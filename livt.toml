@@ -1,0 +1,19 @@
+[project]
+name = "Livt.Base"
+version = "0.1.0"
+path = "src"
+outdir = "out"
+
+[tests]
+path = "tests"
+components = [
+    "BitsTest",
+    "AsciiTest",
+    "ConvertTest",
+    "FormatTest",
+    "ArrayTest",
+    "DiagnosticsTest",
+    "ArrayUnsizedParamTest",
+    "StringTest",
+    "StringHelperTest"
+]

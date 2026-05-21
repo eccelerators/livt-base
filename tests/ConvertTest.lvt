@@ -1,0 +1,295 @@
+namespace Livt.Base.Tests
+
+using Livt.Convert
+
+@Test
+component ConvertTest
+{
+    conv: Convert
+
+    new()
+    {
+        this.conv = new Convert()
+    }
+
+    // -----------------------------------------------------------------------
+    // ToUInt8Clamped
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToUInt8ClampedReturnsZeroForMinimum()
+    {
+        assert this.conv.ToUInt8Clamped(0) == 0
+    }
+
+    @Test
+    fn ToUInt8ClampedReturns255ForMaximum()
+    {
+        assert this.conv.ToUInt8Clamped(255) == 255
+    }
+
+    @Test
+    fn ToUInt8ClampedClampsNegativeToZero()
+    {
+        assert this.conv.ToUInt8Clamped(-1) == 0
+        assert this.conv.ToUInt8Clamped(-100) == 0
+    }
+
+    @Test
+    fn ToUInt8ClampedClampsOverflowTo255()
+    {
+        assert this.conv.ToUInt8Clamped(256) == 255
+        assert this.conv.ToUInt8Clamped(1000) == 255
+    }
+
+    @Test
+    fn ToUInt8ClampedPassesThroughValidValue()
+    {
+        assert this.conv.ToUInt8Clamped(128) == 128
+        assert this.conv.ToUInt8Clamped(100) == 100
+    }
+
+    // -----------------------------------------------------------------------
+    // ToUInt8Wrapping
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToUInt8WrappingPassesThroughInRange()
+    {
+        assert this.conv.ToUInt8Wrapping(0) == 0
+        assert this.conv.ToUInt8Wrapping(255) == 255
+    }
+
+    @Test
+    fn ToUInt8WrappingWrapsAbove255()
+    {
+        assert this.conv.ToUInt8Wrapping(256) == 0
+        assert this.conv.ToUInt8Wrapping(257) == 1
+        assert this.conv.ToUInt8Wrapping(511) == 255
+    }
+
+    @Test
+    fn ToUInt8WrappingWrapsNegativeValues()
+    {
+        assert this.conv.ToUInt8Wrapping(-1) == 255
+        assert this.conv.ToUInt8Wrapping(-256) == 0
+    }
+
+    // -----------------------------------------------------------------------
+    // ToUInt8Truncated
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToUInt8TruncatedKeepsLow8Bits()
+    {
+        assert this.conv.ToUInt8Truncated(0) == 0
+        assert this.conv.ToUInt8Truncated(255) == 255
+        assert this.conv.ToUInt8Truncated(256) == 0
+        assert this.conv.ToUInt8Truncated(257) == 1
+    }
+
+    // -----------------------------------------------------------------------
+    // ToInt8Clamped
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToInt8ClampedReturnsMinusOneHundredTwentyEightForMinimum()
+    {
+        assert this.conv.ToInt8Clamped(-128) == -128
+    }
+
+    @Test
+    fn ToInt8ClampedReturnsOneTwentySevenForMaximum()
+    {
+        assert this.conv.ToInt8Clamped(127) == 127
+    }
+
+    @Test
+    fn ToInt8ClampedClampsUnderflowToMinusTwentyEight()
+    {
+        assert this.conv.ToInt8Clamped(-129) == -128
+        assert this.conv.ToInt8Clamped(-1000) == -128
+    }
+
+    @Test
+    fn ToInt8ClampedClampsOverflowToOneTwentySeven()
+    {
+        assert this.conv.ToInt8Clamped(128) == 127
+        assert this.conv.ToInt8Clamped(1000) == 127
+    }
+
+    @Test
+    fn ToInt8ClampedPassesThroughValidValues()
+    {
+        assert this.conv.ToInt8Clamped(0) == 0
+        assert this.conv.ToInt8Clamped(-1) == -1
+        assert this.conv.ToInt8Clamped(50) == 50
+        assert this.conv.ToInt8Clamped(-50) == -50
+    }
+
+    // -----------------------------------------------------------------------
+    // ToInt8Wrapping
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToInt8WrappingPassesThroughInRange()
+    {
+        assert this.conv.ToInt8Wrapping(0) == 0
+        assert this.conv.ToInt8Wrapping(-128) == -128
+        assert this.conv.ToInt8Wrapping(127) == 127
+    }
+
+    @Test
+    fn ToInt8WrappingWrapsPositiveOverflow()
+    {
+        assert this.conv.ToInt8Wrapping(128) == -128
+        assert this.conv.ToInt8Wrapping(255) == -1
+        assert this.conv.ToInt8Wrapping(256) == 0
+    }
+
+    @Test
+    fn ToInt8WrappingWrapsNegativeUnderflow()
+    {
+        assert this.conv.ToInt8Wrapping(-129) == 127
+    }
+
+    // -----------------------------------------------------------------------
+    // ToInt8Truncated
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToInt8TruncatedPassesThroughInRange()
+    {
+        assert this.conv.ToInt8Truncated(0) == 0
+        assert this.conv.ToInt8Truncated(127) == 127
+        assert this.conv.ToInt8Truncated(-128) == -128
+    }
+
+    @Test
+    fn ToInt8TruncatedWrapsOutOfRange()
+    {
+        assert this.conv.ToInt8Truncated(128) == -128
+        assert this.conv.ToInt8Truncated(255) == -1
+    }
+
+    // -----------------------------------------------------------------------
+    // ToUInt16Clamped
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToUInt16ClampedPassesThroughValidValue()
+    {
+        assert this.conv.ToUInt16Clamped(0) == 0
+        assert this.conv.ToUInt16Clamped(65535) == 65535
+        assert this.conv.ToUInt16Clamped(1000) == 1000
+    }
+
+    @Test
+    fn ToUInt16ClampedClampsNegativeToZero()
+    {
+        assert this.conv.ToUInt16Clamped(-1) == 0
+    }
+
+    @Test
+    fn ToUInt16ClampedClampsOverflowTo65535()
+    {
+        assert this.conv.ToUInt16Clamped(65536) == 65535
+    }
+
+    // -----------------------------------------------------------------------
+    // ToUInt16Wrapping
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToUInt16WrappingWrapsAbove65535()
+    {
+        assert this.conv.ToUInt16Wrapping(65536) == 0
+        assert this.conv.ToUInt16Wrapping(65537) == 1
+    }
+
+    @Test
+    fn ToUInt16WrappingWrapsNegativeValues()
+    {
+        assert this.conv.ToUInt16Wrapping(-1) == 65535
+    }
+
+    // -----------------------------------------------------------------------
+    // ToInt16Clamped
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToInt16ClampedPassesThroughValidValues()
+    {
+        assert this.conv.ToInt16Clamped(0) == 0
+        assert this.conv.ToInt16Clamped(-32768) == -32768
+        assert this.conv.ToInt16Clamped(32767) == 32767
+    }
+
+    @Test
+    fn ToInt16ClampedClampsUnderflow()
+    {
+        assert this.conv.ToInt16Clamped(-32769) == -32768
+    }
+
+    @Test
+    fn ToInt16ClampedClampsOverflow()
+    {
+        assert this.conv.ToInt16Clamped(32768) == 32767
+    }
+
+    // -----------------------------------------------------------------------
+    // ToInt16Wrapping
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToInt16WrappingPassesThroughInRange()
+    {
+        assert this.conv.ToInt16Wrapping(0) == 0
+        assert this.conv.ToInt16Wrapping(-32768) == -32768
+        assert this.conv.ToInt16Wrapping(32767) == 32767
+    }
+
+    @Test
+    fn ToInt16WrappingWrapsPositiveOverflow()
+    {
+        assert this.conv.ToInt16Wrapping(32768) == -32768
+        assert this.conv.ToInt16Wrapping(65535) == -1
+    }
+
+    @Test
+    fn ToInt16WrappingWrapsNegativeUnderflow()
+    {
+        assert this.conv.ToInt16Wrapping(-32769) == 32767
+    }
+
+    // -----------------------------------------------------------------------
+    // ToByteClamped, ToByteWrapping, ToByteTruncated
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ToByteClampedClampsToByteRange()
+    {
+        assert this.conv.ToByteClamped(0) == 0
+        assert this.conv.ToByteClamped(255) == 255
+        assert this.conv.ToByteClamped(-1) == 0
+        assert this.conv.ToByteClamped(256) == 255
+    }
+
+    @Test
+    fn ToByteWrappingWrapsToByteRange()
+    {
+        assert this.conv.ToByteWrapping(0) == 0
+        assert this.conv.ToByteWrapping(255) == 255
+        assert this.conv.ToByteWrapping(256) == 0
+        assert this.conv.ToByteWrapping(-1) == 255
+    }
+
+    @Test
+    fn ToByteTruncatedKeepsLow8Bits()
+    {
+        assert this.conv.ToByteTruncated(0) == 0
+        assert this.conv.ToByteTruncated(255) == 255
+        assert this.conv.ToByteTruncated(256) == 0
+        assert this.conv.ToByteTruncated(257) == 1
+    }
+}

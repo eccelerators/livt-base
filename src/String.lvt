@@ -1,0 +1,322 @@
+namespace Livt.String
+
+/**
+ * String search, comparison, and parsing helpers.
+ *
+ * Strings in Livt are most conveniently worked with as encoded byte arrays.
+ * Use "text".Encode() to convert a string literal to a byte array, and
+ * byteArray.Decode() to convert back to a string variable.
+ *
+ * These helpers operate directly on byte arrays so they work with both
+ * encode/decode patterns and raw protocol data.
+ *
+ * Example — HTTP method matching:
+ *   var str: StringHelper = new StringHelper()
+ *   var method: byte[3] = "GET".Encode()
+ *   if (str.StartsWith(rxBuf, 128, method, 3)) { ... }
+ */
+component StringHelper
+{
+    /**
+     * Returns true if the first prefixSize bytes of data equal prefix.
+     * Returns false if prefixSize is greater than dataSize.
+     */
+    public fn StartsWith(data: byte[], dataSize: int, prefix: byte[], prefixSize: int) bool
+    {
+        if (prefixSize > dataSize)
+        {
+            return false
+        }
+        for (var i = 0; i < prefixSize; i++)
+        {
+            var d: byte = data[i]
+            var p: byte = prefix[i]
+            if (d != p)
+            {
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * Returns true if the last suffixSize bytes of data equal suffix.
+     * Returns false if suffixSize is greater than dataSize.
+     */
+    public fn EndsWith(data: byte[], dataSize: int, suffix: byte[], suffixSize: int) bool
+    {
+        if (suffixSize > dataSize)
+        {
+            return false
+        }
+        var offset: int = dataSize - suffixSize
+        for (var i = 0; i < suffixSize; i++)
+        {
+            var idx: int = offset + i
+            var d: byte = data[idx]
+            var s: byte = suffix[i]
+            if (d != s)
+            {
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * Returns true if sub occurs anywhere within the first dataSize bytes of data.
+     * Returns false if subSize is greater than dataSize, or if subSize is zero.
+     */
+    public fn Contains(data: byte[], dataSize: int, sub: byte[], subSize: int) bool
+    {
+        if (subSize > dataSize)
+        {
+            return false
+        }
+        if (subSize == 0)
+        {
+            return false
+        }
+        var limit: int = dataSize - subSize + 1
+        var match: bool = false
+        for (var i = 0; i < limit; i++)
+        {
+            match = true
+            for (var j = 0; j < subSize; j++)
+            {
+                var cidx: int = i + j
+                var cd: byte = data[cidx]
+                var cs: byte = sub[j]
+                if (cd != cs) { match = false }
+            }
+            if (match == true) { return true }
+        }
+        return false
+    }
+
+    /**
+     * Returns the index of the first occurrence of sub within the first
+     * dataSize bytes of data. Returns -1 if sub is not found, if subSize
+     * is greater than dataSize, or if subSize is zero.
+     */
+    public fn IndexOf(data: byte[], dataSize: int, sub: byte[], subSize: int) int
+    {
+        if (subSize > dataSize)
+        {
+            return -1
+        }
+        if (subSize == 0)
+        {
+            return -1
+        }
+        var limit: int = dataSize - subSize + 1
+        var imatch: bool = false
+        for (var ii = 0; ii < limit; ii++)
+        {
+            imatch = true
+            for (var jj = 0; jj < subSize; jj++)
+            {
+                var iidx: int = ii + jj
+                var iid: byte = data[iidx]
+                var iis: byte = sub[jj]
+                if (iid != iis) { imatch = false }
+            }
+            if (imatch == true) { return ii }
+        }
+        return -1
+    }
+
+    /**
+     * Returns the index of the last occurrence of sub within the first
+     * dataSize bytes of data. Returns -1 if sub is not found, if subSize
+     * is greater than dataSize, or if subSize is zero.
+     *
+     * Example — find last path separator:
+     *   var sep: byte[1] = "/".Encode()
+     *   var pos: int = str.LastIndexOf(path, pathLen, sep, 1)
+     */
+    public fn LastIndexOf(data: byte[], dataSize: int, sub: byte[], subSize: int) int
+    {
+        if (subSize > dataSize)
+        {
+            return -1
+        }
+        if (subSize == 0)
+        {
+            return -1
+        }
+        var llimit: int = dataSize - subSize + 1
+        var lastIdx: int = -1
+        var lmatch: bool = false
+        for (var li = 0; li < llimit; li++)
+        {
+            lmatch = true
+            for (var lj = 0; lj < subSize; lj++)
+            {
+                var lidx: int = li + lj
+                var ld: byte = data[lidx]
+                var ls: byte = sub[lj]
+                if (ld != ls) { lmatch = false }
+            }
+            if (lmatch == true) { lastIdx = li }
+        }
+        return lastIdx
+    }
+
+    /**
+     * Returns true if sub matches the bytes of data starting at position pos.
+     * Returns false if pos is negative, if pos + subSize exceeds dataSize, or
+     * if subSize is zero.
+     *
+     * Example — check HTTP header field at known offset:
+     *   var colon: byte[1] = ":".Encode()
+     *   if (str.EqualsAt(header, 64, colonPos, colon, 1)) { ... }
+     */
+    public fn EqualsAt(data: byte[], dataSize: int, pos: int, sub: byte[], subSize: int) bool
+    {
+        if (subSize == 0)
+        {
+            return false
+        }
+        if (pos < 0)
+        {
+            return false
+        }
+        var eend: int = pos + subSize
+        if (eend > dataSize)
+        {
+            return false
+        }
+        for (var ei = 0; ei < subSize; ei++)
+        {
+            var eidx: int = pos + ei
+            var ed: byte = data[eidx]
+            var es: byte = sub[ei]
+            if (ed != es) { return false }
+        }
+        return true
+    }
+
+    /**
+     * Returns true if the first aSize bytes of a equal the first bSize bytes of b,
+     * ignoring ASCII case (A-Z treated same as a-z). Returns false if aSize != bSize.
+     *
+     * Example — case-insensitive HTTP header name matching:
+     *   var name: byte[13] = "Content-Type:".Encode()
+     *   if (str.EqualsIgnoreCase(header, 13, name, 13)) { ... }
+     */
+    public fn EqualsIgnoreCase(a: byte[], aSize: int, b: byte[], bSize: int) bool
+    {
+        if (aSize != bSize)
+        {
+            return false
+        }
+        for (var ici = 0; ici < aSize; ici++)
+        {
+            var ica: int = a[ici] as int
+            var icb: int = b[ici] as int
+            if (ica >= 65) { if (ica <= 90) { ica = ica + 32 } }
+            if (icb >= 65) { if (icb <= 90) { icb = icb + 32 } }
+            if (ica != icb) { return false }
+        }
+        return true
+    }
+
+    /**
+     * Returns the number of bytes before the first null byte (0x00) in data,
+     * searching up to maxSize bytes. Returns maxSize if no null byte is found.
+     * Returns 0 if the first byte is null or if maxSize is zero.
+     *
+     * Example — measure a UART command received into a buffer:
+     *   var len: int = str.NullTerminatedLength(rxBuf, 64)
+     */
+    public fn NullTerminatedLength(data: byte[], maxSize: int) int
+    {
+        for (var ni = 0; ni < maxSize; ni++)
+        {
+            var nb: byte = data[ni]
+            var nbi: int = nb as int
+            if (nbi == 0) { return ni }
+        }
+        return maxSize
+    }
+
+    /**
+     * Parses an ASCII decimal unsigned integer from the first dataSize bytes of data.
+     * Returns -1 if dataSize is zero or if any byte is not '0'-'9'.
+     * No overflow protection: caller must ensure the value fits in a signed int.
+     *
+     * Example — parse TCP port from UART config "8080":
+     *   var port: int = str.ParseDecimalUInt(buf, 4)
+     */
+    public fn ParseDecimalUInt(data: byte[], dataSize: int) int
+    {
+        if (dataSize == 0)
+        {
+            return -1
+        }
+        var dresult: int = 0
+        for (var di = 0; di < dataSize; di++)
+        {
+            var dc: byte = data[di]
+            var dci: int = dc as int
+            if (dci < 48) { return -1 }
+            if (dci > 57) { return -1 }
+            var ddigit: int = dci - 48
+            dresult = dresult * 10 + ddigit
+        }
+        return dresult
+    }
+
+    /**
+     * Parses an ASCII hexadecimal unsigned integer from the first dataSize bytes of data.
+     * Accepts '0'-'9', 'a'-'f', and 'A'-'F'. Leading "0x" prefix is not accepted.
+     * Returns -1 if dataSize is zero or if any byte is not a valid hex character.
+     * No overflow protection: caller must ensure the value fits in a signed int.
+     *
+     * Example — parse a register address from UART input "1a2f":
+     *   var addr: int = str.ParseHexUInt(buf, 4)
+     */
+    public fn ParseHexUInt(data: byte[], dataSize: int) int
+    {
+        if (dataSize == 0)
+        {
+            return -1
+        }
+        var hresult: int = 0
+        for (var hi = 0; hi < dataSize; hi++)
+        {
+            var hc: byte = data[hi]
+            var hci: int = hc as int
+            var hdigit: int = 0
+            var hvalid: bool = false
+            if (hci >= 48)
+            {
+                if (hci <= 57)
+                {
+                    hdigit = hci - 48
+                    hvalid = true
+                }
+            }
+            if (hci >= 65)
+            {
+                if (hci <= 70)
+                {
+                    hdigit = hci - 55
+                    hvalid = true
+                }
+            }
+            if (hci >= 97)
+            {
+                if (hci <= 102)
+                {
+                    hdigit = hci - 87
+                    hvalid = true
+                }
+            }
+            if (hvalid == false) { return -1 }
+            hresult = hresult * 16 + hdigit
+        }
+        return hresult
+    }
+}

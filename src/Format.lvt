@@ -1,0 +1,173 @@
+namespace Livt.Format
+
+/**
+ * Fixed-width string formatting helpers for machine values.
+ *
+ * The returned strings have compile-time-known lengths for fixed-size output
+ * APIs such as UART transmit helpers. Decimal output is zero-padded. Signed
+ * decimal output uses a leading sign.
+ */
+component Format
+{
+    /**
+     * Returns the ASCII digit for value in 0..9.
+     * Values outside 0..9 return '?'.
+     */
+    fn Digit(value: int) byte
+    {
+        if (value < 0)
+        {
+            return 0x3F
+        }
+        if (value > 9)
+        {
+            return 0x3F
+        }
+        var ascii: int = 0x30 + value
+        return ascii as byte
+    }
+
+    /**
+     * Returns the uppercase ASCII hex digit for value in 0..15.
+     * Values outside 0..15 return '?'.
+     */
+    fn HexDigit(value: int) byte
+    {
+        if (value < 0)
+        {
+            return 0x3F
+        }
+        if (value < 10)
+        {
+            var digit: int = 0x30 + value
+            return digit as byte
+        }
+        if (value < 16)
+        {
+            var letter: int = 0x41 + value - 10
+            return letter as byte
+        }
+        return 0x3F
+    }
+
+    /**
+     * Formats a byte as three zero-padded decimal digits.
+     * Examples: 0 -> "000", 7 -> "007", 42 -> "042", 255 -> "255".
+     */
+    public fn ToStringByte(value: byte) string[3]
+    {
+        var n: int = value as int
+        var buf: byte[3]
+        var hundreds: int = (n / 100) % 10
+        var tens: int = (n / 10) % 10
+        var ones: int = n % 10
+        buf[0] = this.Digit(hundreds)
+        buf[1] = this.Digit(tens)
+        buf[2] = this.Digit(ones)
+        return buf.Decode()
+    }
+
+    /**
+     * Formats an int as a sign plus ten zero-padded decimal digits.
+     * Examples: 42 -> "+0000000042", -42 -> "-0000000042".
+     *
+     * Requires: value is greater than the minimum signed int, because the
+     * implementation negates negative values before extracting digits.
+     */
+    public fn ToStringInt(value: int) string[11]
+    {
+        var n: int = value
+        var buf: byte[11]
+        buf[0] = 0x2B
+        if (value < 0)
+        {
+            buf[0] = 0x2D
+            n = 0 - value
+        }
+        var d9: int = (n / 1000000000) % 10
+        var d8: int = (n / 100000000) % 10
+        var d7: int = (n / 10000000) % 10
+        var d6: int = (n / 1000000) % 10
+        var d5: int = (n / 100000) % 10
+        var d4: int = (n / 10000) % 10
+        var d3: int = (n / 1000) % 10
+        var d2: int = (n / 100) % 10
+        var d1: int = (n / 10) % 10
+        var d0: int = n % 10
+        buf[1] = this.Digit(d9)
+        buf[2] = this.Digit(d8)
+        buf[3] = this.Digit(d7)
+        buf[4] = this.Digit(d6)
+        buf[5] = this.Digit(d5)
+        buf[6] = this.Digit(d4)
+        buf[7] = this.Digit(d3)
+        buf[8] = this.Digit(d2)
+        buf[9] = this.Digit(d1)
+        buf[10] = this.Digit(d0)
+        return buf.Decode()
+    }
+
+    /**
+     * Formats a uint as ten zero-padded decimal digits.
+     * Examples: 42 -> "0000000042", 255 -> "0000000255".
+     */
+    public fn ToStringUInt(value: uint) string[10]
+    {
+        var d9u: uint = (value / 1000000000) % 10
+        var d8u: uint = (value / 100000000) % 10
+        var d7u: uint = (value / 10000000) % 10
+        var d6u: uint = (value / 1000000) % 10
+        var d5u: uint = (value / 100000) % 10
+        var d4u: uint = (value / 10000) % 10
+        var d3u: uint = (value / 1000) % 10
+        var d2u: uint = (value / 100) % 10
+        var d1u: uint = (value / 10) % 10
+        var d0u: uint = value % 10
+        var buf: byte[10]
+        buf[0] = this.Digit(d9u as int)
+        buf[1] = this.Digit(d8u as int)
+        buf[2] = this.Digit(d7u as int)
+        buf[3] = this.Digit(d6u as int)
+        buf[4] = this.Digit(d5u as int)
+        buf[5] = this.Digit(d4u as int)
+        buf[6] = this.Digit(d3u as int)
+        buf[7] = this.Digit(d2u as int)
+        buf[8] = this.Digit(d1u as int)
+        buf[9] = this.Digit(d0u as int)
+        return buf.Decode()
+    }
+
+    /**
+     * Formats a byte as two uppercase hexadecimal digits.
+     * Example: 0xAF -> "AF".
+     */
+    public fn ToHexByte(value: byte) string[2]
+    {
+        var n: int = value as int
+        var hi: int = (n / 16) % 16
+        var lo: int = n % 16
+        var buf: byte[2]
+        buf[0] = this.HexDigit(hi)
+        buf[1] = this.HexDigit(lo)
+        return buf.Decode()
+    }
+
+    /**
+     * Formats a byte as eight binary digits.
+     * Example: 0x05 -> "00000101".
+     */
+    public fn ToBinaryByte(value: byte) string[8]
+    {
+        var n: int = value as int
+        var buf: byte[8]
+        buf[0] = this.Digit((n / 128) % 2)
+        buf[1] = this.Digit((n / 64) % 2)
+        buf[2] = this.Digit((n / 32) % 2)
+        buf[3] = this.Digit((n / 16) % 2)
+        buf[4] = this.Digit((n / 8) % 2)
+        buf[5] = this.Digit((n / 4) % 2)
+        buf[6] = this.Digit((n / 2) % 2)
+        buf[7] = this.Digit(n % 2)
+        return buf.Decode()
+    }
+}

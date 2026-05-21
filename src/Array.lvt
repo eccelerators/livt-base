@@ -1,0 +1,88 @@
+namespace Livt.Array
+
+/**
+ * Fixed-size array operations that fit Livt's synthesis model.
+ *
+ * Arrays must have a statically known size. All functions are synthesizable.
+ *
+ * The byte[] unsized parameter form is supported: any byte[N] can be passed
+ * to a function that declares a byte[] parameter. Element reads inside the
+ * function generate correct VHDL. The size must be supplied as a separate
+ * int parameter; the caller is responsible for providing the correct value.
+ */
+component Array
+{
+    /**
+     * Returns true if index is within the valid range [0, size-1].
+     * Use this before accessing an array at a dynamically computed index.
+     */
+    public fn IsIndexInRange(index: int, size: int) bool
+    {
+        if (index < 0)
+        {
+            return false
+        }
+        if (index >= size)
+        {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Returns true if the first size bytes of a and b are equal.
+     * Both a and b must contain at least size bytes. The caller is
+     * responsible for providing a correct size value.
+     */
+    public fn Equals(a: byte[], b: byte[], size: int) bool
+    {
+        for (var i = 0; i < size; i++)
+        {
+            var ai: byte = a[i]
+            var bi: byte = b[i]
+            if (ai != bi)
+            {
+                return false
+            }
+        }
+        return true
+    }
+
+    /**
+     * Returns the first index at which value appears in the first size bytes
+     * of arr. Returns -1 if value is not found.
+     * arr must contain at least size bytes. The caller is responsible for
+     * providing a correct size value.
+     */
+    public fn IndexOf(arr: byte[], size: int, value: byte) int
+    {
+        for (var i = 0; i < size; i++)
+        {
+            var ai: byte = arr[i]
+            if (ai == value)
+            {
+                return i
+            }
+        }
+        return -1
+    }
+
+    /**
+     * Returns the number of times value appears in the first size bytes of arr.
+     * arr must contain at least size bytes. The caller is responsible for
+     * providing a correct size value.
+     */
+    public fn CountOf(arr: byte[], size: int, value: byte) int
+    {
+        var count: int = 0
+        for (var i = 0; i < size; i++)
+        {
+            var ai: byte = arr[i]
+            if (ai == value)
+            {
+                count = count + 1
+            }
+        }
+        return count
+    }
+}

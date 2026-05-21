@@ -1,0 +1,239 @@
+namespace Livt.Base.Tests
+
+using Livt.Diagnostics
+
+@Test
+component DiagnosticsTest
+{
+    chk: Assert
+
+    new()
+    {
+        this.chk = new Assert()
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertTrue / AssertFalse
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertTruePassesForTrueValue()
+    {
+        this.chk.AssertTrue(true)
+    }
+
+    @Test
+    fn AssertFalsePassesForFalseValue()
+    {
+        this.chk.AssertFalse(false)
+    }
+
+    @Test
+    fn AssertTruePassesForExpressionResult()
+    {
+        var x: int = 42
+        var y: int = 42
+        var equal: bool = x == y
+        this.chk.AssertTrue(equal)
+    }
+
+    @Test
+    fn AssertFalsePassesForNegatedExpressionResult()
+    {
+        var x: int = 1
+        var y: int = 2
+        var notEqual: bool = x != y
+        this.chk.AssertFalse(!notEqual)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertBoolEqual
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertBoolEqualPassesForTrueAndTrue()
+    {
+        this.chk.AssertBoolEqual(true, true)
+    }
+
+    @Test
+    fn AssertBoolEqualPassesForFalseAndFalse()
+    {
+        this.chk.AssertBoolEqual(false, false)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertIntEqual
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertIntEqualPassesForEqualPositiveValues()
+    {
+        this.chk.AssertIntEqual(42, 42)
+    }
+
+    @Test
+    fn AssertIntEqualPassesForZero()
+    {
+        this.chk.AssertIntEqual(0, 0)
+    }
+
+    @Test
+    fn AssertIntEqualPassesForNegativeValues()
+    {
+        this.chk.AssertIntEqual(-100, -100)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertIntNotEqual
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertIntNotEqualPassesForDifferentValues()
+    {
+        this.chk.AssertIntNotEqual(1, 2)
+        this.chk.AssertIntNotEqual(-1, 1)
+        this.chk.AssertIntNotEqual(0, 100)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertIntGreater / AssertIntLess
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertIntGreaterPassesWhenValueExceedsThreshold()
+    {
+        this.chk.AssertIntGreater(10, 5)
+        this.chk.AssertIntGreater(1, 0)
+        this.chk.AssertIntGreater(0, -1)
+    }
+
+    @Test
+    fn AssertIntLessPassesWhenValueIsBelowThreshold()
+    {
+        this.chk.AssertIntLess(5, 10)
+        this.chk.AssertIntLess(0, 1)
+        this.chk.AssertIntLess(-1, 0)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertIntInRange
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertIntInRangePassesAtLowerBound()
+    {
+        this.chk.AssertIntInRange(0, 0, 10)
+    }
+
+    @Test
+    fn AssertIntInRangePassesAtUpperBound()
+    {
+        this.chk.AssertIntInRange(10, 0, 10)
+    }
+
+    @Test
+    fn AssertIntInRangePassesInMiddle()
+    {
+        this.chk.AssertIntInRange(5, 0, 10)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertByteEqual
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertByteEqualPassesForZeroBytes()
+    {
+        this.chk.AssertByteEqual(0x00, 0x00)
+    }
+
+    @Test
+    fn AssertByteEqualPassesForMaxByte()
+    {
+        this.chk.AssertByteEqual(0xFF, 0xFF)
+    }
+
+    @Test
+    fn AssertByteEqualPassesForArbitraryByte()
+    {
+        this.chk.AssertByteEqual(0x42, 0x42)
+    }
+
+    // -----------------------------------------------------------------------
+    // AssertByteNotEqual
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn AssertByteNotEqualPassesForDifferentBytes()
+    {
+        this.chk.AssertByteNotEqual(0x00, 0xFF)
+        this.chk.AssertByteNotEqual(0x41, 0x61)
+    }
+
+    // -----------------------------------------------------------------------
+    // ReportHex
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ReportHexRunsForZero()
+    {
+        this.chk.ReportHex(0)
+    }
+
+    @Test
+    fn ReportHexRunsForByteValue()
+    {
+        this.chk.ReportHex(255)
+    }
+
+    @Test
+    fn ReportHexRunsForLargeValue()
+    {
+        this.chk.ReportHex(2147483647)
+    }
+
+    // -----------------------------------------------------------------------
+    // ReportValue
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ReportValueRunsForZero()
+    {
+        this.chk.ReportValue(0)
+    }
+
+    @Test
+    fn ReportValueRunsForPositiveValue()
+    {
+        this.chk.ReportValue(42)
+    }
+
+    @Test
+    fn ReportValueRunsForNegativeValue()
+    {
+        this.chk.ReportValue(-1)
+    }
+
+    // -----------------------------------------------------------------------
+    // ReportBinary
+    // -----------------------------------------------------------------------
+
+    @Test
+    fn ReportBinaryRunsForZero()
+    {
+        this.chk.ReportBinary(0)
+    }
+
+    @Test
+    fn ReportBinaryRunsForPositiveValue()
+    {
+        this.chk.ReportBinary(42)
+    }
+
+    @Test
+    fn ReportBinaryRunsForNegativeValue()
+    {
+        this.chk.ReportBinary(-1)
+    }
+}

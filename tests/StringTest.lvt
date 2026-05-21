@@ -1,0 +1,18 @@
+namespace Livt.Base.Tests
+
+@Test
+component StringTest
+{
+    @Test
+    fn ReportWithStringLiteral()
+    {
+        Simulation.Report("hello from string literal")
+    }
+
+    @Test
+    fn ReportWithStringVariable()
+    {
+        var msg: string = "hello from string variable"
+        Simulation.Report(msg)
+    }
+}

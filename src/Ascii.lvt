@@ -1,0 +1,493 @@
+namespace Livt.Ascii
+
+/**
+ * ASCII constants, character classification functions, and character
+ * conversion functions.
+ *
+ * All functions operate on byte values and are synthesizable. Non-ASCII
+ * input bytes (0x80-0xFF) return false from classification functions and
+ * are returned unchanged by conversion functions.
+ */
+component Ascii
+{
+    // -----------------------------------------------------------------------
+    // Control characters
+    // -----------------------------------------------------------------------
+    // ASCII NUL (0x00).
+    public const NUL:              byte = 0x00
+
+    // ASCII backspace (0x08).
+    public const BACKSPACE:        byte = 0x08
+
+    // ASCII horizontal tab (0x09).
+    public const TAB:              byte = 0x09
+
+    // ASCII line feed (0x0A).
+    public const LINE_FEED:        byte = 0x0A
+
+    // ASCII carriage return (0x0D).
+    public const CARRIAGE_RETURN:  byte = 0x0D
+
+    // ASCII escape (0x1B).
+    public const ESCAPE:           byte = 0x1B
+
+    // ASCII delete (0x7F).
+    public const DELETE:           byte = 0x7F
+
+    // -----------------------------------------------------------------------
+    // Printable characters
+    // -----------------------------------------------------------------------
+    // ASCII space (0x20).
+    public const SPACE:            byte = 0x20
+
+    // ASCII exclamation mark '!' (0x21).
+    public const EXCLAMATION:      byte = 0x21
+
+    // ASCII double quote '"' (0x22).
+    public const QUOTE:            byte = 0x22
+
+    // ASCII hash '#' (0x23).
+    public const HASH:             byte = 0x23
+
+    // ASCII percent '%' (0x25).
+    public const PERCENT:          byte = 0x25
+
+    // ASCII ampersand '&' (0x26).
+    public const AMPERSAND:        byte = 0x26
+
+    // ASCII left parenthesis '(' (0x28).
+    public const LEFT_PAREN:       byte = 0x28
+
+    // ASCII right parenthesis ')' (0x29).
+    public const RIGHT_PAREN:      byte = 0x29
+
+    // ASCII asterisk '*' (0x2A).
+    public const ASTERISK:         byte = 0x2A
+
+    // ASCII plus '+' (0x2B).
+    public const PLUS:             byte = 0x2B
+
+    // ASCII comma ',' (0x2C).
+    public const COMMA:            byte = 0x2C
+
+    // ASCII hyphen-minus '-' (0x2D).
+    public const MINUS:            byte = 0x2D
+
+    // ASCII full stop '.' (0x2E).
+    public const DOT:              byte = 0x2E
+
+    // ASCII solidus '/' (0x2F).
+    public const SLASH:            byte = 0x2F
+
+    // ASCII colon ':' (0x3A).
+    public const COLON:            byte = 0x3A
+
+    // ASCII semicolon ';' (0x3B).
+    public const SEMICOLON:        byte = 0x3B
+
+    // ASCII less-than sign '<' (0x3C).
+    public const LESS_THAN:        byte = 0x3C
+
+    // ASCII equals sign '=' (0x3D).
+    public const EQUALS:           byte = 0x3D
+
+    // ASCII greater-than sign '>' (0x3E).
+    public const GREATER_THAN:     byte = 0x3E
+
+    // ASCII question mark '?' (0x3F).
+    public const QUESTION:         byte = 0x3F
+
+    // ASCII commercial at '@' (0x40).
+    public const AT:               byte = 0x40
+
+    // ASCII left square bracket '[' (0x5B).
+    public const LEFT_BRACKET:     byte = 0x5B
+
+    // ASCII reverse solidus '\' (0x5C).
+    public const BACKSLASH:        byte = 0x5C
+
+    // ASCII right square bracket ']' (0x5D).
+    public const RIGHT_BRACKET:    byte = 0x5D
+
+    // ASCII circumflex accent '^' (0x5E).
+    public const CARET:            byte = 0x5E
+
+    // ASCII low line '_' (0x5F).
+    public const UNDERSCORE:       byte = 0x5F
+
+    // ASCII grave accent '`' (0x60).
+    public const BACKTICK:         byte = 0x60
+
+    // ASCII left curly bracket '{' (0x7B).
+    public const LEFT_BRACE:       byte = 0x7B
+
+    // ASCII vertical line '|' (0x7C).
+    public const PIPE:             byte = 0x7C
+
+    // ASCII right curly bracket '}' (0x7D).
+    public const RIGHT_BRACE:      byte = 0x7D
+
+    // ASCII tilde '~' (0x7E).
+    public const TILDE:            byte = 0x7E
+
+    // -----------------------------------------------------------------------
+    // Digit range boundaries
+    // -----------------------------------------------------------------------
+    // ASCII digit '0' (0x30).
+    public const DIGIT_0:          byte = 0x30
+
+    // ASCII digit '9' (0x39).
+    public const DIGIT_9:          byte = 0x39
+
+    // -----------------------------------------------------------------------
+    // Letter range boundaries
+    // -----------------------------------------------------------------------
+    // ASCII uppercase letter 'A' (0x41).
+    public const UPPER_A:          byte = 0x41
+
+    // ASCII uppercase letter 'F' (0x46).
+    public const UPPER_F:          byte = 0x46
+
+    // ASCII uppercase letter 'Z' (0x5A).
+    public const UPPER_Z:          byte = 0x5A
+
+    // ASCII lowercase letter 'a' (0x61).
+    public const LOWER_A:          byte = 0x61
+
+    // ASCII lowercase letter 'f' (0x66).
+    public const LOWER_F:          byte = 0x66
+
+    // ASCII lowercase letter 'z' (0x7A).
+    public const LOWER_Z:          byte = 0x7A
+
+    // -----------------------------------------------------------------------
+    // Classification
+    // -----------------------------------------------------------------------
+    /**
+     * Returns true if c is an ASCII decimal digit '0'..'9'.
+     */
+    public fn IsDigit(c: byte) bool
+    {
+        if (c < 0x30)
+        {
+            return false
+        }
+        if (c > 0x39)
+        {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Returns true if c is an ASCII hexadecimal digit.
+     * Accepts '0'..'9', 'A'..'F', and 'a'..'f'.
+     */
+    public fn IsHexDigit(c: byte) bool
+    {
+        if (c >= 0x30 && c <= 0x39)
+        {
+            return true
+        }
+        if (c >= 0x41 && c <= 0x46)
+        {
+            return true
+        }
+        if (c >= 0x61 && c <= 0x66)
+        {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Returns true if c is an ASCII binary digit: '0' or '1'.
+     */
+    public fn IsBinaryDigit(c: byte) bool
+    {
+        if (c == 0x30)
+        {
+            return true
+        }
+        if (c == 0x31)
+        {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Returns true if c is an ASCII octal digit '0'..'7'.
+     */
+    public fn IsOctalDigit(c: byte) bool
+    {
+        if (c < 0x30)
+        {
+            return false
+        }
+        if (c > 0x37)
+        {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Returns true if c is an ASCII uppercase letter 'A'..'Z'.
+     */
+    public fn IsUpper(c: byte) bool
+    {
+        if (c < 0x41)
+        {
+            return false
+        }
+        if (c > 0x5A)
+        {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Returns true if c is an ASCII lowercase letter 'a'..'z'.
+     */
+    public fn IsLower(c: byte) bool
+    {
+        if (c < 0x61)
+        {
+            return false
+        }
+        if (c > 0x7A)
+        {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Returns true if c is an ASCII letter: 'A'..'Z' or 'a'..'z'.
+     */
+    public fn IsLetter(c: byte) bool
+    {
+        if (this.IsUpper(c))
+        {
+            return true
+        }
+        if (this.IsLower(c))
+        {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Returns true if c is an ASCII letter or decimal digit.
+     */
+    public fn IsAlphaNumeric(c: byte) bool
+    {
+        if (this.IsLetter(c))
+        {
+            return true
+        }
+        if (this.IsDigit(c))
+        {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Returns true if c is an ASCII whitespace character.
+     * Accepts space (0x20), horizontal tab (0x09), line feed (0x0A),
+     * and carriage return (0x0D).
+     */
+    public fn IsWhitespace(c: byte) bool
+    {
+        if (c == 0x20)
+        {
+            return true
+        }
+        if (c == 0x09)
+        {
+            return true
+        }
+        if (c == 0x0A)
+        {
+            return true
+        }
+        if (c == 0x0D)
+        {
+            return true
+        }
+        return false
+    }
+
+    /**
+     * Returns true if c is a printable ASCII character (0x20..0x7E).
+     */
+    public fn IsPrintable(c: byte) bool
+    {
+        if (c < 0x20)
+        {
+            return false
+        }
+        if (c > 0x7E)
+        {
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Returns true if c is an ASCII control character (0x00..0x1F or 0x7F).
+     */
+    public fn IsControl(c: byte) bool
+    {
+        if (c <= 0x1F)
+        {
+            return true
+        }
+        if (c == 0x7F)
+        {
+            return true
+        }
+        return false
+    }
+
+    // -----------------------------------------------------------------------
+    // Conversion
+    // -----------------------------------------------------------------------
+    /**
+     * Returns the uppercase form of c.
+     * Non-lowercase characters are returned unchanged.
+     */
+    public fn ToUpper(c: byte) byte
+    {
+        if (c < 0x61)
+        {
+            return c
+        }
+        if (c > 0x7A)
+        {
+            return c
+        }
+        var ci: int = c as int
+        var ui: int = ci - 32
+        var ub: byte = ui as byte
+        return ub
+    }
+
+    /**
+     * Returns the lowercase form of c.
+     * Non-uppercase characters are returned unchanged.
+     */
+    public fn ToLower(c: byte) byte
+    {
+        if (c < 0x41)
+        {
+            return c
+        }
+        if (c > 0x5A)
+        {
+            return c
+        }
+        var ci: int = c as int
+        var li: int = ci + 32
+        var lb: byte = li as byte
+        return lb
+    }
+
+    /**
+     * Returns the numeric value of an ASCII decimal digit '0'..'9'.
+     * Returns 0xFF for non-digit input.
+     */
+    public fn DigitValue(c: byte) byte
+    {
+        if (c < 0x30)
+        {
+            return 0xFF
+        }
+        if (c > 0x39)
+        {
+            return 0xFF
+        }
+        var ci: int = c as int
+        var vi: int = ci - 48
+        var vb: byte = vi as byte
+        return vb
+    }
+
+    /**
+     * Returns the numeric value (0..15) of an ASCII hexadecimal digit.
+     * Accepts '0'..'9', 'A'..'F', and 'a'..'f'.
+     * Returns 0xFF for non-hex input.
+     */
+    public fn HexValue(c: byte) byte
+    {
+        var ci: int = c as int
+        if (c >= 0x30 && c <= 0x39)
+        {
+            var vi: int = ci - 48
+            var vb: byte = vi as byte
+            return vb
+        }
+        if (c >= 0x41 && c <= 0x46)
+        {
+            var viU: int = ci - 55
+            var vbU: byte = viU as byte
+            return vbU
+        }
+        if (c >= 0x61 && c <= 0x66)
+        {
+            var viL: int = ci - 87
+            var vbL: byte = viL as byte
+            return vbL
+        }
+        return 0xFF
+    }
+
+    /**
+     * Returns the ASCII character for a decimal digit value 0..9.
+     * Returns '?' (0x3F) for values outside 0..9.
+     */
+    public fn FromDigit(value: byte) byte
+    {
+        if (value > 0x09)
+        {
+            return 0x3F
+        }
+        var vi: int = value as int
+        var ci: int = vi + 48
+        var cb: byte = ci as byte
+        return cb
+    }
+
+    /**
+     * Returns the ASCII character for a hexadecimal digit value 0..15.
+     * When uppercase is true, letter digits use 'A'..'F'; otherwise 'a'..'f'.
+     * Returns '?' (0x3F) for values outside 0..15.
+     */
+    public fn FromHexDigit(value: byte, uppercase: bool) byte
+    {
+        if (value > 0x0F)
+        {
+            return 0x3F
+        }
+        var vi: int = value as int
+        if (value <= 0x09)
+        {
+            var ciD: int = vi + 48
+            var cbD: byte = ciD as byte
+            return cbD
+        }
+        if (uppercase == true)
+        {
+            var ciU: int = vi + 55
+            var cbU: byte = ciU as byte
+            return cbU
+        }
+        var ciL: int = vi + 87
+        var cbL: byte = ciL as byte
+        return cbL
+    }
+}

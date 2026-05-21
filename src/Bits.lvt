@@ -1,0 +1,290 @@
+namespace Livt.Bits
+
+/**
+ * Bit and logic-vector operations for non-negative integer values.
+ *
+ * All functions treat the value as a non-negative integer stored in an int.
+ * Bit indices are 0-based (0 = least significant bit, 30 = most significant
+ * bit of the usable range). All functions are synthesizable.
+ */
+component Bits
+{
+    /**
+     * Returns 2^n for n in 0..30.
+     */
+    public fn Pow2(n: int) int
+    {
+        var result: int = 1
+        for (var i = 0; i < n; i++)
+        {
+            result = result * 2
+        }
+        return result
+    }
+
+    /**
+     * Returns the bit at position index (0 = LSB) as 0 or 1.
+     */
+    public fn GetBit(value: int, index: int) int
+    {
+        var p: int = this.Pow2(index)
+        return (value / p) % 2
+    }
+
+    /**
+     * Returns value with the bit at position index set to 1.
+     */
+    public fn SetBit(value: int, index: int) int
+    {
+        var p: int = this.Pow2(index)
+        var bit: int = (value / p) % 2
+        if (bit == 0)
+        {
+            return value + p
+        }
+        return value
+    }
+
+    /**
+     * Returns value with the bit at position index cleared to 0.
+     */
+    public fn ClearBit(value: int, index: int) int
+    {
+        var p: int = this.Pow2(index)
+        var bit: int = (value / p) % 2
+        if (bit == 1)
+        {
+            return value - p
+        }
+        return value
+    }
+
+    /**
+     * Returns value with the bit at position index inverted.
+     */
+    public fn ToggleBit(value: int, index: int) int
+    {
+        var p: int = this.Pow2(index)
+        var bit: int = (value / p) % 2
+        if (bit == 0)
+        {
+            return value + p
+        }
+        return value - p
+    }
+
+    /**
+     * Returns value with the bit at position index set to bit.
+     * bit must be 0 or 1.
+     */
+    public fn WithBit(value: int, index: int, bit: int) int
+    {
+        if (bit == 0)
+        {
+            return this.ClearBit(value, index)
+        }
+        return this.SetBit(value, index)
+    }
+
+    /**
+     * Returns an integer with the lowest width bits set to 1.
+     * Example: Mask(4) returns 0b1111 = 15.
+     */
+    public fn Mask(width: int) int
+    {
+        var p: int = this.Pow2(width)
+        return p - 1
+    }
+
+    /**
+     * Returns an integer with bits low through high (inclusive) set to 1.
+     * Example: MaskRange(5, 2) returns 0b111100 = 60.
+     */
+    public fn MaskRange(high: int, low: int) int
+    {
+        var width: int = high - low + 1
+        var m: int = this.Mask(width)
+        var p: int = this.Pow2(low)
+        return m * p
+    }
+
+    /**
+     * Returns bits low through high (inclusive) of value, shifted down to bit 0.
+     * Example: Extract(0b11010110, 5, 2) returns 0b0101 = 5.
+     */
+    public fn Extract(value: int, high: int, low: int) int
+    {
+        var p: int = this.Pow2(low)
+        var shifted: int = value / p
+        var width: int = high - low + 1
+        var pw: int = this.Pow2(width)
+        return shifted % pw
+    }
+
+    /**
+     * Returns value with bits low through high replaced by field.
+     * field is masked to the target width before insertion.
+     * Example: Insert(0b11000000, 5, 2, 0b0101) returns 0b11010100.
+     */
+    public fn Insert(value: int, high: int, low: int, field: int) int
+    {
+        var p: int = this.Pow2(low)
+        var width: int = high - low + 1
+        var pw: int = this.Pow2(width)
+        var fieldMasked: int = field % pw
+        var extracted: int = this.Extract(value, high, low)
+        var cleared: int = value - extracted * p
+        return cleared + fieldMasked * p
+    }
+
+    /**
+     * Returns the number of 1-bits in the lower 31 bits of value.
+     * value must be non-negative.
+     */
+    public fn CountOnes(value: int) int
+    {
+        var count: int = 0
+        var remaining: int = value
+        for (var i = 0; i < 31; i++)
+        {
+            var bit: int = remaining % 2
+            count = count + bit
+            remaining = remaining / 2
+        }
+        return count
+    }
+
+    /**
+     * Returns the number of 0-bits in the lower width bits of value.
+     * Use width = 8 for a byte field, width = 16 for a halfword, and so on.
+     */
+    public fn CountZeros(value: int, width: int) int
+    {
+        var p: int = this.Pow2(width)
+        var masked: int = value % p
+        var ones: int = this.CountOnes(masked)
+        return width - ones
+    }
+
+    /**
+     * Returns 1 if the number of 1-bits in value (lower 31 bits) is odd,
+     * otherwise returns 0.
+     */
+    public fn Parity(value: int) int
+    {
+        var ones: int = this.CountOnes(value)
+        return ones % 2
+    }
+
+    /**
+     * Returns value with its lower width bits in reverse order.
+     * Use width = 8 for byte reversal, width = 16 for halfword reversal.
+     */
+    public fn ReverseBits(value: int, width: int) int
+    {
+        var pw: int = this.Pow2(width)
+        var result: int = 0
+        var remaining: int = value % pw
+        for (var i = 0; i < width; i++)
+        {
+            var bit: int = remaining % 2
+            var shift: int = width - 1 - i
+            var p: int = this.Pow2(shift)
+            result = result + bit * p
+            remaining = remaining / 2
+        }
+        return result
+    }
+
+    /**
+     * Rotates value left by amount positions within a field of width bits.
+     * Example: RotateLeft(0b10110001, 2, 8) returns 0b11000110.
+     */
+    public fn RotateLeft(value: int, amount: int, width: int) int
+    {
+        var pw: int = this.Pow2(width)
+        var masked: int = value % pw
+        var normAmount: int = amount % width
+        var splitAt: int = width - normAmount
+        var pSplit: int = this.Pow2(splitAt)
+        var topBits: int = masked / pSplit
+        var bottomBits: int = masked % pSplit
+        var pAmount: int = this.Pow2(normAmount)
+        return bottomBits * pAmount + topBits
+    }
+
+    /**
+     * Rotates value right by amount positions within a field of width bits.
+     * Example: RotateRight(0b10110001, 2, 8) returns 0b01101100.
+     */
+    public fn RotateRight(value: int, amount: int, width: int) int
+    {
+        var pw: int = this.Pow2(width)
+        var masked: int = value % pw
+        var normAmount: int = amount % width
+        var pNorm: int = this.Pow2(normAmount)
+        var lowBits: int = masked % pNorm
+        var highBits: int = masked / pNorm
+        var pHigh: int = this.Pow2(width - normAmount)
+        return lowBits * pHigh + highBits
+    }
+
+    /**
+     * Returns value with its lower fromWidth bits zero-extended to toWidth bits.
+     * All bits above fromWidth are cleared.
+     */
+    public fn ZeroExtend(value: int, fromWidth: int, toWidth: int) int
+    {
+        var pw: int = this.Pow2(fromWidth)
+        return value % pw
+    }
+
+    /**
+     * Returns value with its lower fromWidth bits sign-extended to toWidth bits.
+     * If bit (fromWidth - 1) is 1, all bits from fromWidth to toWidth - 1 are
+     * set to 1.
+     */
+    public fn SignExtend(value: int, fromWidth: int, toWidth: int) int
+    {
+        var pw: int = this.Pow2(fromWidth)
+        var masked: int = value % pw
+        var signShift: int = fromWidth - 1
+        var pSign: int = this.Pow2(signShift)
+        var signBit: int = masked / pSign
+        if (signBit == 0)
+        {
+            return masked
+        }
+        var extensionWidth: int = toWidth - fromWidth
+        var pExt: int = this.Pow2(extensionWidth)
+        var extensionMask: int = pExt - 1
+        return masked + extensionMask * pw
+    }
+
+    /**
+     * Returns the minimum number of bits required to represent value.
+     * value must be non-negative.
+     * RequiredBits(0) returns 1.
+     * RequiredBits(1) returns 1.
+     * RequiredBits(255) returns 8.
+     * RequiredBits(256) returns 9.
+     */
+    public fn RequiredBits(value: int) int
+    {
+        if (value <= 0)
+        {
+            return 1
+        }
+        var bitCount: int = 0
+        var remaining: int = value
+        for (var i = 0; i < 31; i++)
+        {
+            if (remaining > 0)
+            {
+                bitCount = bitCount + 1
+                remaining = remaining / 2
+            }
+        }
+        return bitCount
+    }
+}

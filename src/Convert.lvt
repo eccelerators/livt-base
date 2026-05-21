@@ -1,0 +1,273 @@
+namespace Livt.Convert
+
+/**
+ * Explicit integer width conversion functions.
+ *
+ * The name of each function makes the overflow behavior visible at the call
+ * site. All functions are synthesizable.
+ *
+ * Naming conventions:
+ *   Clamped   — clamps the result to the nearest boundary of the target range.
+ *   Wrapping  — wraps modulo the target type range.
+ *   Truncated — discards high bits; equivalent to Wrapping for unsigned targets.
+ */
+component Convert
+{
+    // -----------------------------------------------------------------------
+    // UInt8 — range [0, 255]
+    // -----------------------------------------------------------------------
+    /**
+     * Converts value to the range [0, 255] by clamping.
+     * Values below 0 become 0; values above 255 become 255.
+     */
+    public fn ToUInt8Clamped(value: int) int
+    {
+        if (value < 0)
+        {
+            return 0
+        }
+        if (value > 255)
+        {
+            return 255
+        }
+        return value
+    }
+
+    /**
+     * Converts value to [0, 255] by wrapping modulo 256.
+     * Negative values wrap: -1 becomes 255, -256 becomes 0.
+     */
+    public fn ToUInt8Wrapping(value: int) int
+    {
+        var r: int = value % 256
+        if (r < 0)
+        {
+            return r + 256
+        }
+        return r
+    }
+
+    /**
+     * Converts value to [0, 255] by keeping the lowest 8 bits.
+     * Equivalent to ToUInt8Wrapping for all inputs.
+     */
+    public fn ToUInt8Truncated(value: int) int
+    {
+        var r: int = value % 256
+        if (r < 0)
+        {
+            return r + 256
+        }
+        return r
+    }
+
+    // -----------------------------------------------------------------------
+    // Int8 — range [-128, 127]
+    // -----------------------------------------------------------------------
+    /**
+     * Converts value to the range [-128, 127] by clamping.
+     * Values below -128 become -128; values above 127 become 127.
+     */
+    public fn ToInt8Clamped(value: int) int
+    {
+        if (value < -128)
+        {
+            return -128
+        }
+        if (value > 127)
+        {
+            return 127
+        }
+        return value
+    }
+
+    /**
+     * Converts value to [-128, 127] by wrapping modulo 256.
+     * The result is the signed interpretation of the lowest 8 bits.
+     */
+    public fn ToInt8Wrapping(value: int) int
+    {
+        var r: int = value % 256
+        if (r < 0)
+        {
+            r = r + 256
+        }
+        if (r > 127)
+        {
+            return r - 256
+        }
+        return r
+    }
+
+    /**
+     * Converts value to [-128, 127] by keeping the lowest 8 bits and
+     * interpreting the result as a signed 8-bit integer.
+     * Equivalent to ToInt8Wrapping for all inputs.
+     */
+    public fn ToInt8Truncated(value: int) int
+    {
+        var r: int = value % 256
+        if (r < 0)
+        {
+            r = r + 256
+        }
+        if (r > 127)
+        {
+            return r - 256
+        }
+        return r
+    }
+
+    // -----------------------------------------------------------------------
+    // UInt16 — range [0, 65535]
+    // -----------------------------------------------------------------------
+    /**
+     * Converts value to the range [0, 65535] by clamping.
+     * Values below 0 become 0; values above 65535 become 65535.
+     */
+    public fn ToUInt16Clamped(value: int) int
+    {
+        if (value < 0)
+        {
+            return 0
+        }
+        if (value > 65535)
+        {
+            return 65535
+        }
+        return value
+    }
+
+    /**
+     * Converts value to [0, 65535] by wrapping modulo 65536.
+     * Negative values wrap: -1 becomes 65535, -65536 becomes 0.
+     */
+    public fn ToUInt16Wrapping(value: int) int
+    {
+        var r: int = value % 65536
+        if (r < 0)
+        {
+            return r + 65536
+        }
+        return r
+    }
+
+    /**
+     * Converts value to [0, 65535] by keeping the lowest 16 bits.
+     * Equivalent to ToUInt16Wrapping for all inputs.
+     */
+    public fn ToUInt16Truncated(value: int) int
+    {
+        var r: int = value % 65536
+        if (r < 0)
+        {
+            return r + 65536
+        }
+        return r
+    }
+
+    // -----------------------------------------------------------------------
+    // Int16 — range [-32768, 32767]
+    // -----------------------------------------------------------------------
+    /**
+     * Converts value to the range [-32768, 32767] by clamping.
+     * Values below -32768 become -32768; values above 32767 become 32767.
+     */
+    public fn ToInt16Clamped(value: int) int
+    {
+        if (value < -32768)
+        {
+            return -32768
+        }
+        if (value > 32767)
+        {
+            return 32767
+        }
+        return value
+    }
+
+    /**
+     * Converts value to [-32768, 32767] by wrapping modulo 65536.
+     * The result is the signed interpretation of the lowest 16 bits.
+     */
+    public fn ToInt16Wrapping(value: int) int
+    {
+        var r: int = value % 65536
+        if (r < 0)
+        {
+            r = r + 65536
+        }
+        if (r > 32767)
+        {
+            return r - 65536
+        }
+        return r
+    }
+
+    /**
+     * Converts value to [-32768, 32767] by keeping the lowest 16 bits and
+     * interpreting the result as a signed 16-bit integer.
+     * Equivalent to ToInt16Wrapping for all inputs.
+     */
+    public fn ToInt16Truncated(value: int) int
+    {
+        var r: int = value % 65536
+        if (r < 0)
+        {
+            r = r + 65536
+        }
+        if (r > 32767)
+        {
+            return r - 65536
+        }
+        return r
+    }
+
+    // -----------------------------------------------------------------------
+    // Byte — range [0, 255]; byte is the Livt native unsigned 8-bit type
+    // -----------------------------------------------------------------------
+    /**
+     * Converts value to the range [0, 255] by clamping.
+     * Values below 0 become 0; values above 255 become 255.
+     */
+    public fn ToByteClamped(value: int) int
+    {
+        if (value < 0)
+        {
+            return 0
+        }
+        if (value > 255)
+        {
+            return 255
+        }
+        return value
+    }
+
+    /**
+     * Converts value to [0, 255] by wrapping modulo 256.
+     * Negative values wrap: -1 becomes 255, -256 becomes 0.
+     */
+    public fn ToByteWrapping(value: int) int
+    {
+        var bwr: int = value % 256
+        if (bwr < 0)
+        {
+            return bwr + 256
+        }
+        return bwr
+    }
+
+    /**
+     * Converts value to [0, 255] by keeping the lowest 8 bits.
+     * Equivalent to ToByteWrapping for all inputs.
+     */
+    public fn ToByteTruncated(value: int) int
+    {
+        var r: int = value % 256
+        if (r < 0)
+        {
+            return r + 256
+        }
+        return r
+    }
+}

@@ -1,0 +1,171 @@
+namespace Livt.Diagnostics
+
+/**
+ * Assertion components for test and simulation use.
+ *
+ * This namespace is not synthesizable. It is intended for use inside
+ * @Test components only.
+ *
+ * Assert wraps the built-in assert statement with named functions that
+ * communicate intent at the call site. An assertion failure during simulation
+ * causes the test to fail with the standard VHDL assertion mechanism.
+ */
+component Assert
+{
+    /**
+     * Fails if value is false.
+     */
+    public fn AssertTrue(value: bool)
+    {
+        assert value == true
+    }
+
+    /**
+     * Fails if value is true.
+     */
+    public fn AssertFalse(value: bool)
+    {
+        assert value == false
+    }
+
+    /**
+     * Fails if expected and actual are not equal.
+     */
+    public fn AssertBoolEqual(expected: bool, actual: bool)
+    {
+        assert expected == actual
+    }
+
+    /**
+     * Fails if expected and actual are not equal.
+     */
+    public fn AssertIntEqual(expected: int, actual: int)
+    {
+        assert expected == actual
+    }
+
+    /**
+     * Fails if a and b are equal.
+     */
+    public fn AssertIntNotEqual(a: int, b: int)
+    {
+        assert a != b
+    }
+
+    /**
+     * Fails if value is not strictly greater than threshold.
+     */
+    public fn AssertIntGreater(value: int, threshold: int)
+    {
+        assert value > threshold
+    }
+
+    /**
+     * Fails if value is not strictly less than threshold.
+     */
+    public fn AssertIntLess(value: int, threshold: int)
+    {
+        assert value < threshold
+    }
+
+    /**
+     * Fails if value is outside the inclusive range [low, high].
+     */
+    public fn AssertIntInRange(value: int, low: int, high: int)
+    {
+        assert value >= low
+        assert value <= high
+    }
+
+    /**
+     * Fails if expected and actual are not equal.
+     */
+    public fn AssertByteEqual(expected: byte, actual: byte)
+    {
+        assert expected == actual
+    }
+
+    /**
+     * Fails if a and b are equal.
+     */
+    public fn AssertByteNotEqual(a: byte, b: byte)
+    {
+        assert a != b
+    }
+
+    /**
+     * Reports value as an 8-digit lowercase hexadecimal string to the
+     * simulation log. Intended for simulation and test diagnostics only.
+     *
+     * Produces correct output for non-negative values [0, 2147483647].
+     * Negative values produce incorrect output due to signed integer
+     * division truncation toward zero.
+     */
+    public fn ReportHex(value: int)
+    {
+        var buf: byte[8]
+        var v: int = value
+        var n7: int = (v / 268435456) % 16
+        var n6: int = (v / 16777216) % 16
+        var n5: int = (v / 1048576) % 16
+        var n4: int = (v / 65536) % 16
+        var n3: int = (v / 4096) % 16
+        var n2: int = (v / 256) % 16
+        var n1: int = (v / 16) % 16
+        var n0: int = v % 16
+        var h7i: int = 0x30 + n7
+        if (n7 > 9) { h7i = 0x61 + n7 - 10 }
+        buf[0] = h7i as byte
+        var h6i: int = 0x30 + n6
+        if (n6 > 9) { h6i = 0x61 + n6 - 10 }
+        buf[1] = h6i as byte
+        var h5i: int = 0x30 + n5
+        if (n5 > 9) { h5i = 0x61 + n5 - 10 }
+        buf[2] = h5i as byte
+        var h4i: int = 0x30 + n4
+        if (n4 > 9) { h4i = 0x61 + n4 - 10 }
+        buf[3] = h4i as byte
+        var h3i: int = 0x30 + n3
+        if (n3 > 9) { h3i = 0x61 + n3 - 10 }
+        buf[4] = h3i as byte
+        var h2i: int = 0x30 + n2
+        if (n2 > 9) { h2i = 0x61 + n2 - 10 }
+        buf[5] = h2i as byte
+        var h1i: int = 0x30 + n1
+        if (n1 > 9) { h1i = 0x61 + n1 - 10 }
+        buf[6] = h1i as byte
+        var h0i: int = 0x30 + n0
+        if (n0 > 9) { h0i = 0x61 + n0 - 10 }
+        buf[7] = h0i as byte
+        var s: string = buf.Decode()
+        Simulation.Report(s)
+    }
+
+    /**
+     * Reports value as a decimal integer to the simulation log.
+     * Intended for simulation and test diagnostics only.
+     *
+     * Uses string interpolation: the compiler emits VHDL integer'image(value),
+     * which produces the standard decimal representation. Works for all signed
+     * integer values.
+     */
+    public fn ReportValue(value: int)
+    {
+        Simulation.Report("value: {value}")
+    }
+
+    /**
+     * Reports value as a 32-bit binary string to the simulation log.
+     * Intended for simulation and test diagnostics only.
+     *
+     * Casts the int to logic[32] first, then uses string interpolation.
+     * The compiler emits VHDL to_string(bits) which produces a 32-character
+     * binary string such as "00000000000000000000000000101010" for 42.
+     * Negative values appear as two's complement.
+     */
+    public fn ReportBinary(value: int)
+    {
+        var bits: logic[32] = value as logic[32]
+        Simulation.Report("value: {bits}")
+    }
+}
