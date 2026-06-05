@@ -9,14 +9,14 @@ foundation for other packages. The API is still stabilizing while the Livt
 compiler and VHDL backend mature. Every component is either fully synthesizable
 or explicitly designated as simulation and test tooling.
 
-## Package
+## 📦 Package
 
 ```toml
 [dependencies]
 Livt.Base = "0.1.0"
 ```
 
-## Namespaces
+## 📚 Namespaces
 
 `Livt.Base` publishes a small set of foundational root namespaces rather than a
 single `Livt.Base.*` namespace. This keeps common utilities short at call sites
@@ -32,7 +32,7 @@ while the package itself remains the dependency boundary.
 | `Livt.String` | `StringHelper` | Yes | Byte-array string search: starts-with, ends-with, contains, and substring index |
 | `Livt.Diagnostics` | `Assert` | No | Assertion and reporting components for test and simulation use |
 
-## Dependency Policy
+## 🔗 Dependency Policy
 
 `Livt.Base` has no dependencies on other Livt packages. It is the foundation
 that other packages build on.
@@ -43,7 +43,7 @@ that other packages build on.
   vendor-specific functionality, or protocol implementations. Those belong in
   their respective packages.
 
-## Build and Test
+## 🧪 Build and Test
 
 ```sh
 livt test
@@ -58,7 +58,7 @@ livt test
 
 ---
 
-## `Livt.Bits`
+## 🔢 `Livt.Bits`
 
 Provides bit and logic-vector operations for non-negative integer values. All
 functions treat the value as a non-negative integer stored in `int`. Bit indices
@@ -129,7 +129,7 @@ bits.SignExtend(0b1111, 4, 8)            // 0b11111111
 
 ---
 
-## `Livt.Ascii`
+## 🔤 `Livt.Ascii`
 
 Provides ASCII constants, character classification functions, and character
 conversion functions. All functions operate on `byte` values and are
@@ -197,7 +197,7 @@ ascii.FromHexDigit(10, false) // 0x61  — 'a'
 
 ---
 
-## `Livt.Convert`
+## 🔄 `Livt.Convert`
 
 Provides explicit integer width conversion functions. All functions are
 synthesizable. The name of each function makes the overflow behavior visible at
@@ -249,7 +249,7 @@ conv.ToByteTruncated(0x1FF)  // 255
 
 ---
 
-## `Livt.Format`
+## 🧾 `Livt.Format`
 
 Provides fixed-width string formatting helpers for machine values. Decimal
 output is zero-padded; signed integer output uses a leading sign. All functions
@@ -292,7 +292,7 @@ before extracting decimal digits.
 
 ---
 
-## `Livt.Array`
+## 📋 `Livt.Array`
 
 Provides fixed-size array operations that fit Livt's synthesis model. Arrays
 must have a statically known size. All functions are synthesizable.
@@ -326,7 +326,7 @@ arr.CountOf(data, 4, 0x20)   // 2
 
 ---
 
-## `Livt.Diagnostics`
+## 🛠️ `Livt.Diagnostics`
 
 Provides assertion components for test and simulation use. This namespace is
 **not synthesizable** and is intended for `@Test` components only.
@@ -377,7 +377,7 @@ component ExampleTest
 
 ---
 
-## `Livt.String`
+## 📝 `Livt.String`
 
 Provides byte-oriented string search and comparison helpers. Strings in Livt
 are most conveniently handled as encoded byte arrays — use `"text".Encode()`
@@ -413,7 +413,7 @@ if (str.StartsWith(buf, 128, method, 3))
 
 ---
 
-## Synthesis Classification
+## ⚙️ Synthesis Classification
 
 | Namespace | Synthesizable |
 |---|---|
@@ -427,7 +427,11 @@ if (str.StartsWith(buf, 128, method, 3))
 
 ---
 
-## Versioning
+## 🚀 Versioning
 
 `Livt.Base` follows semantic versioning. The current version is `0.1.0`. The
 API is stabilizing. Dependent packages should pin the version explicitly.
+
+## 📄 License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
