@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Base"
-version = "0.1.0"
+version = "0.1.1"
 path = "src"
 outdir = "out"
 
@@ -17,3 +17,9 @@ components = [
     "StringTest",
     "StringHelperTest"
 ]
+
+[build.debug]
+warnings = ["all", "no-variable-divisor"]
+
+[build.release]
+warnings = ["all"]
