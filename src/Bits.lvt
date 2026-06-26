@@ -1,5 +1,7 @@
 namespace Livt.Bits
 
+using Livt.Lang.Annotations
+
 /**
  * Bit and logic-vector operations for non-negative integer values.
  *
@@ -25,6 +27,7 @@ component Bits
     /**
      * Returns the bit at position index (0 = LSB) as 0 or 1.
      */
+    @SuppressWarning("variable-divisor")
     public fn GetBit(value: int, index: int) int
     {
         var p: int = this.Pow2(index)
@@ -34,6 +37,7 @@ component Bits
     /**
      * Returns value with the bit at position index set to 1.
      */
+    @SuppressWarning("variable-divisor")
     public fn SetBit(value: int, index: int) int
     {
         var p: int = this.Pow2(index)
@@ -48,6 +52,7 @@ component Bits
     /**
      * Returns value with the bit at position index cleared to 0.
      */
+    @SuppressWarning("variable-divisor")
     public fn ClearBit(value: int, index: int) int
     {
         var p: int = this.Pow2(index)
@@ -62,6 +67,7 @@ component Bits
     /**
      * Returns value with the bit at position index inverted.
      */
+    @SuppressWarning("variable-divisor")
     public fn ToggleBit(value: int, index: int) int
     {
         var p: int = this.Pow2(index)
@@ -112,6 +118,7 @@ component Bits
      * Returns bits low through high (inclusive) of value, shifted down to bit 0.
      * Example: Extract(0b11010110, 5, 2) returns 0b0101 = 5.
      */
+    @SuppressWarning("variable-divisor")
     public fn Extract(value: int, high: int, low: int) int
     {
         var p: int = this.Pow2(low)
@@ -126,6 +133,7 @@ component Bits
      * field is masked to the target width before insertion.
      * Example: Insert(0b11000000, 5, 2, 0b0101) returns 0b11010100.
      */
+    @SuppressWarning("variable-divisor")
     public fn Insert(value: int, high: int, low: int, field: int) int
     {
         var p: int = this.Pow2(low)
@@ -158,6 +166,7 @@ component Bits
      * Returns the number of 0-bits in the lower width bits of value.
      * Use width = 8 for a byte field, width = 16 for a halfword, and so on.
      */
+    @SuppressWarning("variable-divisor")
     public fn CountZeros(value: int, width: int) int
     {
         var p: int = this.Pow2(width)
@@ -180,6 +189,7 @@ component Bits
      * Returns value with its lower width bits in reverse order.
      * Use width = 8 for byte reversal, width = 16 for halfword reversal.
      */
+    @SuppressWarning("variable-divisor")
     public fn ReverseBits(value: int, width: int) int
     {
         var pw: int = this.Pow2(width)
@@ -200,6 +210,7 @@ component Bits
      * Rotates value left by amount positions within a field of width bits.
      * Example: RotateLeft(0b10110001, 2, 8) returns 0b11000110.
      */
+    @SuppressWarning("variable-divisor")
     public fn RotateLeft(value: int, amount: int, width: int) int
     {
         var pw: int = this.Pow2(width)
@@ -217,6 +228,7 @@ component Bits
      * Rotates value right by amount positions within a field of width bits.
      * Example: RotateRight(0b10110001, 2, 8) returns 0b01101100.
      */
+    @SuppressWarning("variable-divisor")
     public fn RotateRight(value: int, amount: int, width: int) int
     {
         var pw: int = this.Pow2(width)
@@ -233,6 +245,7 @@ component Bits
      * Returns value with its lower fromWidth bits zero-extended to toWidth bits.
      * All bits above fromWidth are cleared.
      */
+    @SuppressWarning("variable-divisor")
     public fn ZeroExtend(value: int, fromWidth: int, toWidth: int) int
     {
         var pw: int = this.Pow2(fromWidth)
@@ -244,6 +257,7 @@ component Bits
      * If bit (fromWidth - 1) is 1, all bits from fromWidth to toWidth - 1 are
      * set to 1.
      */
+    @SuppressWarning("variable-divisor")
     public fn SignExtend(value: int, fromWidth: int, toWidth: int) int
     {
         var pw: int = this.Pow2(fromWidth)
