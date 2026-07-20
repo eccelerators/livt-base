@@ -1,6 +1,6 @@
 [project]
 name = "Livt.Base"
-version = "0.1.1"
+version = "0.2.0"
 path = "src"
 outdir = "out"
 
@@ -15,7 +15,9 @@ components = [
     "DiagnosticsTest",
     "ArrayUnsizedParamTest",
     "StringTest",
-    "StringHelperTest"
+    "StringHelperTest",
+    "PeriodicTickProviderTest",
+    "PeriodicTickProvider50MHzTest"
 ]
 
 [build.debug]

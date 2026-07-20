@@ -1,0 +1,96 @@
+namespace Livt.Base.Tests
+
+using Livt.Timing
+
+@Test
+@Context(ClockFrequency=100MHz)
+component PeriodicTickProviderTest
+{
+	provider: PeriodicTickProvider
+	oneMicrosecondProvider: PeriodicTickProvider1us
+	oneMillisecondProvider: PeriodicTickProvider1ms
+	tenMillisecondProvider: PeriodicTickProvider10ms
+	hundredMillisecondProvider: PeriodicTickProvider100ms
+	oneSecondProvider: PeriodicTickProvider1s
+	tick: logic
+	oneMicrosecondTick: logic
+	oneMillisecondTick: logic
+	tenMillisecondTick: logic
+	hundredMillisecondTick: logic
+	oneSecondTick: logic
+	observedTicks: uint
+	previousTick: logic
+	backToBackPulse: bool
+
+	new()
+	{
+		this.provider = new PeriodicTickProvider((4 as uint), this.tick)
+		this.oneMicrosecondProvider = new PeriodicTickProvider1us(this.oneMicrosecondTick)
+		this.oneMillisecondProvider = new PeriodicTickProvider1ms(this.oneMillisecondTick)
+		this.tenMillisecondProvider = new PeriodicTickProvider10ms(this.tenMillisecondTick)
+		this.hundredMillisecondProvider = new PeriodicTickProvider100ms(this.hundredMillisecondTick)
+		this.oneSecondProvider = new PeriodicTickProvider1s(this.oneSecondTick)
+		this.observedTicks = 0
+		this.previousTick = 0b0
+		this.backToBackPulse = false
+	}
+
+	process Observe()
+	{
+		if (this.tick == 0b1) {
+			this.observedTicks = this.observedTicks + 1
+			if (this.previousTick == 0b1) {
+				this.backToBackPulse = true
+			}
+		}
+		this.previousTick = this.tick
+	}
+
+	@Test
+	fn GeneratesPeriodicOneCyclePulses()
+	{
+		assert this.provider.GetPeriodTicks() == (4 as uint)
+
+		Simulation.Wait(500)
+
+		assert this.observedTicks >= (5 as uint)
+		assert this.backToBackPulse == false
+	}
+
+	@Test
+	fn DerivesCommonPeriodsAt100MHz()
+	{
+		assert this.oneMicrosecondProvider.GetPeriodTicks() == (100 as uint)
+		assert this.oneMillisecondProvider.GetPeriodTicks() == (100000 as uint)
+		assert this.tenMillisecondProvider.GetPeriodTicks() == (1000000 as uint)
+		assert this.hundredMillisecondProvider.GetPeriodTicks() == (10000000 as uint)
+		assert this.oneSecondProvider.GetPeriodTicks() == (100000000 as uint)
+	}
+}
+
+@Test
+@Context(ClockFrequency=50MHz)
+component PeriodicTickProvider50MHzTest
+{
+	oneMicrosecondProvider: PeriodicTickProvider1us
+	oneMillisecondProvider: PeriodicTickProvider1ms
+	oneSecondProvider: PeriodicTickProvider1s
+	oneMicrosecondTick: logic
+	oneMillisecondTick: logic
+	oneSecondTick: logic
+
+	new()
+	{
+		this.oneMicrosecondProvider = new PeriodicTickProvider1us(this.oneMicrosecondTick)
+		this.oneMillisecondProvider = new PeriodicTickProvider1ms(this.oneMillisecondTick)
+		this.oneSecondProvider = new PeriodicTickProvider1s(this.oneSecondTick)
+	}
+
+	@Test
+	fn DerivesPeriodsFromAssignedContext()
+	{
+		assert this.oneMicrosecondProvider.GetPeriodTicks() == (50 as uint)
+		assert this.oneMillisecondProvider.GetPeriodTicks() == (50000 as uint)
+		assert this.oneSecondProvider.GetPeriodTicks() == (50000000 as uint)
+	}
+}

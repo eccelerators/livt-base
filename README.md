@@ -13,7 +13,7 @@ or explicitly designated as simulation and test tooling.
 
 ```toml
 [dependencies]
-Livt.Base = "0.1.0"
+Livt.Base = "0.2.0"
 ```
 
 ## 📚 Namespaces
@@ -30,7 +30,46 @@ while the package itself remains the dependency boundary.
 | `Livt.Format` | `Format` | Yes | Fixed-width string formatting for byte, int, and uint values |
 | `Livt.Array` | `Array` | Yes | Fixed-size array operations: bounds checking, byte equality, and byte search |
 | `Livt.String` | `StringHelper` | Yes | Byte-array string search: starts-with, ends-with, contains, and substring index |
+| `Livt.Timing` | `PeriodicTickProvider`, fixed-period providers | Yes | Context-derived periodic one-tick pulses |
 | `Livt.Diagnostics` | `Assert` | No | Assertion and reporting components for test and simulation use |
+
+## ⏱️ `Livt.Timing`
+
+Provides synthesizable periodic pulse components. Each provider asserts its
+`tick` output for one context tick whenever its interval expires. Fixed-period
+providers derive their tick counts from the component context, so their
+real-time period remains stable when the component is used at another clock
+frequency.
+
+```livt
+using Livt.Timing
+
+tick1ms: logic
+tick200ms: logic
+millisecondProvider: PeriodicTickProvider1ms
+applicationProvider: PeriodicTickProvider
+
+new()
+{
+    this.millisecondProvider = new PeriodicTickProvider1ms(this.tick1ms)
+    var period = this.context.TicksFor(200ms)
+    this.applicationProvider = new PeriodicTickProvider(period, this.tick200ms)
+}
+```
+
+| Component | Period |
+|---|---:|
+| `PeriodicTickProvider` | Configured in context ticks |
+| `PeriodicTickProvider1us` | 1 microsecond |
+| `PeriodicTickProvider1ms` | 1 millisecond |
+| `PeriodicTickProvider10ms` | 10 milliseconds |
+| `PeriodicTickProvider100ms` | 100 milliseconds |
+| `PeriodicTickProvider1s` | 1 second |
+
+`PeriodicTickProvider` requires an interval of at least one context tick. Use
+`GetPeriodTicks()` when diagnostics or tests need to inspect the resolved
+interval. `TicksFor(...)` always rounds a positive duration up to at least one
+tick.
 
 ## 🔗 Dependency Policy
 
@@ -423,13 +462,14 @@ if (str.StartsWith(buf, 128, method, 3))
 | `Livt.Format` | Yes |
 | `Livt.Array` | Yes |
 | `Livt.String` | Yes — byte-array helpers are synthesizable |
+| `Livt.Timing` | Yes — periodic pulses are derived from the component context |
 | `Livt.Diagnostics` | No — simulation and test tooling only |
 
 ---
 
 ## 🚀 Versioning
 
-`Livt.Base` follows semantic versioning. The current version is `0.1.0`. The
+`Livt.Base` follows semantic versioning. The current version is `0.2.0`. The
 API is stabilizing. Dependent packages should pin the version explicitly.
 
 ## 📄 License

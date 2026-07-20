@@ -1,0 +1,25 @@
+namespace Livt.Timing
+
+/**
+ * Produces a one-context-tick pulse every millisecond.
+ */
+component PeriodicTickProvider1ms
+{
+    provider: PeriodicTickProvider
+
+    /**
+     * Creates a provider whose period is derived from this component's context.
+     */
+    new(tick: out logic)
+    {
+        this.provider = new PeriodicTickProvider(this.context.TicksFor(1ms), tick)
+    }
+
+    /**
+     * Returns the one-millisecond interval in ticks of this component's context.
+     */
+    public fn GetPeriodTicks() uint
+    {
+        return this.provider.GetPeriodTicks()
+    }
+}
