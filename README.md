@@ -4,16 +4,16 @@ The base library for the Livt programming language.
 
 `Livt.Base` is part of the official Livt standard library. It provides
 foundational components that other Livt packages and application code depend on.
-The library is small, dependency-free, and intended to become the stable
-foundation for other packages. The API is still stabilizing while the Livt
-compiler and VHDL backend mature. Every component is either fully synthesizable
+The library is small, dependency-free, and provides the stable foundation for
+other packages. The API evolves alongside the Livt compiler and VHDL backend.
+Every component is either fully synthesizable
 or explicitly designated as simulation and test tooling.
 
 ## 📦 Package
 
 ```toml
 [dependencies]
-Livt.Base = "0.2.0"
+Livt.Base = "1.0.1"
 ```
 
 ## 📚 Namespaces
@@ -469,8 +469,8 @@ if (str.StartsWith(buf, 128, method, 3))
 
 ## 🚀 Versioning
 
-`Livt.Base` follows semantic versioning. The current version is `0.2.0`. The
-API is stabilizing. Dependent packages should pin the version explicitly.
+`Livt.Base` follows semantic versioning. The current version is `1.0.1`.
+Dependent packages should pin the version explicitly.
 
 ## 📄 License
 
