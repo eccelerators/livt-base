@@ -1,0 +1,83 @@
+namespace Livt.Iteration
+
+using Livt.Lang
+
+/**
+ * Sequential traversal of a caller-owned cursor from its current position.
+ * Operations never reset the cursor. Keep exclusive ownership of the cursor
+ * and keep its source unchanged until the operation completes.
+ */
+component Iteration
+{
+	/** Returns initial for empty input. Visits values in source order. */
+	public static fn Fold<T, TAccumulator>(iterator: IIterator<T>, initial: TAccumulator,
+		operation: const fn(accumulator: TAccumulator, value: T) TAccumulator) TAccumulator
+	{
+		var result = initial
+		while (iterator.HasNext())
+		{
+			var value = iterator.Next()
+			result = operation(result, value)
+		}
+		return result
+	}
+
+	/** Stops after consuming the first match. Empty input returns false. */
+	public static fn Any<T>(iterator: IIterator<T>, predicate: const fn(value: T) bool) bool
+	{
+		while (iterator.HasNext())
+		{
+			var value = iterator.Next()
+			if (predicate(value))
+			{
+				return true
+			}
+		}
+		return false
+	}
+
+	/** Stops after consuming the first non-match. Empty input returns true. */
+	public static fn All<T>(iterator: IIterator<T>, predicate: const fn(value: T) bool) bool
+	{
+		while (iterator.HasNext())
+		{
+			var value = iterator.Next()
+			if (!predicate(value))
+			{
+				return false
+			}
+		}
+		return true
+	}
+
+	/** Counts matching remaining values. The result must fit in int. */
+	public static fn CountWhere<T>(iterator: IIterator<T>, predicate: const fn(value: T) bool) int
+	{
+		var count = 0
+		while (iterator.HasNext())
+		{
+			var value = iterator.Next()
+			if (predicate(value))
+			{
+				count++
+			}
+		}
+		return count
+	}
+
+	/** Returns an index relative to the starting cursor position, or -1. */
+	public static fn FindIndex<T>(iterator: IIterator<T>, predicate: const fn(value: T) bool) int
+	{
+		var index = 0
+		while (iterator.HasNext())
+		{
+			var value = iterator.Next()
+			if (predicate(value))
+			{
+				return index
+			}
+			index++
+		}
+		return -1
+	}
+}

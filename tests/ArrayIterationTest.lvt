@@ -1,0 +1,41 @@
+namespace Livt.Base.Tests
+
+using Livt.Iteration
+
+@Test
+component ArrayIterationTest
+{
+	values: ArrayIterator<int>
+	shorter: ArrayIterator<int>
+	empty: ArrayIterator<int>
+	single: ArrayIterator<int>
+
+	new()
+	{
+		this.values = new ArrayIterator<int>([1, 2, 3, 4], 4)
+		this.shorter = new ArrayIterator<int>([5, 6], 2)
+		this.empty = new ArrayIterator<int>([0], 0)
+		this.single = new ArrayIterator<int>([7], 1)
+	}
+
+	@Test
+	fn SnapshotLengthsAndReset()
+	{
+		var sum = Iteration.Fold<int, int>(this.values, 0,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert sum == 10
+		var shortSum = Iteration.Fold<int, int>(this.shorter, 0,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert shortSum == 11
+		var emptySum = Iteration.Fold<int, int>(this.empty, 17,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert emptySum == 17
+		var singleSum = Iteration.Fold<int, int>(this.single, 0,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert singleSum == 7
+		this.values.Reset()
+		var repeated = Iteration.Fold<int, int>(this.values, 0,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert repeated == 10
+	}
+}

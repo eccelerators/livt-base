@@ -1,0 +1,68 @@
+namespace Livt.Base.Tests
+
+using Livt.Iteration
+
+@Test
+component IterationTest
+{
+	iterator: RangeIterator
+
+	new()
+	{
+		this.iterator = new RangeIterator()
+	}
+
+	@Test
+	fn FoldValues()
+	{
+		this.iterator.Reset()
+		var sum = Iteration.Fold<int, int>(this.iterator, 0,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert sum == 10
+	}
+
+	@Test
+	fn ShortCircuitAndResume()
+	{
+		this.iterator.Reset()
+		var found = Iteration.Any<int>(this.iterator, fn(value: int) bool { return value == 2 })
+		assert found
+		var remaining = Iteration.Fold<int, int>(this.iterator, 0,
+			fn(accumulator: int, value: int) int { return accumulator + value })
+		assert remaining == 7
+		var emptyAny = Iteration.Any<int>(this.iterator, fn(value: int) bool { return true })
+		assert !emptyAny
+		var emptyAll = Iteration.All<int>(this.iterator, fn(value: int) bool { return false })
+		assert emptyAll
+	}
+
+	@Test
+	fn CountAndFind()
+	{
+		this.iterator.Reset()
+		var count = Iteration.CountWhere<int>(this.iterator, fn(value: int) bool { return value > 2 })
+		assert count == 2
+		this.iterator.Reset()
+		var first = this.iterator.Next()
+		assert first == 1
+		var index = Iteration.FindIndex<int>(this.iterator, fn(value: int) bool { return value == 3 })
+		assert index == 1
+		var all = Iteration.All<int>(this.iterator, fn(value: int) bool { return value == 4 })
+		assert all
+		var missing = Iteration.FindIndex<int>(this.iterator, fn(value: int) bool { return true })
+		assert missing == -1
+	}
+
+	@Test
+	fn CapturedPredicateStopsAtFirstFailure()
+	{
+		this.iterator.Reset()
+		var limit = 3
+		var all = Iteration.All<int>(this.iterator, fn(value: int) bool { return value < limit })
+		assert !all
+		var next = this.iterator.Next()
+		assert next == 4
+		var emptyCount = Iteration.CountWhere<int>(this.iterator, fn(value: int) bool { return true })
+		assert emptyCount == 0
+	}
+}

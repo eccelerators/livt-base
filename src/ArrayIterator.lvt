@@ -1,0 +1,41 @@
+namespace Livt.Iteration
+
+using Livt.Lang
+
+/**
+ * A resettable cursor over an owned array snapshot initialized at construction.
+ * The array shape is inferred statically; this is not a borrowed array view.
+ */
+component ArrayIterator<T> : IResettableIterator<T>
+{
+	values: T[]
+	count: int
+	position: int
+
+	/** Copies a prefix. count is explicit so padded hardware ports do not add elements. */
+	new(values: T[], count: int)
+	{
+		assert count >= 0 && count <= values.Length(), "Invalid array iterator count"
+		this.values = values
+		this.count = count
+		this.position = 0
+	}
+
+	override fn Reset()
+	{
+		this.position = 0
+	}
+
+	override fn HasNext() bool
+	{
+		return this.position < this.count
+	}
+
+	override fn Next() T
+	{
+		assert this.position < this.count, "Array iterator is exhausted"
+		var value = this.values[this.position]
+		this.position++
+		return value
+	}
+}

@@ -29,9 +29,52 @@ while the package itself remains the dependency boundary.
 | `Livt.Convert` | `Convert` | Yes | Explicit integer width conversions with named overflow semantics |
 | `Livt.Format` | `Format` | Yes | Fixed-width string formatting for byte, int, and uint values |
 | `Livt.Array` | `Array` | Yes | Fixed-size array operations: bounds checking, byte equality, and byte search |
+| `Livt.Iteration` | `Iteration`, `ArrayIterator<T>` | Yes | Generic cursor algorithms and an owned array snapshot |
 | `Livt.String` | `StringHelper` | Yes | Byte-array string search: starts-with, ends-with, contains, and substring index |
 | `Livt.Timing` | `PeriodicTickProvider`, fixed-period providers | Yes | Context-derived periodic one-tick pulses |
 | `Livt.Diagnostics` | `Assert` | No | Assertion and reporting components for test and simulation use |
+
+## `Livt.Iteration`
+
+`Iteration` provides public static algorithms over the core `IIterator<T>`
+contract. Callbacks are `const fn` parameters specialized at compile time.
+
+| Function | Result | Empty input |
+|---|---|---|
+| `Fold<T, TAccumulator>(iterator, initial, operation)` | Left-to-right accumulation | `initial` |
+| `Any<T>(iterator, predicate)` | Stops at the first matching value | `false` |
+| `All<T>(iterator, predicate)` | Stops at the first non-matching value | `true` |
+| `CountWhere<T>(iterator, predicate)` | Number of matching values | `0` |
+| `FindIndex<T>(iterator, predicate)` | First match's index relative to entry | `-1` |
+
+All operations consume the cursor's current position. They never reset it.
+The value causing an early exit is consumed; the next traversal resumes after
+it. Counts and indices must fit `int`.
+
+```livt
+using Livt.Iteration
+
+// Inside a clocked function, with a statically owned cursor:
+var sum = Iteration.Fold<int, int>(this.iterator, 0,
+	fn(accumulator: int, value: int) int { return accumulator + value })
+```
+
+`ArrayIterator<T>` implements `IResettableIterator<T>`. Construct it with an
+array and its logical element count, for example `new ArrayIterator<int>([1, 2, 3], 3)`.
+It owns a snapshot, not a reference to mutable array storage. The explicit count
+keeps padding outside the traversal when constructor ports share a larger
+inferred physical width. `Reset()` rewinds; `Next()` requires `HasNext()` to be
+true. For borrowed list storage, use `Livt.Collections.List.FixedListIterator<TSource>`.
+
+The caller owns each cursor. Do not share it between concurrent traversals or
+mutate borrowed storage during traversal. Use separate cursors for independent
+positions. Generic specialization adds no runtime type dispatch, but cursor
+state, snapshot storage, and scheduled method/callback calls have hardware and
+latency costs. These algorithms are sequential, not automatically unrolled.
+
+The generic core contracts replace the former primitive-specific iterator
+interfaces. `foreach` also consumes the current position; call `Reset()`
+explicitly when a traversal should restart.
 
 ## ⏱️ `Livt.Timing`
 
@@ -461,6 +504,7 @@ if (str.StartsWith(buf, 128, method, 3))
 | `Livt.Convert` | Yes |
 | `Livt.Format` | Yes |
 | `Livt.Array` | Yes |
+| `Livt.Iteration` | Yes — sequential traversal with statically bound callbacks |
 | `Livt.String` | Yes — byte-array helpers are synthesizable |
 | `Livt.Timing` | Yes — periodic pulses are derived from the component context |
 | `Livt.Diagnostics` | No — simulation and test tooling only |

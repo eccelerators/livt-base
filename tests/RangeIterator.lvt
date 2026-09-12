@@ -1,0 +1,18 @@
+namespace Livt.Base.Tests
+
+using Livt.Lang
+
+component RangeIterator : IIterator<int>
+{
+	position: int
+
+	new() { this.position = 1 }
+	public fn Reset() { this.position = 1 }
+	override fn HasNext() bool { return this.position <= 4 }
+	override fn Next() int
+	{
+		var value = this.position
+		this.position++
+		return value
+	}
+}

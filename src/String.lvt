@@ -78,18 +78,18 @@ component StringHelper
             return false
         }
         var limit: int = dataSize - subSize + 1
-        var match: bool = false
+        var matches: bool = false
         for (var i = 0; i < limit; i++)
         {
-            match = true
+            matches = true
             for (var j = 0; j < subSize; j++)
             {
                 var cidx: int = i + j
                 var cd: byte = data[cidx]
                 var cs: byte = sub[j]
-                if (cd != cs) { match = false }
+                if (cd != cs) { matches = false }
             }
-            if (match == true) { return true }
+            if (matches == true) { return true }
         }
         return false
     }
