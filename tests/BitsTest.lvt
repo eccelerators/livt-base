@@ -2,507 +2,711 @@ namespace Livt.Base.Tests
 
 using Livt.Bits
 
+/**
+ * Exercises Bits with a shared fixture instance. Each scenario establishes the inputs and
+ * state it needs.
+ */
 @Test
 component BitsTest
 {
-    bits: Bits
-
-    new()
-    {
-        this.bits = new Bits()
-    }
-
-    // -----------------------------------------------------------------------
-    // GetBit
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn GetBitAtBit0IsLsb()
-    {
-        assert this.bits.GetBit(1, 0) == 1
-        assert this.bits.GetBit(2, 0) == 0
-    }
-
-    @Test
-    fn GetBitAtBit1()
-    {
-        assert this.bits.GetBit(2, 1) == 1
-        assert this.bits.GetBit(1, 1) == 0
-    }
-
-    @Test
-    fn GetBitAtBit7()
-    {
-        assert this.bits.GetBit(128, 7) == 1
-        assert this.bits.GetBit(127, 7) == 0
-    }
-
-    @Test
-    fn GetBitOnZeroValueIsAlwaysZero()
-    {
-        assert this.bits.GetBit(0, 0) == 0
-        assert this.bits.GetBit(0, 7) == 0
-        assert this.bits.GetBit(0, 15) == 0
-    }
-
-    @Test
-    fn GetBitOnAllOnesValue()
-    {
-        var allOnes: int = 255
-        assert this.bits.GetBit(allOnes, 0) == 1
-        assert this.bits.GetBit(allOnes, 3) == 1
-        assert this.bits.GetBit(allOnes, 7) == 1
-    }
-
-    // -----------------------------------------------------------------------
-    // SetBit
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn SetBitSetsLowestBit()
-    {
-        assert this.bits.SetBit(0, 0) == 1
-    }
-
-    @Test
-    fn SetBitSetsHigherBit()
-    {
-        assert this.bits.SetBit(0, 3) == 8
-    }
-
-    @Test
-    fn SetBitIsIdempotent()
-    {
-        assert this.bits.SetBit(15, 0) == 15
-        assert this.bits.SetBit(15, 3) == 15
-    }
-
-    @Test
-    fn SetBitDoesNotAffectOtherBits()
-    {
-        assert this.bits.SetBit(4, 0) == 5
-        assert this.bits.SetBit(4, 2) == 4
-    }
-
-    // -----------------------------------------------------------------------
-    // ClearBit
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn ClearBitClearsLowestBit()
-    {
-        assert this.bits.ClearBit(1, 0) == 0
-    }
-
-    @Test
-    fn ClearBitClearsHigherBit()
-    {
-        assert this.bits.ClearBit(8, 3) == 0
-    }
-
-    @Test
-    fn ClearBitIsIdempotent()
-    {
-        assert this.bits.ClearBit(0, 0) == 0
-        assert this.bits.ClearBit(14, 0) == 14
-    }
-
-    @Test
-    fn ClearBitDoesNotAffectOtherBits()
-    {
-        assert this.bits.ClearBit(7, 0) == 6
-        assert this.bits.ClearBit(7, 1) == 5
-        assert this.bits.ClearBit(7, 2) == 3
-    }
-
-    // -----------------------------------------------------------------------
-    // ToggleBit
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn ToggleBitFlipsZeroToOne()
-    {
-        assert this.bits.ToggleBit(0, 0) == 1
-        assert this.bits.ToggleBit(0, 4) == 16
-    }
-
-    @Test
-    fn ToggleBitFlipsOneToZero()
-    {
-        assert this.bits.ToggleBit(1, 0) == 0
-        assert this.bits.ToggleBit(16, 4) == 0
-    }
-
-    @Test
-    fn ToggleBitDoesNotAffectOtherBits()
-    {
-        assert this.bits.ToggleBit(6, 0) == 7
-        assert this.bits.ToggleBit(7, 0) == 6
-    }
-
-    // -----------------------------------------------------------------------
-    // WithBit
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn WithBitSetsOrClearsCorrectly()
-    {
-        assert this.bits.WithBit(0, 3, 1) == 8
-        assert this.bits.WithBit(8, 3, 0) == 0
-        assert this.bits.WithBit(8, 3, 1) == 8
-        assert this.bits.WithBit(0, 3, 0) == 0
-    }
-
-    // -----------------------------------------------------------------------
-    // Mask
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn MaskWidthZeroIsZero()
-    {
-        assert this.bits.Mask(0) == 0
-    }
-
-    @Test
-    fn MaskWidthOne()
-    {
-        assert this.bits.Mask(1) == 1
-    }
-
-    @Test
-    fn MaskWidthFour()
-    {
-        assert this.bits.Mask(4) == 15
-    }
-
-    @Test
-    fn MaskWidthEight()
-    {
-        assert this.bits.Mask(8) == 255
-    }
-
-    // -----------------------------------------------------------------------
-    // MaskRange
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn MaskRangeSingleBit()
-    {
-        assert this.bits.MaskRange(0, 0) == 1
-        assert this.bits.MaskRange(3, 3) == 8
-    }
-
-    @Test
-    fn MaskRangeMultiBit()
-    {
-        assert this.bits.MaskRange(3, 0) == 15
-        assert this.bits.MaskRange(5, 2) == 60
-    }
-
-    // -----------------------------------------------------------------------
-    // Extract
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn ExtractSingleBit()
-    {
-        assert this.bits.Extract(12, 3, 3) == 1
-        assert this.bits.Extract(12, 2, 2) == 1
-        assert this.bits.Extract(12, 1, 1) == 0
-        assert this.bits.Extract(12, 0, 0) == 0
-    }
-
-    @Test
-    fn ExtractMultiBit()
-    {
-        assert this.bits.Extract(214, 5, 2) == 5
-    }
-
-    @Test
-    fn ExtractLowestBits()
-    {
-        assert this.bits.Extract(255, 3, 0) == 15
-    }
-
-    // -----------------------------------------------------------------------
-    // Insert
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn InsertIntoZero()
-    {
-        assert this.bits.Insert(0, 3, 0, 15) == 15
-        assert this.bits.Insert(0, 3, 2, 3) == 12
-    }
-
-    @Test
-    fn InsertIntoNonZero()
-    {
-        assert this.bits.Insert(255, 3, 0, 0) == 240
-    }
-
-    @Test
-    fn InsertMasksFieldToWidth()
-    {
-        assert this.bits.Insert(0, 3, 0, 31) == 15
-    }
-
-    // -----------------------------------------------------------------------
-    // CountOnes
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn CountOnesOnZero()
-    {
-        assert this.bits.CountOnes(0) == 0
-    }
-
-    @Test
-    fn CountOnesOnOne()
-    {
-        assert this.bits.CountOnes(1) == 1
-    }
-
-    @Test
-    fn CountOnesOnByte()
-    {
-        assert this.bits.CountOnes(255) == 8
-        assert this.bits.CountOnes(170) == 4
-        assert this.bits.CountOnes(85) == 4
-    }
-
-    @Test
-    fn CountOnesAlternatingBits()
-    {
-        assert this.bits.CountOnes(85) == 4
-        assert this.bits.CountOnes(170) == 4
-    }
-
-    // -----------------------------------------------------------------------
-    // CountZeros
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn CountZerosOnZeroByte()
-    {
-        assert this.bits.CountZeros(0, 8) == 8
-    }
-
-    @Test
-    fn CountZerosOnAllOnesByte()
-    {
-        assert this.bits.CountZeros(255, 8) == 0
-    }
-
-    @Test
-    fn CountZerosAlternatingBits()
-    {
-        assert this.bits.CountZeros(85, 8) == 4
-    }
-
-    // -----------------------------------------------------------------------
-    // Parity
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn ParityOnZeroIsEven()
-    {
-        assert this.bits.Parity(0) == 0
-    }
-
-    @Test
-    fn ParityOnOneIsOdd()
-    {
-        assert this.bits.Parity(1) == 1
-    }
-
-    @Test
-    fn ParityOnThreeBitsSet()
-    {
-        assert this.bits.Parity(7) == 1
-    }
-
-    @Test
-    fn ParityOnFourBitsSet()
-    {
-        assert this.bits.Parity(15) == 0
-    }
-
-    // -----------------------------------------------------------------------
-    // ReverseBits
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn ReverseBitsOnOneBit()
-    {
-        assert this.bits.ReverseBits(1, 1) == 1
-    }
-
-    @Test
-    fn ReverseBitsByteLevel()
-    {
-        assert this.bits.ReverseBits(1, 8) == 128
-        assert this.bits.ReverseBits(128, 8) == 1
-    }
-
-    @Test
-    fn ReverseBitsAlternating()
-    {
-        assert this.bits.ReverseBits(85, 8) == 170
-        assert this.bits.ReverseBits(170, 8) == 85
-    }
-
-    @Test
-    fn ReverseBitsPalindrome()
-    {
-        assert this.bits.ReverseBits(102, 8) == 102
-    }
-
-    // -----------------------------------------------------------------------
-    // RotateLeft
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn RotateLeftByZeroIsUnchanged()
-    {
-        assert this.bits.RotateLeft(0b10110001, 0, 8) == 177
-    }
-
-    @Test
-    fn RotateLeftByOne()
-    {
-        assert this.bits.RotateLeft(128, 1, 8) == 1
-    }
-
-    @Test
-    fn RotateLeftByWidth()
-    {
-        assert this.bits.RotateLeft(177, 8, 8) == 177
-    }
-
-    @Test
-    fn RotateLeftByFour()
-    {
-        assert this.bits.RotateLeft(0b10110001, 4, 8) == 0b00011011
-    }
-
-    // -----------------------------------------------------------------------
-    // RotateRight
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn RotateRightByZeroIsUnchanged()
-    {
-        assert this.bits.RotateRight(177, 0, 8) == 177
-    }
-
-    @Test
-    fn RotateRightByOne()
-    {
-        assert this.bits.RotateRight(1, 1, 8) == 128
-    }
-
-    @Test
-    fn RotateRightByWidth()
-    {
-        assert this.bits.RotateRight(177, 8, 8) == 177
-    }
-
-    @Test
-    fn RotateRightByFour()
-    {
-        assert this.bits.RotateRight(0b10110001, 4, 8) == 0b00011011
-    }
-
-    // -----------------------------------------------------------------------
-    // ZeroExtend
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn ZeroExtendClearsHighBits()
-    {
-        assert this.bits.ZeroExtend(255, 4, 8) == 15
-    }
-
-    @Test
-    fn ZeroExtendPreservesLowBits()
-    {
-        assert this.bits.ZeroExtend(10, 4, 8) == 10
-    }
-
-    @Test
-    fn ZeroExtendOnZeroIsZero()
-    {
-        assert this.bits.ZeroExtend(0, 8, 16) == 0
-    }
-
-    // -----------------------------------------------------------------------
-    // SignExtend
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn SignExtendPositiveValue()
-    {
-        assert this.bits.SignExtend(5, 4, 8) == 5
-    }
-
-    @Test
-    fn SignExtendNegativeValue()
-    {
-        assert this.bits.SignExtend(12, 4, 8) == 252
-    }
-
-    @Test
-    fn SignExtendFullRangeNegative()
-    {
-        assert this.bits.SignExtend(15, 4, 8) == 255
-    }
-
-    // -----------------------------------------------------------------------
-    // RequiredBits
-    // -----------------------------------------------------------------------
-
-    @Test
-    fn RequiredBitsOfZeroIsOne()
-    {
-        assert this.bits.RequiredBits(0) == 1
-    }
-
-    @Test
-    fn RequiredBitsOfOneIsOne()
-    {
-        assert this.bits.RequiredBits(1) == 1
-    }
-
-    @Test
-    fn RequiredBitsOfTwo()
-    {
-        assert this.bits.RequiredBits(2) == 2
-        assert this.bits.RequiredBits(3) == 2
-    }
-
-    @Test
-    fn RequiredBitsOfMaxByteValue()
-    {
-        assert this.bits.RequiredBits(255) == 8
-    }
-
-    @Test
-    fn RequiredBitsJustAboveMaxByteValue()
-    {
-        assert this.bits.RequiredBits(256) == 9
-    }
-
-    @Test
-    fn RequiredBitsOfPowerOfTwo()
-    {
-        assert this.bits.RequiredBits(128) == 8
-    }
-
-    @Test
-    fn RequiredBitsOfLargeValue()
-    {
-        assert this.bits.RequiredBits(65535) == 16
-        assert this.bits.RequiredBits(65536) == 17
-    }
+	// Shared fixture instances, signals, and observation state.
+	bits: Bits
+
+	/**
+	 * Creates the shared fixture instances (Bits). Tests initialize the state required by
+	 * their scenario.
+	 */
+	new()
+	{
+		this.bits = new Bits()
+	}
+
+	// -----------------------------------------------------------------------
+	// GetBit
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that GetBit at bit0 is lsb.
+	 */
+	@Test
+	fn GetBitAtBit0IsLsb()
+	{
+		assert this.bits.GetBit(1, 0) == 1
+		assert this.bits.GetBit(2, 0) == 0
+	}
+
+	/**
+	 * Checks that GetBit at bit1.
+	 */
+	@Test
+	fn GetBitAtBit1()
+	{
+		assert this.bits.GetBit(2, 1) == 1
+		assert this.bits.GetBit(1, 1) == 0
+	}
+
+	/**
+	 * Checks that GetBit at bit7.
+	 */
+	@Test
+	fn GetBitAtBit7()
+	{
+		assert this.bits.GetBit(128, 7) == 1
+		assert this.bits.GetBit(127, 7) == 0
+	}
+
+	/**
+	 * Checks that GetBit on zero value is always zero.
+	 */
+	@Test
+	fn GetBitOnZeroValueIsAlwaysZero()
+	{
+		assert this.bits.GetBit(0, 0) == 0
+		assert this.bits.GetBit(0, 7) == 0
+		assert this.bits.GetBit(0, 15) == 0
+	}
+
+	/**
+	 * Checks that GetBit on all ones value.
+	 */
+	@Test
+	fn GetBitOnAllOnesValue()
+	{
+		var allOnes: int = 255
+		assert this.bits.GetBit(allOnes, 0) == 1
+		assert this.bits.GetBit(allOnes, 3) == 1
+		assert this.bits.GetBit(allOnes, 7) == 1
+	}
+
+	// -----------------------------------------------------------------------
+	// SetBit
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that SetBit sets lowest bit.
+	 */
+	@Test
+	fn SetBitSetsLowestBit()
+	{
+		assert this.bits.SetBit(0, 0) == 1
+	}
+
+	/**
+	 * Checks that SetBit sets higher bit.
+	 */
+	@Test
+	fn SetBitSetsHigherBit()
+	{
+		assert this.bits.SetBit(0, 3) == 8
+	}
+
+	/**
+	 * Checks that SetBit is idempotent.
+	 */
+	@Test
+	fn SetBitIsIdempotent()
+	{
+		assert this.bits.SetBit(15, 0) == 15
+		assert this.bits.SetBit(15, 3) == 15
+	}
+
+	/**
+	 * Checks that SetBit does not affect other bits.
+	 */
+	@Test
+	fn SetBitDoesNotAffectOtherBits()
+	{
+		assert this.bits.SetBit(4, 0) == 5
+		assert this.bits.SetBit(4, 2) == 4
+	}
+
+	// -----------------------------------------------------------------------
+	// ClearBit
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that ClearBit clears lowest bit.
+	 */
+	@Test
+	fn ClearBitClearsLowestBit()
+	{
+		assert this.bits.ClearBit(1, 0) == 0
+	}
+
+	/**
+	 * Checks that ClearBit clears higher bit.
+	 */
+	@Test
+	fn ClearBitClearsHigherBit()
+	{
+		assert this.bits.ClearBit(8, 3) == 0
+	}
+
+	/**
+	 * Checks that ClearBit is idempotent.
+	 */
+	@Test
+	fn ClearBitIsIdempotent()
+	{
+		assert this.bits.ClearBit(0, 0) == 0
+		assert this.bits.ClearBit(14, 0) == 14
+	}
+
+	/**
+	 * Checks that ClearBit does not affect other bits.
+	 */
+	@Test
+	fn ClearBitDoesNotAffectOtherBits()
+	{
+		assert this.bits.ClearBit(7, 0) == 6
+		assert this.bits.ClearBit(7, 1) == 5
+		assert this.bits.ClearBit(7, 2) == 3
+	}
+
+	// -----------------------------------------------------------------------
+	// ToggleBit
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that ToggleBit flips zero to one.
+	 */
+	@Test
+	fn ToggleBitFlipsZeroToOne()
+	{
+		assert this.bits.ToggleBit(0, 0) == 1
+		assert this.bits.ToggleBit(0, 4) == 16
+	}
+
+	/**
+	 * Checks that ToggleBit flips one to zero.
+	 */
+	@Test
+	fn ToggleBitFlipsOneToZero()
+	{
+		assert this.bits.ToggleBit(1, 0) == 0
+		assert this.bits.ToggleBit(16, 4) == 0
+	}
+
+	/**
+	 * Checks that ToggleBit does not affect other bits.
+	 */
+	@Test
+	fn ToggleBitDoesNotAffectOtherBits()
+	{
+		assert this.bits.ToggleBit(6, 0) == 7
+		assert this.bits.ToggleBit(7, 0) == 6
+	}
+
+	// -----------------------------------------------------------------------
+	// WithBit
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that WithBit sets or clears correctly.
+	 */
+	@Test
+	fn WithBitSetsOrClearsCorrectly()
+	{
+		assert this.bits.WithBit(0, 3, 1) == 8
+		assert this.bits.WithBit(8, 3, 0) == 0
+		assert this.bits.WithBit(8, 3, 1) == 8
+		assert this.bits.WithBit(0, 3, 0) == 0
+	}
+
+	// -----------------------------------------------------------------------
+	// Mask
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that Mask width zero is zero.
+	 */
+	@Test
+	fn MaskWidthZeroIsZero()
+	{
+		assert this.bits.Mask(0) == 0
+	}
+
+	/**
+	 * Checks that Mask width one.
+	 */
+	@Test
+	fn MaskWidthOne()
+	{
+		assert this.bits.Mask(1) == 1
+	}
+
+	/**
+	 * Checks that Mask width four.
+	 */
+	@Test
+	fn MaskWidthFour()
+	{
+		assert this.bits.Mask(4) == 15
+	}
+
+	/**
+	 * Checks that Mask width eight.
+	 */
+	@Test
+	fn MaskWidthEight()
+	{
+		assert this.bits.Mask(8) == 255
+	}
+
+	// -----------------------------------------------------------------------
+	// MaskRange
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that MaskRange single bit.
+	 */
+	@Test
+	fn MaskRangeSingleBit()
+	{
+		assert this.bits.MaskRange(0, 0) == 1
+		assert this.bits.MaskRange(3, 3) == 8
+	}
+
+	/**
+	 * Checks that MaskRange multi bit.
+	 */
+	@Test
+	fn MaskRangeMultiBit()
+	{
+		assert this.bits.MaskRange(3, 0) == 15
+		assert this.bits.MaskRange(5, 2) == 60
+	}
+
+	// -----------------------------------------------------------------------
+	// Extract
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that Extract single bit.
+	 */
+	@Test
+	fn ExtractSingleBit()
+	{
+		assert this.bits.Extract(12, 3, 3) == 1
+		assert this.bits.Extract(12, 2, 2) == 1
+		assert this.bits.Extract(12, 1, 1) == 0
+		assert this.bits.Extract(12, 0, 0) == 0
+	}
+
+	/**
+	 * Checks that Extract multi bit.
+	 */
+	@Test
+	fn ExtractMultiBit()
+	{
+		assert this.bits.Extract(214, 5, 2) == 5
+	}
+
+	/**
+	 * Checks that Extract lowest bits.
+	 */
+	@Test
+	fn ExtractLowestBits()
+	{
+		assert this.bits.Extract(255, 3, 0) == 15
+	}
+
+	// -----------------------------------------------------------------------
+	// Insert
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that Insert into zero.
+	 */
+	@Test
+	fn InsertIntoZero()
+	{
+		assert this.bits.Insert(0, 3, 0, 15) == 15
+		assert this.bits.Insert(0, 3, 2, 3) == 12
+	}
+
+	/**
+	 * Checks that Insert into non zero.
+	 */
+	@Test
+	fn InsertIntoNonZero()
+	{
+		assert this.bits.Insert(255, 3, 0, 0) == 240
+	}
+
+	/**
+	 * Checks that Insert masks field to width.
+	 */
+	@Test
+	fn InsertMasksFieldToWidth()
+	{
+		assert this.bits.Insert(0, 3, 0, 31) == 15
+	}
+
+	// -----------------------------------------------------------------------
+	// CountOnes
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that CountOnes on zero.
+	 */
+	@Test
+	fn CountOnesOnZero()
+	{
+		assert this.bits.CountOnes(0) == 0
+	}
+
+	/**
+	 * Checks that CountOnes on one.
+	 */
+	@Test
+	fn CountOnesOnOne()
+	{
+		assert this.bits.CountOnes(1) == 1
+	}
+
+	/**
+	 * Checks that CountOnes on byte.
+	 */
+	@Test
+	fn CountOnesOnByte()
+	{
+		assert this.bits.CountOnes(255) == 8
+		assert this.bits.CountOnes(170) == 4
+		assert this.bits.CountOnes(85) == 4
+	}
+
+	/**
+	 * Checks that CountOnes alternating bits.
+	 */
+	@Test
+	fn CountOnesAlternatingBits()
+	{
+		assert this.bits.CountOnes(85) == 4
+		assert this.bits.CountOnes(170) == 4
+	}
+
+	// -----------------------------------------------------------------------
+	// CountZeros
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that CountZeros on zero byte.
+	 */
+	@Test
+	fn CountZerosOnZeroByte()
+	{
+		assert this.bits.CountZeros(0, 8) == 8
+	}
+
+	/**
+	 * Checks that CountZeros on all ones byte.
+	 */
+	@Test
+	fn CountZerosOnAllOnesByte()
+	{
+		assert this.bits.CountZeros(255, 8) == 0
+	}
+
+	/**
+	 * Checks that CountZeros alternating bits.
+	 */
+	@Test
+	fn CountZerosAlternatingBits()
+	{
+		assert this.bits.CountZeros(85, 8) == 4
+	}
+
+	// -----------------------------------------------------------------------
+	// Parity
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that Parity on zero is even.
+	 */
+	@Test
+	fn ParityOnZeroIsEven()
+	{
+		assert this.bits.Parity(0) == 0
+	}
+
+	/**
+	 * Checks that Parity on one is odd.
+	 */
+	@Test
+	fn ParityOnOneIsOdd()
+	{
+		assert this.bits.Parity(1) == 1
+	}
+
+	/**
+	 * Checks that Parity on three bits set.
+	 */
+	@Test
+	fn ParityOnThreeBitsSet()
+	{
+		assert this.bits.Parity(7) == 1
+	}
+
+	/**
+	 * Checks that Parity on four bits set.
+	 */
+	@Test
+	fn ParityOnFourBitsSet()
+	{
+		assert this.bits.Parity(15) == 0
+	}
+
+	// -----------------------------------------------------------------------
+	// ReverseBits
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that ReverseBits on one bit.
+	 */
+	@Test
+	fn ReverseBitsOnOneBit()
+	{
+		assert this.bits.ReverseBits(1, 1) == 1
+	}
+
+	/**
+	 * Exercises ReverseBits byte level.
+	 */
+	@Test
+	fn ReverseBitsByteLevel()
+	{
+		assert this.bits.ReverseBits(1, 8) == 128
+		assert this.bits.ReverseBits(128, 8) == 1
+	}
+
+	/**
+	 * Checks that ReverseBits alternating.
+	 */
+	@Test
+	fn ReverseBitsAlternating()
+	{
+		assert this.bits.ReverseBits(85, 8) == 170
+		assert this.bits.ReverseBits(170, 8) == 85
+	}
+
+	/**
+	 * Checks that ReverseBits palindrome.
+	 */
+	@Test
+	fn ReverseBitsPalindrome()
+	{
+		assert this.bits.ReverseBits(102, 8) == 102
+	}
+
+	// -----------------------------------------------------------------------
+	// RotateLeft
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Exercises RotateLeft by zero is unchanged.
+	 */
+	@Test
+	fn RotateLeftByZeroIsUnchanged()
+	{
+		assert this.bits.RotateLeft(0b10110001, 0, 8) == 177
+	}
+
+	/**
+	 * Exercises RotateLeft by one.
+	 */
+	@Test
+	fn RotateLeftByOne()
+	{
+		assert this.bits.RotateLeft(128, 1, 8) == 1
+	}
+
+	/**
+	 * Exercises RotateLeft by width.
+	 */
+	@Test
+	fn RotateLeftByWidth()
+	{
+		assert this.bits.RotateLeft(177, 8, 8) == 177
+	}
+
+	/**
+	 * Exercises RotateLeft by four.
+	 */
+	@Test
+	fn RotateLeftByFour()
+	{
+		assert this.bits.RotateLeft(0b10110001, 4, 8) == 0b00011011
+	}
+
+	// -----------------------------------------------------------------------
+	// RotateRight
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Exercises RotateRight by zero is unchanged.
+	 */
+	@Test
+	fn RotateRightByZeroIsUnchanged()
+	{
+		assert this.bits.RotateRight(177, 0, 8) == 177
+	}
+
+	/**
+	 * Exercises RotateRight by one.
+	 */
+	@Test
+	fn RotateRightByOne()
+	{
+		assert this.bits.RotateRight(1, 1, 8) == 128
+	}
+
+	/**
+	 * Exercises RotateRight by width.
+	 */
+	@Test
+	fn RotateRightByWidth()
+	{
+		assert this.bits.RotateRight(177, 8, 8) == 177
+	}
+
+	/**
+	 * Exercises RotateRight by four.
+	 */
+	@Test
+	fn RotateRightByFour()
+	{
+		assert this.bits.RotateRight(0b10110001, 4, 8) == 0b00011011
+	}
+
+	// -----------------------------------------------------------------------
+	// ZeroExtend
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that ZeroExtend clears high bits.
+	 */
+	@Test
+	fn ZeroExtendClearsHighBits()
+	{
+		assert this.bits.ZeroExtend(255, 4, 8) == 15
+	}
+
+	/**
+	 * Checks that ZeroExtend preserves low bits.
+	 */
+	@Test
+	fn ZeroExtendPreservesLowBits()
+	{
+		assert this.bits.ZeroExtend(10, 4, 8) == 10
+	}
+
+	/**
+	 * Checks that ZeroExtend on zero is zero.
+	 */
+	@Test
+	fn ZeroExtendOnZeroIsZero()
+	{
+		assert this.bits.ZeroExtend(0, 8, 16) == 0
+	}
+
+	// -----------------------------------------------------------------------
+	// SignExtend
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks that SignExtend positive value.
+	 */
+	@Test
+	fn SignExtendPositiveValue()
+	{
+		assert this.bits.SignExtend(5, 4, 8) == 5
+	}
+
+	/**
+	 * Checks that SignExtend negative value.
+	 */
+	@Test
+	fn SignExtendNegativeValue()
+	{
+		assert this.bits.SignExtend(12, 4, 8) == 252
+	}
+
+	/**
+	 * Checks that SignExtend full range negative.
+	 */
+	@Test
+	fn SignExtendFullRangeNegative()
+	{
+		assert this.bits.SignExtend(15, 4, 8) == 255
+	}
+
+	// -----------------------------------------------------------------------
+	// RequiredBits
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Exercises RequiredBits of zero is one.
+	 */
+	@Test
+	fn RequiredBitsOfZeroIsOne()
+	{
+		assert this.bits.RequiredBits(0) == 1
+	}
+
+	/**
+	 * Exercises RequiredBits of one is one.
+	 */
+	@Test
+	fn RequiredBitsOfOneIsOne()
+	{
+		assert this.bits.RequiredBits(1) == 1
+	}
+
+	/**
+	 * Exercises RequiredBits of two.
+	 */
+	@Test
+	fn RequiredBitsOfTwo()
+	{
+		assert this.bits.RequiredBits(2) == 2
+		assert this.bits.RequiredBits(3) == 2
+	}
+
+	/**
+	 * Exercises RequiredBits of max byte value.
+	 */
+	@Test
+	fn RequiredBitsOfMaxByteValue()
+	{
+		assert this.bits.RequiredBits(255) == 8
+	}
+
+	/**
+	 * Checks that RequiredBits just above max byte value.
+	 */
+	@Test
+	fn RequiredBitsJustAboveMaxByteValue()
+	{
+		assert this.bits.RequiredBits(256) == 9
+	}
+
+	/**
+	 * Exercises RequiredBits of power of two.
+	 */
+	@Test
+	fn RequiredBitsOfPowerOfTwo()
+	{
+		assert this.bits.RequiredBits(128) == 8
+	}
+
+	/**
+	 * Exercises RequiredBits of large value.
+	 */
+	@Test
+	fn RequiredBitsOfLargeValue()
+	{
+		assert this.bits.RequiredBits(65535) == 16
+		assert this.bits.RequiredBits(65536) == 17
+	}
 }

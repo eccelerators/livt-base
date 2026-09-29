@@ -6,43 +6,45 @@ namespace Livt.Timing
  */
 component PeriodicTickProvider
 {
-    periodTicks: uint
-    elapsedTicks: uint
-    tick: logic
+	// Configured interval in cycles and current elapsed-cycle count.
+	periodTicks: uint
+	elapsedTicks: uint
 
-    /**
-     * Creates a provider that pulses after every periodTicks context ticks.
-     * periodTicks must be at least one.
-     */
-    new(periodTicks: uint, tick: out logic)
-    {
-        tick = this.tick
-        this.periodTicks = periodTicks
-        this.elapsedTicks = 0
-        this.tick = 0b0
-    }
+	// One-cycle output pulse when the configured interval elapses.
+	tick: logic
 
-    /**
-     * Returns the configured interval in ticks of this component's context.
-     */
-    public fn GetPeriodTicks() uint
-    {
-        return this.periodTicks
-    }
+	/**
+	 * Creates a provider that pulses after every periodTicks context ticks.
+	 * periodTicks must be at least one.
+	 */
+	new(periodTicks: uint, tick: out logic)
+	{
+		tick = this.tick
+		this.periodTicks = periodTicks
+		this.elapsedTicks = 0
+		this.tick = 0b0
+	}
 
-    /**
-     * Advances the interval counter and emits a one-context-tick pulse.
-     */
-    process Generate()
-    {
-        this.tick = 0b0
+	/**
+	 * Returns the configured interval in ticks of this component's context.
+	 */
+	public fn GetPeriodTicks() uint
+	{
+		return this.periodTicks
+	}
 
-        if ((this.elapsedTicks + 1) >= this.periodTicks) {
-            this.elapsedTicks = 0
-            this.tick = 0b1
-        }
-        else {
-            this.elapsedTicks = this.elapsedTicks + 1
-        }
-    }
+	/**
+	 * Advances the interval counter and emits a one-context-tick pulse.
+	 */
+	process Generate()
+	{
+		this.tick = 0b0
+
+		if ((this.elapsedTicks + 1) >= this.periodTicks) {
+			this.elapsedTicks = 0
+			this.tick = 0b1
+		} else {
+			this.elapsedTicks = this.elapsedTicks + 1
+		}
+	}
 }

@@ -5,138 +5,167 @@ namespace Livt.Base.Tests
 // Array.lvt depends on this support so it can expose size-agnostic helpers
 // instead of per-size functions such as ByteEquals16, ByteEquals32, and
 // ByteEquals64.
+
+/**
+ * Exercises ArrayUnsizedParam with a shared fixture instance. Each scenario establishes
+ * the inputs and state it needs.
+ */
 @Test
 component ArrayUnsizedParamTest
 {
-    // -----------------------------------------------------------------------
-    // Internal probe functions using unsized array parameters
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// Internal probe functions using unsized array parameters
+	// -----------------------------------------------------------------------
 
-    // Probe: read two bytes from a byte[] parameter and compare them.
-    fn ByteEq(a: byte[], b: byte[], size: int) bool
-    {
-        for (var i = 0; i < size; i++)
-        {
-            var ai: byte = a[i]
-            var bi: byte = b[i]
-            if (ai != bi)
-            {
-                return false
-            }
-        }
-        return true
-    }
+	// Probe: read two bytes from a byte[] parameter and compare them.
+	/**
+	 * Compares the first size bytes of both arrays; callers supply arrays at least size
+	 * elements long.
+	 */
+	fn ByteEq(a: byte[], b: byte[], size: int) bool
+	{
+		for (var i = 0; i < size; i++) {
+			var ai: byte = a[i]
+			var bi: byte = b[i]
 
-    // Probe: find first index of value in a byte[] parameter.
-    fn ByteIdxOf(arr: byte[], size: int, value: byte) int
-    {
-        for (var i = 0; i < size; i++)
-        {
-            var ai: byte = arr[i]
-            if (ai == value)
-            {
-                return i
-            }
-        }
-        return -1
-    }
+			if (ai != bi) {
+				return false
+			}
+		}
 
-    // int[] unsized parameters currently cause a VHDL generation error.
-    // This regression test covers only the byte[] form used by Array.lvt.
+		return true
+	}
 
-    // -----------------------------------------------------------------------
-    // Tests for ByteEq
-    // -----------------------------------------------------------------------
+	// Probe: find first index of value in a byte[] parameter.
 
-    @Test
-    fn ByteEqReturnsTrueForIdentical16ByteArrays()
-    {
-        var a: byte[16]
-        a[0] = 0x01
-        a[1] = 0x02
-        a[2] = 0x03
-        a[3] = 0x04
-        a[4] = 0x05
-        a[5] = 0x06
-        a[6] = 0x07
-        a[7] = 0x08
-        a[8] = 0x09
-        a[9] = 0x0A
-        a[10] = 0x0B
-        a[11] = 0x0C
-        a[12] = 0x0D
-        a[13] = 0x0E
-        a[14] = 0x0F
-        a[15] = 0x10
+	/**
+	 * Finds the first matching byte in the size-element prefix, or returns -1. Requires size
+	 * within the supplied array.
+	 */
+	fn ByteIdxOf(arr: byte[], size: int, value: byte) int
+	{
+		for (var i = 0; i < size; i++) {
+			var ai: byte = arr[i]
 
-        var b: byte[16]
-        b[0] = 0x01
-        b[1] = 0x02
-        b[2] = 0x03
-        b[3] = 0x04
-        b[4] = 0x05
-        b[5] = 0x06
-        b[6] = 0x07
-        b[7] = 0x08
-        b[8] = 0x09
-        b[9] = 0x0A
-        b[10] = 0x0B
-        b[11] = 0x0C
-        b[12] = 0x0D
-        b[13] = 0x0E
-        b[14] = 0x0F
-        b[15] = 0x10
+			if (ai == value) {
+				return i
+			}
+		}
 
-        assert this.ByteEq(a, b, 16) == true
-    }
+		return -1
+	}
 
-    @Test
-    fn ByteEqReturnsFalseWhenDifferent()
-    {
-        var a: byte[16]
-        a[0] = 0xAA
+	// int[] unsized parameters currently cause a VHDL generation error.
+	// This regression test covers only the byte[] form used by Array.lvt.
 
-        var b: byte[16]
-        b[0] = 0xBB
+	// -----------------------------------------------------------------------
+	// Tests for ByteEq
+	// -----------------------------------------------------------------------
 
-        assert this.ByteEq(a, b, 16) == false
-    }
+	/**
+	 * Checks the byte eq returns true for identical16 byte arrays case.
+	 */
+	@Test
+	fn ByteEqReturnsTrueForIdentical16ByteArrays()
+	{
+		var a: byte[16]
+		a[0] = 0x01
+		a[1] = 0x02
+		a[2] = 0x03
+		a[3] = 0x04
+		a[4] = 0x05
+		a[5] = 0x06
+		a[6] = 0x07
+		a[7] = 0x08
+		a[8] = 0x09
+		a[9] = 0x0A
+		a[10] = 0x0B
+		a[11] = 0x0C
+		a[12] = 0x0D
+		a[13] = 0x0E
+		a[14] = 0x0F
+		a[15] = 0x10
 
-    @Test
-    fn ByteEqWorksFor32ByteArrays()
-    {
-        var a: byte[32]
-        a[31] = 0xFF
+		var b: byte[16]
+		b[0] = 0x01
+		b[1] = 0x02
+		b[2] = 0x03
+		b[3] = 0x04
+		b[4] = 0x05
+		b[5] = 0x06
+		b[6] = 0x07
+		b[7] = 0x08
+		b[8] = 0x09
+		b[9] = 0x0A
+		b[10] = 0x0B
+		b[11] = 0x0C
+		b[12] = 0x0D
+		b[13] = 0x0E
+		b[14] = 0x0F
+		b[15] = 0x10
 
-        var b: byte[32]
-        b[31] = 0xFF
+		assert this.ByteEq(a, b, 16) == true
+	}
 
-        assert this.ByteEq(a, b, 32) == true
-    }
+	/**
+	 * Checks the byte eq returns false when different case.
+	 */
+	@Test
+	fn ByteEqReturnsFalseWhenDifferent()
+	{
+		var a: byte[16]
+		a[0] = 0xAA
 
-    // -----------------------------------------------------------------------
-    // Tests for ByteIdxOf
-    // -----------------------------------------------------------------------
+		var b: byte[16]
+		b[0] = 0xBB
 
-    @Test
-    fn ByteIdxOfFindsFirstMatch()
-    {
-        var arr: byte[16]
-        arr[0] = 0x10
-        arr[1] = 0x20
-        arr[2] = 0x30
+		assert this.ByteEq(a, b, 16) == false
+	}
 
-        var result: int = this.ByteIdxOf(arr, 16, 0x20)
-        assert result == 1
-    }
+	/**
+	 * Checks the byte eq works for32 byte arrays case.
+	 */
+	@Test
+	fn ByteEqWorksFor32ByteArrays()
+	{
+		var a: byte[32]
+		a[31] = 0xFF
 
-    @Test
-    fn ByteIdxOfReturnsMinusOneWhenNotFound()
-    {
-        var arr: byte[16]
-        arr[0] = 0x01
+		var b: byte[32]
+		b[31] = 0xFF
 
-        var result: int = this.ByteIdxOf(arr, 16, 0xFF)
-        assert result == -1
-    }
+		assert this.ByteEq(a, b, 32) == true
+	}
+
+	// -----------------------------------------------------------------------
+	// Tests for ByteIdxOf
+	// -----------------------------------------------------------------------
+
+	/**
+	 * Checks the byte idx of finds first match case.
+	 */
+	@Test
+	fn ByteIdxOfFindsFirstMatch()
+	{
+		var arr: byte[16]
+		arr[0] = 0x10
+		arr[1] = 0x20
+		arr[2] = 0x30
+
+		var result: int = this.ByteIdxOf(arr, 16, 0x20)
+		assert result == 1
+	}
+
+	/**
+	 * Checks the byte idx of returns minus one when not found case.
+	 */
+	@Test
+	fn ByteIdxOfReturnsMinusOneWhenNotFound()
+	{
+		var arr: byte[16]
+		arr[0] = 0x01
+
+		var result: int = this.ByteIdxOf(arr, 16, 0xFF)
+		assert result == -1
+	}
 }

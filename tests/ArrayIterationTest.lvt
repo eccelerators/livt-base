@@ -1,15 +1,23 @@
 namespace Livt.Base.Tests
-
 using Livt.Iteration
 
+/**
+ * Exercises ArrayIteration with a shared fixture instance. Each scenario establishes the
+ * inputs and state it needs.
+ */
 @Test
 component ArrayIterationTest
 {
+	// Shared fixture instances, signals, and observation state.
 	values: ArrayIterator<int>
 	shorter: ArrayIterator<int>
 	empty: ArrayIterator<int>
 	single: ArrayIterator<int>
 
+	/**
+	 * Creates the shared fixture instances (ArrayIterator). Tests initialize the state
+	 * required by their scenario.
+	 */
 	new()
 	{
 		this.values = new ArrayIterator<int>([1, 2, 3, 4], 4)
@@ -18,24 +26,42 @@ component ArrayIterationTest
 		this.single = new ArrayIterator<int>([7], 1)
 	}
 
+	/**
+	 * Checks the snapshot lengths and reset case.
+	 */
 	@Test
 	fn SnapshotLengthsAndReset()
 	{
 		var sum = Iteration.Fold<int, int>(this.values, 0,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert sum == 10
 		var shortSum = Iteration.Fold<int, int>(this.shorter, 0,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert shortSum == 11
 		var emptySum = Iteration.Fold<int, int>(this.empty, 17,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert emptySum == 17
 		var singleSum = Iteration.Fold<int, int>(this.single, 0,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert singleSum == 7
 		this.values.Reset()
 		var repeated = Iteration.Fold<int, int>(this.values, 0,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert repeated == 10
 	}
 }

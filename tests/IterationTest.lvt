@@ -2,67 +2,121 @@ namespace Livt.Base.Tests
 
 using Livt.Iteration
 
+/**
+ * Exercises Iteration with a shared fixture instance. Each scenario establishes the inputs
+ * and state it needs.
+ */
 @Test
 component IterationTest
 {
+	// Shared fixture instances, signals, and observation state.
 	iterator: RangeIterator
 
+	/**
+	 * Creates the shared fixture instances (RangeIterator). Tests initialize the state
+	 * required by their scenario.
+	 */
 	new()
 	{
 		this.iterator = new RangeIterator()
 	}
 
+	/**
+	 * Checks that Fold values.
+	 */
 	@Test
 	fn FoldValues()
 	{
 		this.iterator.Reset()
 		var sum = Iteration.Fold<int, int>(this.iterator, 0,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert sum == 10
 	}
 
+	/**
+	 * Checks the short circuit and resume case.
+	 */
 	@Test
 	fn ShortCircuitAndResume()
 	{
 		this.iterator.Reset()
-		var found = Iteration.Any<int>(this.iterator, fn(value: int) bool { return value == 2 })
+		var found = Iteration.Any<int>(this.iterator, fn(value: int) bool {
+			return value == 2
+		}
+		)
 		assert found
 		var remaining = Iteration.Fold<int, int>(this.iterator, 0,
-			fn(accumulator: int, value: int) int { return accumulator + value })
+		fn(accumulator: int, value: int) int {
+			return accumulator + value
+		}
+		)
 		assert remaining == 7
-		var emptyAny = Iteration.Any<int>(this.iterator, fn(value: int) bool { return true })
+		var emptyAny = Iteration.Any<int>(this.iterator, fn(value: int) bool {
+			return true
+		}
+		)
 		assert !emptyAny
-		var emptyAll = Iteration.All<int>(this.iterator, fn(value: int) bool { return false })
+		var emptyAll = Iteration.All<int>(this.iterator, fn(value: int) bool {
+			return false
+		}
+		)
 		assert emptyAll
 	}
 
+	/**
+	 * Checks the count and find case.
+	 */
 	@Test
 	fn CountAndFind()
 	{
 		this.iterator.Reset()
-		var count = Iteration.CountWhere<int>(this.iterator, fn(value: int) bool { return value > 2 })
+		var count = Iteration.CountWhere<int>(this.iterator, fn(value: int) bool {
+			return value > 2
+		}
+		)
 		assert count == 2
 		this.iterator.Reset()
 		var first = this.iterator.Next()
 		assert first == 1
-		var index = Iteration.FindIndex<int>(this.iterator, fn(value: int) bool { return value == 3 })
+		var index = Iteration.FindIndex<int>(this.iterator, fn(value: int) bool {
+			return value == 3
+		}
+		)
 		assert index == 1
-		var all = Iteration.All<int>(this.iterator, fn(value: int) bool { return value == 4 })
+		var all = Iteration.All<int>(this.iterator, fn(value: int) bool {
+			return value == 4
+		}
+		)
 		assert all
-		var missing = Iteration.FindIndex<int>(this.iterator, fn(value: int) bool { return true })
+		var missing = Iteration.FindIndex<int>(this.iterator, fn(value: int) bool {
+			return true
+		}
+		)
 		assert missing == -1
 	}
 
+	/**
+	 * Checks the captured predicate stops at first failure case.
+	 */
 	@Test
 	fn CapturedPredicateStopsAtFirstFailure()
 	{
 		this.iterator.Reset()
 		var limit = 3
-		var all = Iteration.All<int>(this.iterator, fn(value: int) bool { return value < limit })
+		var all = Iteration.All<int>(this.iterator, fn(value: int) bool {
+			return value < limit
+		}
+		)
 		assert !all
 		var next = this.iterator.Next()
 		assert next == 4
-		var emptyCount = Iteration.CountWhere<int>(this.iterator, fn(value: int) bool { return true })
+		var emptyCount = Iteration.CountWhere<int>(this.iterator, fn(value: int) bool {
+			return true
+		}
+		)
 		assert emptyCount == 0
 	}
 }

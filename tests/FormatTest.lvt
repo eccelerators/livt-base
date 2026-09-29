@@ -2,142 +2,196 @@ namespace Livt.Base.Tests
 
 using Livt.Format
 
+/**
+ * Exercises Format with a shared fixture instance. Each scenario establishes the inputs
+ * and state it needs.
+ */
 @Test
 component FormatTest
 {
-    fmt: Format
+	// Shared fixture instances, signals, and observation state.
+	fmt: Format
 
-    new()
-    {
-        this.fmt = new Format()
-    }
+	/**
+	 * Creates the shared fixture instances (Format). Tests initialize the state required by
+	 * their scenario.
+	 */
+	new()
+	{
+		this.fmt = new Format()
+	}
 
-    // -----------------------------------------------------------------------
-    // ToStringByte
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToStringByte
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToStringByteFormatsZero()
-    {
-        var s: string[3] = this.fmt.ToStringByte(0x00)
-        assert s == "000"
-    }
+	/**
+	 * Checks that ToStringByte formats zero.
+	 */
+	@Test
+	fn ToStringByteFormatsZero()
+	{
+		var s: string[3] = this.fmt.ToStringByte(0x00)
+		assert s == "000"
+	}
 
-    @Test
-    fn ToStringByteFormatsSingleDigitWithPadding()
-    {
-        var s: string[3] = this.fmt.ToStringByte(0x07)
-        assert s == "007"
-    }
+	/**
+	 * Checks that ToStringByte formats single digit with padding.
+	 */
+	@Test
+	fn ToStringByteFormatsSingleDigitWithPadding()
+	{
+		var s: string[3] = this.fmt.ToStringByte(0x07)
+		assert s == "007"
+	}
 
-    @Test
-    fn ToStringByteFormatsMaxByte()
-    {
-        var s: string[3] = this.fmt.ToStringByte(0xFF)
-        assert s == "255"
-    }
+	/**
+	 * Checks that ToStringByte formats max byte.
+	 */
+	@Test
+	fn ToStringByteFormatsMaxByte()
+	{
+		var s: string[3] = this.fmt.ToStringByte(0xFF)
+		assert s == "255"
+	}
 
-    // -----------------------------------------------------------------------
-    // ToStringInt
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToStringInt
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToStringIntFormatsPositiveValue()
-    {
-        var s: string[11] = this.fmt.ToStringInt(42)
-        assert s == "+0000000042"
-    }
+	/**
+	 * Checks that ToStringInt formats positive value.
+	 */
+	@Test
+	fn ToStringIntFormatsPositiveValue()
+	{
+		var s: string[11] = this.fmt.ToStringInt(42)
+		assert s == "+0000000042"
+	}
 
-    @Test
-    fn ToStringIntFormatsNegativeValue()
-    {
-        var s: string[11] = this.fmt.ToStringInt(-42)
-        assert s == "-0000000042"
-    }
+	/**
+	 * Checks that ToStringInt formats negative value.
+	 */
+	@Test
+	fn ToStringIntFormatsNegativeValue()
+	{
+		var s: string[11] = this.fmt.ToStringInt(-42)
+		assert s == "-0000000042"
+	}
 
-    @Test
-    fn ToStringIntFormatsZero()
-    {
-        var s: string[11] = this.fmt.ToStringInt(0)
-        assert s == "+0000000000"
-    }
+	/**
+	 * Checks that ToStringInt formats zero.
+	 */
+	@Test
+	fn ToStringIntFormatsZero()
+	{
+		var s: string[11] = this.fmt.ToStringInt(0)
+		assert s == "+0000000000"
+	}
 
-    @Test
-    fn ToStringIntFormatsLargePositiveValue()
-    {
-        var s: string[11] = this.fmt.ToStringInt(2147483647)
-        assert s == "+2147483647"
-    }
+	/**
+	 * Checks that ToStringInt formats large positive value.
+	 */
+	@Test
+	fn ToStringIntFormatsLargePositiveValue()
+	{
+		var s: string[11] = this.fmt.ToStringInt(2147483647)
+		assert s == "+2147483647"
+	}
 
-    // -----------------------------------------------------------------------
-    // ToStringUInt
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToStringUInt
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToStringUIntFormatsZero()
-    {
-        var value: uint = 0
-        var s: string[10] = this.fmt.ToStringUInt(value)
-        assert s == "0000000000"
-    }
+	/**
+	 * Checks that ToStringUInt formats zero.
+	 */
+	@Test
+	fn ToStringUIntFormatsZero()
+	{
+		var value: uint = 0
+		var s: string[10] = this.fmt.ToStringUInt(value)
+		assert s == "0000000000"
+	}
 
-    @Test
-    fn ToStringUIntFormatsPositiveValue()
-    {
-        var value: uint = 42
-        var s: string[10] = this.fmt.ToStringUInt(value)
-        assert s == "0000000042"
-    }
+	/**
+	 * Checks that ToStringUInt formats positive value.
+	 */
+	@Test
+	fn ToStringUIntFormatsPositiveValue()
+	{
+		var value: uint = 42
+		var s: string[10] = this.fmt.ToStringUInt(value)
+		assert s == "0000000042"
+	}
 
-    @Test
-    fn ToStringUIntFormatsByteSizedValue()
-    {
-        var value: uint = 255
-        var s: string[10] = this.fmt.ToStringUInt(value)
-        assert s == "0000000255"
-    }
+	/**
+	 * Checks that ToStringUInt formats byte sized value.
+	 */
+	@Test
+	fn ToStringUIntFormatsByteSizedValue()
+	{
+		var value: uint = 255
+		var s: string[10] = this.fmt.ToStringUInt(value)
+		assert s == "0000000255"
+	}
 
-    @Test
-    fn ToStringUIntFormatsTenDigits()
-    {
-        var value: uint = 1000000000
-        var s: string[10] = this.fmt.ToStringUInt(value)
-        assert s == "1000000000"
-    }
+	/**
+	 * Checks that ToStringUInt formats ten digits.
+	 */
+	@Test
+	fn ToStringUIntFormatsTenDigits()
+	{
+		var value: uint = 1000000000
+		var s: string[10] = this.fmt.ToStringUInt(value)
+		assert s == "1000000000"
+	}
 
-    // -----------------------------------------------------------------------
-    // ToHexByte
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToHexByte
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToHexByteFormatsZero()
-    {
-        var s: string[2] = this.fmt.ToHexByte(0x00)
-        assert s == "00"
-    }
+	/**
+	 * Checks that ToHexByte formats zero.
+	 */
+	@Test
+	fn ToHexByteFormatsZero()
+	{
+		var s: string[2] = this.fmt.ToHexByte(0x00)
+		assert s == "00"
+	}
 
-    @Test
-    fn ToHexByteFormatsLettersUppercase()
-    {
-        var s: string[2] = this.fmt.ToHexByte(0xAF)
-        assert s == "AF"
-    }
+	/**
+	 * Checks that ToHexByte formats letters uppercase.
+	 */
+	@Test
+	fn ToHexByteFormatsLettersUppercase()
+	{
+		var s: string[2] = this.fmt.ToHexByte(0xAF)
+		assert s == "AF"
+	}
 
-    // -----------------------------------------------------------------------
-    // ToBinaryByte
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToBinaryByte
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToBinaryByteFormatsZero()
-    {
-        var s: string[8] = this.fmt.ToBinaryByte(0x00)
-        assert s == "00000000"
-    }
+	/**
+	 * Checks that ToBinaryByte formats zero.
+	 */
+	@Test
+	fn ToBinaryByteFormatsZero()
+	{
+		var s: string[8] = this.fmt.ToBinaryByte(0x00)
+		assert s == "00000000"
+	}
 
-    @Test
-    fn ToBinaryByteFormatsBits()
-    {
-        var s: string[8] = this.fmt.ToBinaryByte(0xA5)
-        assert s == "10100101"
-    }
+	/**
+	 * Checks that ToBinaryByte formats bits.
+	 */
+	@Test
+	fn ToBinaryByteFormatsBits()
+	{
+		var s: string[8] = this.fmt.ToBinaryByte(0xA5)
+		assert s == "10100101"
+	}
 }

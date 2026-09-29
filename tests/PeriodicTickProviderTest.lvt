@@ -2,16 +2,23 @@ namespace Livt.Base.Tests
 
 using Livt.Timing
 
+/**
+ * Exercises PeriodicTickProvider with a shared fixture instance. Each scenario establishes
+ * the inputs and state it needs.
+ */
 @Test
-@Context(ClockFrequency=100MHz)
+@Context(ClockFrequency = 100MHz)
 component PeriodicTickProviderTest
 {
+	// Shared fixture instances, signals, and observation state.
 	provider: PeriodicTickProvider
 	oneMicrosecondProvider: PeriodicTickProvider1us
 	oneMillisecondProvider: PeriodicTickProvider1ms
 	tenMillisecondProvider: PeriodicTickProvider10ms
 	hundredMillisecondProvider: PeriodicTickProvider100ms
 	oneSecondProvider: PeriodicTickProvider1s
+
+	// One-cycle output pulse when the configured interval elapses.
 	tick: logic
 	oneMicrosecondTick: logic
 	oneMillisecondTick: logic
@@ -22,6 +29,11 @@ component PeriodicTickProviderTest
 	previousTick: logic
 	backToBackPulse: bool
 
+	/**
+	 * Creates the shared fixture instances (PeriodicTickProvider, PeriodicTickProvider1us,
+	 * PeriodicTickProvider1ms, PeriodicTickProvider10ms, PeriodicTickProvider100ms,
+	 * PeriodicTickProvider1s). Tests initialize the state required by their scenario.
+	 */
 	new()
 	{
 		this.provider = new PeriodicTickProvider((4 as uint), this.tick)
@@ -35,17 +47,25 @@ component PeriodicTickProviderTest
 		this.backToBackPulse = false
 	}
 
+	/**
+	 * Counts observed tick pulses and records adjacent-cycle pulses for the timing assertions.
+	 */
 	process Observe()
 	{
 		if (this.tick == 0b1) {
 			this.observedTicks = this.observedTicks + 1
+
 			if (this.previousTick == 0b1) {
 				this.backToBackPulse = true
 			}
 		}
+
 		this.previousTick = this.tick
 	}
 
+	/**
+	 * Checks that the component generates periodic one cycle pulses.
+	 */
 	@Test
 	fn GeneratesPeriodicOneCyclePulses()
 	{
@@ -57,6 +77,9 @@ component PeriodicTickProviderTest
 		assert this.backToBackPulse == false
 	}
 
+	/**
+	 * Checks that the component derives common periods at100 m hz.
+	 */
 	@Test
 	fn DerivesCommonPeriodsAt100MHz()
 	{
@@ -68,10 +91,15 @@ component PeriodicTickProviderTest
 	}
 }
 
+/**
+ * Exercises PeriodicTickProvider50MHz with a shared fixture instance. Each scenario
+ * establishes the inputs and state it needs.
+ */
 @Test
-@Context(ClockFrequency=50MHz)
+@Context(ClockFrequency = 50MHz)
 component PeriodicTickProvider50MHzTest
 {
+	// Shared fixture instances, signals, and observation state.
 	oneMicrosecondProvider: PeriodicTickProvider1us
 	oneMillisecondProvider: PeriodicTickProvider1ms
 	oneSecondProvider: PeriodicTickProvider1s
@@ -79,6 +107,10 @@ component PeriodicTickProvider50MHzTest
 	oneMillisecondTick: logic
 	oneSecondTick: logic
 
+	/**
+	 * Creates the shared fixture instances (PeriodicTickProvider1us, PeriodicTickProvider1ms,
+	 * PeriodicTickProvider1s). Tests initialize the state required by their scenario.
+	 */
 	new()
 	{
 		this.oneMicrosecondProvider = new PeriodicTickProvider1us(this.oneMicrosecondTick)
@@ -86,6 +118,9 @@ component PeriodicTickProvider50MHzTest
 		this.oneSecondProvider = new PeriodicTickProvider1s(this.oneSecondTick)
 	}
 
+	/**
+	 * Checks that the component derives periods from assigned context.
+	 */
 	@Test
 	fn DerivesPeriodsFromAssignedContext()
 	{

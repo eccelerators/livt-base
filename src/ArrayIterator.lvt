@@ -8,11 +8,16 @@ using Livt.Lang
  */
 component ArrayIterator<T> : IResettableIterator<T>
 {
+	// Owned copy of the iterable prefix.
 	values: T[]
+
+	// Valid prefix length and next unread position.
 	count: int
 	position: int
 
-	/** Copies a prefix. count is explicit so padded hardware ports do not add elements. */
+	/**
+	 * Copies a prefix. count is explicit so padded hardware ports do not add elements.
+	 */
 	new(values: T[], count: int)
 	{
 		assert count >= 0 && count <= values.Length(), "Invalid array iterator count"
@@ -21,16 +26,26 @@ component ArrayIterator<T> : IResettableIterator<T>
 		this.position = 0
 	}
 
+	/**
+	 * Rewinds the cursor to the start of the copied prefix without changing its values.
+	 */
 	override fn Reset()
 	{
 		this.position = 0
 	}
 
+	/**
+	 * Reports whether the copied prefix has another element; does not advance the cursor.
+	 */
 	override fn HasNext() bool
 	{
 		return this.position < this.count
 	}
 
+	/**
+	 * Returns the next copied value and advances the cursor. Requires HasNext(); exhaustion
+	 * fails an assertion.
+	 */
 	override fn Next() T
 	{
 		assert this.position < this.count, "Array iterator is exhausted"

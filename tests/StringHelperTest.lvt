@@ -2,459 +2,603 @@ namespace Livt.String.Tests
 
 using Livt.String
 
+/**
+ * Exercises StringHelper with a shared fixture instance. Each scenario establishes the
+ * inputs and state it needs.
+ */
 @Test
 component StringHelperTest
 {
-    str: StringHelper
+	// Shared fixture instances, signals, and observation state.
+	str: StringHelper
 
-    new()
-    {
-        this.str = new StringHelper()
-    }
+	/**
+	 * Creates the shared fixture instances (StringHelper). Tests initialize the state required
+	 * by their scenario.
+	 */
+	new()
+	{
+		this.str = new StringHelper()
+	}
 
-    // -----------------------------------------------------------------------
-    // StartsWith
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// StartsWith
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn StartsWithReturnsTrueForMatchingPrefix()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var prefix: byte[5] = "Hello".Encode()
-        var result: bool = this.str.StartsWith(data, 11, prefix, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that StartsWith returns true for matching prefix.
+	 */
+	@Test
+	fn StartsWithReturnsTrueForMatchingPrefix()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var prefix: byte[5] = "Hello".Encode()
+		var result: bool = this.str.StartsWith(data, 11, prefix, 5)
+		assert result == true
+	}
 
-    @Test
-    fn StartsWithReturnsFalseForNonMatchingPrefix()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var prefix: byte[5] = "World".Encode()
-        var result: bool = this.str.StartsWith(data, 11, prefix, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that StartsWith returns false for non matching prefix.
+	 */
+	@Test
+	fn StartsWithReturnsFalseForNonMatchingPrefix()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var prefix: byte[5] = "World".Encode()
+		var result: bool = this.str.StartsWith(data, 11, prefix, 5)
+		assert result == false
+	}
 
-    @Test
-    fn StartsWithReturnsTrueForFullMatch()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var prefix: byte[5] = "Hello".Encode()
-        var result: bool = this.str.StartsWith(data, 5, prefix, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that StartsWith returns true for full match.
+	 */
+	@Test
+	fn StartsWithReturnsTrueForFullMatch()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var prefix: byte[5] = "Hello".Encode()
+		var result: bool = this.str.StartsWith(data, 5, prefix, 5)
+		assert result == true
+	}
 
-    @Test
-    fn StartsWithReturnsFalseWhenPrefixLongerThanData()
-    {
-        var data: byte[3] = "GET".Encode()
-        var prefix: byte[5] = "Hello".Encode()
-        var result: bool = this.str.StartsWith(data, 3, prefix, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that StartsWith returns false when prefix longer than data.
+	 */
+	@Test
+	fn StartsWithReturnsFalseWhenPrefixLongerThanData()
+	{
+		var data: byte[3] = "GET".Encode()
+		var prefix: byte[5] = "Hello".Encode()
+		var result: bool = this.str.StartsWith(data, 3, prefix, 5)
+		assert result == false
+	}
 
-    @Test
-    fn StartsWithReturnsTrueForSingleByteMatch()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var prefix: byte[1] = "H".Encode()
-        var result: bool = this.str.StartsWith(data, 5, prefix, 1)
-        assert result == true
-    }
+	/**
+	 * Checks that StartsWith returns true for single byte match.
+	 */
+	@Test
+	fn StartsWithReturnsTrueForSingleByteMatch()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var prefix: byte[1] = "H".Encode()
+		var result: bool = this.str.StartsWith(data, 5, prefix, 1)
+		assert result == true
+	}
 
-    // -----------------------------------------------------------------------
-    // EndsWith
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// EndsWith
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn EndsWithReturnsTrueForMatchingSuffix()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var suffix: byte[5] = "World".Encode()
-        var result: bool = this.str.EndsWith(data, 11, suffix, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that EndsWith returns true for matching suffix.
+	 */
+	@Test
+	fn EndsWithReturnsTrueForMatchingSuffix()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var suffix: byte[5] = "World".Encode()
+		var result: bool = this.str.EndsWith(data, 11, suffix, 5)
+		assert result == true
+	}
 
-    @Test
-    fn EndsWithReturnsFalseForNonMatchingSuffix()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var suffix: byte[5] = "Hello".Encode()
-        var result: bool = this.str.EndsWith(data, 11, suffix, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that EndsWith returns false for non matching suffix.
+	 */
+	@Test
+	fn EndsWithReturnsFalseForNonMatchingSuffix()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var suffix: byte[5] = "Hello".Encode()
+		var result: bool = this.str.EndsWith(data, 11, suffix, 5)
+		assert result == false
+	}
 
-    @Test
-    fn EndsWithReturnsTrueForFullMatch()
-    {
-        var data: byte[5] = "World".Encode()
-        var suffix: byte[5] = "World".Encode()
-        var result: bool = this.str.EndsWith(data, 5, suffix, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that EndsWith returns true for full match.
+	 */
+	@Test
+	fn EndsWithReturnsTrueForFullMatch()
+	{
+		var data: byte[5] = "World".Encode()
+		var suffix: byte[5] = "World".Encode()
+		var result: bool = this.str.EndsWith(data, 5, suffix, 5)
+		assert result == true
+	}
 
-    @Test
-    fn EndsWithReturnsFalseWhenSuffixLongerThanData()
-    {
-        var data: byte[3] = "GET".Encode()
-        var suffix: byte[5] = "World".Encode()
-        var result: bool = this.str.EndsWith(data, 3, suffix, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that EndsWith returns false when suffix longer than data.
+	 */
+	@Test
+	fn EndsWithReturnsFalseWhenSuffixLongerThanData()
+	{
+		var data: byte[3] = "GET".Encode()
+		var suffix: byte[5] = "World".Encode()
+		var result: bool = this.str.EndsWith(data, 3, suffix, 5)
+		assert result == false
+	}
 
-    // -----------------------------------------------------------------------
-    // Contains
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// Contains
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ContainsReturnsTrueWhenSubstringAtStart()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "Hello".Encode()
-        var result: bool = this.str.Contains(data, 11, sub, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that Contains returns true when substring at start.
+	 */
+	@Test
+	fn ContainsReturnsTrueWhenSubstringAtStart()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "Hello".Encode()
+		var result: bool = this.str.Contains(data, 11, sub, 5)
+		assert result == true
+	}
 
-    @Test
-    fn ContainsReturnsTrueWhenSubstringInMiddle()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[3] = "lo ".Encode()
-        var result: bool = this.str.Contains(data, 11, sub, 3)
-        assert result == true
-    }
+	/**
+	 * Checks that Contains returns true when substring in middle.
+	 */
+	@Test
+	fn ContainsReturnsTrueWhenSubstringInMiddle()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[3] = "lo ".Encode()
+		var result: bool = this.str.Contains(data, 11, sub, 3)
+		assert result == true
+	}
 
-    @Test
-    fn ContainsReturnsTrueWhenSubstringAtEnd()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "World".Encode()
-        var result: bool = this.str.Contains(data, 11, sub, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that Contains returns true when substring at end.
+	 */
+	@Test
+	fn ContainsReturnsTrueWhenSubstringAtEnd()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "World".Encode()
+		var result: bool = this.str.Contains(data, 11, sub, 5)
+		assert result == true
+	}
 
-    @Test
-    fn ContainsReturnsFalseWhenSubstringAbsent()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[3] = "xyz".Encode()
-        var result: bool = this.str.Contains(data, 5, sub, 3)
-        assert result == false
-    }
+	/**
+	 * Checks that Contains returns false when substring absent.
+	 */
+	@Test
+	fn ContainsReturnsFalseWhenSubstringAbsent()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[3] = "xyz".Encode()
+		var result: bool = this.str.Contains(data, 5, sub, 3)
+		assert result == false
+	}
 
-    @Test
-    fn ContainsReturnsFalseWhenSubLongerThanData()
-    {
-        var data: byte[3] = "GET".Encode()
-        var sub: byte[5] = "Hello".Encode()
-        var result: bool = this.str.Contains(data, 3, sub, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that Contains returns false when sub longer than data.
+	 */
+	@Test
+	fn ContainsReturnsFalseWhenSubLongerThanData()
+	{
+		var data: byte[3] = "GET".Encode()
+		var sub: byte[5] = "Hello".Encode()
+		var result: bool = this.str.Contains(data, 3, sub, 5)
+		assert result == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IndexOf
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IndexOf
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IndexOfReturnsZeroForPrefixMatch()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "Hello".Encode()
-        var result: int = this.str.IndexOf(data, 11, sub, 5)
-        assert result == 0
-    }
+	/**
+	 * Checks that IndexOf returns zero for prefix match.
+	 */
+	@Test
+	fn IndexOfReturnsZeroForPrefixMatch()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "Hello".Encode()
+		var result: int = this.str.IndexOf(data, 11, sub, 5)
+		assert result == 0
+	}
 
-    @Test
-    fn IndexOfReturnsCorrectIndexForMiddleMatch()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "World".Encode()
-        var result: int = this.str.IndexOf(data, 11, sub, 5)
-        assert result == 6
-    }
+	/**
+	 * Checks that IndexOf returns correct index for middle match.
+	 */
+	@Test
+	fn IndexOfReturnsCorrectIndexForMiddleMatch()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "World".Encode()
+		var result: int = this.str.IndexOf(data, 11, sub, 5)
+		assert result == 6
+	}
 
-    @Test
-    fn IndexOfReturnsNegativeOneWhenNotFound()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[3] = "xyz".Encode()
-        var result: int = this.str.IndexOf(data, 5, sub, 3)
-        assert result == -1
-    }
+	/**
+	 * Checks that IndexOf returns negative one when not found.
+	 */
+	@Test
+	fn IndexOfReturnsNegativeOneWhenNotFound()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[3] = "xyz".Encode()
+		var result: int = this.str.IndexOf(data, 5, sub, 3)
+		assert result == -1
+	}
 
-    @Test
-    fn IndexOfReturnsNegativeOneWhenSubLongerThanData()
-    {
-        var data: byte[3] = "GET".Encode()
-        var sub: byte[5] = "Hello".Encode()
-        var result: int = this.str.IndexOf(data, 3, sub, 5)
-        assert result == -1
-    }
+	/**
+	 * Checks that IndexOf returns negative one when sub longer than data.
+	 */
+	@Test
+	fn IndexOfReturnsNegativeOneWhenSubLongerThanData()
+	{
+		var data: byte[3] = "GET".Encode()
+		var sub: byte[5] = "Hello".Encode()
+		var result: int = this.str.IndexOf(data, 3, sub, 5)
+		assert result == -1
+	}
 
-    @Test
-    fn IndexOfReturnsSingleBytePosition()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[1] = "l".Encode()
-        var result: int = this.str.IndexOf(data, 5, sub, 1)
-        assert result == 2
-    }
+	/**
+	 * Checks that IndexOf returns single byte position.
+	 */
+	@Test
+	fn IndexOfReturnsSingleBytePosition()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[1] = "l".Encode()
+		var result: int = this.str.IndexOf(data, 5, sub, 1)
+		assert result == 2
+	}
 
-    // -----------------------------------------------------------------------
-    // LastIndexOf
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// LastIndexOf
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn LastIndexOfReturnsSingleOccurrence()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "World".Encode()
-        var result: int = this.str.LastIndexOf(data, 11, sub, 5)
-        assert result == 6
-    }
+	/**
+	 * Checks that LastIndexOf returns single occurrence.
+	 */
+	@Test
+	fn LastIndexOfReturnsSingleOccurrence()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "World".Encode()
+		var result: int = this.str.LastIndexOf(data, 11, sub, 5)
+		assert result == 6
+	}
 
-    @Test
-    fn LastIndexOfReturnsLastOfMultipleOccurrences()
-    {
-        // "abcabc" — "bc" appears at index 1 and index 4; last is 4
-        var data: byte[6] = "abcabc".Encode()
-        var sub: byte[2] = "bc".Encode()
-        var result: int = this.str.LastIndexOf(data, 6, sub, 2)
-        assert result == 4
-    }
+	/**
+	 * Checks that LastIndexOf returns last of multiple occurrences.
+	 */
+	@Test
+	fn LastIndexOfReturnsLastOfMultipleOccurrences()
+	{
+		// "abcabc" — "bc" appears at index 1 and index 4; last is 4
+		var data: byte[6] = "abcabc".Encode()
+		var sub: byte[2] = "bc".Encode()
+		var result: int = this.str.LastIndexOf(data, 6, sub, 2)
+		assert result == 4
+	}
 
-    @Test
-    fn LastIndexOfReturnsNegativeOneWhenNotFound()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[3] = "xyz".Encode()
-        var result: int = this.str.LastIndexOf(data, 5, sub, 3)
-        assert result == -1
-    }
+	/**
+	 * Checks that LastIndexOf returns negative one when not found.
+	 */
+	@Test
+	fn LastIndexOfReturnsNegativeOneWhenNotFound()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[3] = "xyz".Encode()
+		var result: int = this.str.LastIndexOf(data, 5, sub, 3)
+		assert result == -1
+	}
 
-    @Test
-    fn LastIndexOfReturnsNegativeOneWhenSubLongerThanData()
-    {
-        var data: byte[3] = "GET".Encode()
-        var sub: byte[5] = "Hello".Encode()
-        var result: int = this.str.LastIndexOf(data, 3, sub, 5)
-        assert result == -1
-    }
+	/**
+	 * Checks that LastIndexOf returns negative one when sub longer than data.
+	 */
+	@Test
+	fn LastIndexOfReturnsNegativeOneWhenSubLongerThanData()
+	{
+		var data: byte[3] = "GET".Encode()
+		var sub: byte[5] = "Hello".Encode()
+		var result: int = this.str.LastIndexOf(data, 3, sub, 5)
+		assert result == -1
+	}
 
-    @Test
-    fn LastIndexOfReturnsZeroForSingleCharAtStart()
-    {
-        // "Hello" — "H" appears only at index 0
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[1] = "H".Encode()
-        var result: int = this.str.LastIndexOf(data, 5, sub, 1)
-        assert result == 0
-    }
+	/**
+	 * Checks that LastIndexOf returns zero for single char at start.
+	 */
+	@Test
+	fn LastIndexOfReturnsZeroForSingleCharAtStart()
+	{
+		// "Hello" — "H" appears only at index 0
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[1] = "H".Encode()
+		var result: int = this.str.LastIndexOf(data, 5, sub, 1)
+		assert result == 0
+	}
 
-    // -----------------------------------------------------------------------
-    // EqualsAt
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// EqualsAt
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn EqualsAtReturnsTrueAtPositionZero()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "Hello".Encode()
-        var result: bool = this.str.EqualsAt(data, 11, 0, sub, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that EqualsAt returns true at position zero.
+	 */
+	@Test
+	fn EqualsAtReturnsTrueAtPositionZero()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "Hello".Encode()
+		var result: bool = this.str.EqualsAt(data, 11, 0, sub, 5)
+		assert result == true
+	}
 
-    @Test
-    fn EqualsAtReturnsTrueAtMiddlePosition()
-    {
-        // "World" starts at index 6 in "Hello World"
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "World".Encode()
-        var result: bool = this.str.EqualsAt(data, 11, 6, sub, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that EqualsAt returns true at middle position.
+	 */
+	@Test
+	fn EqualsAtReturnsTrueAtMiddlePosition()
+	{
+		// "World" starts at index 6 in "Hello World"
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "World".Encode()
+		var result: bool = this.str.EqualsAt(data, 11, 6, sub, 5)
+		assert result == true
+	}
 
-    @Test
-    fn EqualsAtReturnsFalseForMismatch()
-    {
-        var data: byte[11] = "Hello World".Encode()
-        var sub: byte[5] = "World".Encode()
-        var result: bool = this.str.EqualsAt(data, 11, 0, sub, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that EqualsAt returns false for mismatch.
+	 */
+	@Test
+	fn EqualsAtReturnsFalseForMismatch()
+	{
+		var data: byte[11] = "Hello World".Encode()
+		var sub: byte[5] = "World".Encode()
+		var result: bool = this.str.EqualsAt(data, 11, 0, sub, 5)
+		assert result == false
+	}
 
-    @Test
-    fn EqualsAtReturnsFalseWhenSubExtendsBeyondData()
-    {
-        // pos=3, subSize=5, eend=8 > dataSize=5, so the match is out of range.
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[5] = "World".Encode()
-        var result: bool = this.str.EqualsAt(data, 5, 3, sub, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that EqualsAt returns false when sub extends beyond data.
+	 */
+	@Test
+	fn EqualsAtReturnsFalseWhenSubExtendsBeyondData()
+	{
+		// pos=3, subSize=5, eend=8 > dataSize=5, so the match is out of range.
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[5] = "World".Encode()
+		var result: bool = this.str.EqualsAt(data, 5, 3, sub, 5)
+		assert result == false
+	}
 
-    @Test
-    fn EqualsAtReturnsFalseForNegativePosition()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var sub: byte[1] = "H".Encode()
-        var result: bool = this.str.EqualsAt(data, 5, -1, sub, 1)
-        assert result == false
-    }
+	/**
+	 * Checks that EqualsAt returns false for negative position.
+	 */
+	@Test
+	fn EqualsAtReturnsFalseForNegativePosition()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var sub: byte[1] = "H".Encode()
+		var result: bool = this.str.EqualsAt(data, 5, -1, sub, 1)
+		assert result == false
+	}
 
-    // -----------------------------------------------------------------------
-    // EqualsIgnoreCase
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// EqualsIgnoreCase
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn EqualsIgnoreCaseReturnsTrueForSameCase()
-    {
-        var a: byte[5] = "hello".Encode()
-        var b: byte[5] = "hello".Encode()
-        var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that EqualsIgnoreCase returns true for same case.
+	 */
+	@Test
+	fn EqualsIgnoreCaseReturnsTrueForSameCase()
+	{
+		var a: byte[5] = "hello".Encode()
+		var b: byte[5] = "hello".Encode()
+		var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 5)
+		assert result == true
+	}
 
-    @Test
-    fn EqualsIgnoreCaseReturnsTrueForMixedCase()
-    {
-        var a: byte[5] = "Hello".Encode()
-        var b: byte[5] = "hello".Encode()
-        var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 5)
-        assert result == true
-    }
+	/**
+	 * Checks that EqualsIgnoreCase returns true for mixed case.
+	 */
+	@Test
+	fn EqualsIgnoreCaseReturnsTrueForMixedCase()
+	{
+		var a: byte[5] = "Hello".Encode()
+		var b: byte[5] = "hello".Encode()
+		var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 5)
+		assert result == true
+	}
 
-    @Test
-    fn EqualsIgnoreCaseReturnsFalseForDifferentContent()
-    {
-        var a: byte[5] = "Hello".Encode()
-        var b: byte[5] = "World".Encode()
-        var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 5)
-        assert result == false
-    }
+	/**
+	 * Checks that EqualsIgnoreCase returns false for different content.
+	 */
+	@Test
+	fn EqualsIgnoreCaseReturnsFalseForDifferentContent()
+	{
+		var a: byte[5] = "Hello".Encode()
+		var b: byte[5] = "World".Encode()
+		var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 5)
+		assert result == false
+	}
 
-    @Test
-    fn EqualsIgnoreCaseReturnsFalseForDifferentSizes()
-    {
-        var a: byte[5] = "Hello".Encode()
-        var b: byte[4] = "Hell".Encode()
-        var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 4)
-        assert result == false
-    }
+	/**
+	 * Checks that EqualsIgnoreCase returns false for different sizes.
+	 */
+	@Test
+	fn EqualsIgnoreCaseReturnsFalseForDifferentSizes()
+	{
+		var a: byte[5] = "Hello".Encode()
+		var b: byte[4] = "Hell".Encode()
+		var result: bool = this.str.EqualsIgnoreCase(a, 5, b, 4)
+		assert result == false
+	}
 
-    // -----------------------------------------------------------------------
-    // NullTerminatedLength
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// NullTerminatedLength
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn NullTerminatedLengthReturnsMaxSizeWhenNoNull()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var result: int = this.str.NullTerminatedLength(data, 5)
-        assert result == 5
-    }
+	/**
+	 * Checks that NullTerminatedLength returns max size when no null.
+	 */
+	@Test
+	fn NullTerminatedLengthReturnsMaxSizeWhenNoNull()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var result: int = this.str.NullTerminatedLength(data, 5)
+		assert result == 5
+	}
 
-    @Test
-    fn NullTerminatedLengthReturnsZeroForImmediateNull()
-    {
-        // First byte is 0x00
-        var data: byte[5] = [0x00, 0x48, 0x65, 0x6C, 0x6C]
-        var result: int = this.str.NullTerminatedLength(data, 5)
-        assert result == 0
-    }
+	/**
+	 * Checks that NullTerminatedLength returns zero for immediate null.
+	 */
+	@Test
+	fn NullTerminatedLengthReturnsZeroForImmediateNull()
+	{
+		// First byte is 0x00
+		var data: byte[5] = [0x00, 0x48, 0x65, 0x6C, 0x6C]
+		var result: int = this.str.NullTerminatedLength(data, 5)
+		assert result == 0
+	}
 
-    @Test
-    fn NullTerminatedLengthFindsNullInMiddle()
-    {
-        // 0x48='H', 0x69='i', 0x00=null, then padding
-        var data: byte[5] = [0x48, 0x69, 0x00, 0x41, 0x42]
-        var result: int = this.str.NullTerminatedLength(data, 5)
-        assert result == 2
-    }
+	/**
+	 * Checks that NullTerminatedLength finds null in middle.
+	 */
+	@Test
+	fn NullTerminatedLengthFindsNullInMiddle()
+	{
+		// 0x48='H', 0x69='i', 0x00=null, then padding
+		var data: byte[5] = [0x48, 0x69, 0x00, 0x41, 0x42]
+		var result: int = this.str.NullTerminatedLength(data, 5)
+		assert result == 2
+	}
 
-    @Test
-    fn NullTerminatedLengthReturnsZeroForZeroMaxSize()
-    {
-        var data: byte[5] = "Hello".Encode()
-        var result: int = this.str.NullTerminatedLength(data, 0)
-        assert result == 0
-    }
+	/**
+	 * Checks that NullTerminatedLength returns zero for zero max size.
+	 */
+	@Test
+	fn NullTerminatedLengthReturnsZeroForZeroMaxSize()
+	{
+		var data: byte[5] = "Hello".Encode()
+		var result: int = this.str.NullTerminatedLength(data, 0)
+		assert result == 0
+	}
 
-    // -----------------------------------------------------------------------
-    // ParseDecimalUInt
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ParseDecimalUInt
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ParseDecimalUIntParsesSingleDigit()
-    {
-        // '7' = 0x37
-        var data: byte[1] = [0x37]
-        var result: int = this.str.ParseDecimalUInt(data, 1)
-        assert result == 7
-    }
+	/**
+	 * Checks that ParseDecimalUInt parses single digit.
+	 */
+	@Test
+	fn ParseDecimalUIntParsesSingleDigit()
+	{
+		// '7' = 0x37
+		var data: byte[1] = [0x37]
+		var result: int = this.str.ParseDecimalUInt(data, 1)
+		assert result == 7
+	}
 
-    @Test
-    fn ParseDecimalUIntParsesMultipleDigits()
-    {
-        // "255" = 0x32 0x35 0x35
-        var data: byte[3] = [0x32, 0x35, 0x35]
-        var result: int = this.str.ParseDecimalUInt(data, 3)
-        assert result == 255
-    }
+	/**
+	 * Checks that ParseDecimalUInt parses multiple digits.
+	 */
+	@Test
+	fn ParseDecimalUIntParsesMultipleDigits()
+	{
+		// "255" = 0x32 0x35 0x35
+		var data: byte[3] = [0x32, 0x35, 0x35]
+		var result: int = this.str.ParseDecimalUInt(data, 3)
+		assert result == 255
+	}
 
-    @Test
-    fn ParseDecimalUIntReturnsNegativeOneForEmptyInput()
-    {
-        var data: byte[1] = [0x30]
-        var result: int = this.str.ParseDecimalUInt(data, 0)
-        assert result == -1
-    }
+	/**
+	 * Checks that ParseDecimalUInt returns negative one for empty input.
+	 */
+	@Test
+	fn ParseDecimalUIntReturnsNegativeOneForEmptyInput()
+	{
+		var data: byte[1] = [0x30]
+		var result: int = this.str.ParseDecimalUInt(data, 0)
+		assert result == -1
+	}
 
-    @Test
-    fn ParseDecimalUIntReturnsNegativeOneForInvalidChar()
-    {
-        // "4A" — 'A' is not a decimal digit
-        var data: byte[2] = [0x34, 0x41]
-        var result: int = this.str.ParseDecimalUInt(data, 2)
-        assert result == -1
-    }
+	/**
+	 * Checks that ParseDecimalUInt returns negative one for invalid char.
+	 */
+	@Test
+	fn ParseDecimalUIntReturnsNegativeOneForInvalidChar()
+	{
+		// "4A" — 'A' is not a decimal digit
+		var data: byte[2] = [0x34, 0x41]
+		var result: int = this.str.ParseDecimalUInt(data, 2)
+		assert result == -1
+	}
 
-    // -----------------------------------------------------------------------
-    // ParseHexUInt
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ParseHexUInt
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ParseHexUIntParsesLowercaseHex()
-    {
-        // "ff" = 0x66 0x66
-        var data: byte[2] = [0x66, 0x66]
-        var result: int = this.str.ParseHexUInt(data, 2)
-        assert result == 255
-    }
+	/**
+	 * Checks that ParseHexUInt parses lowercase hex.
+	 */
+	@Test
+	fn ParseHexUIntParsesLowercaseHex()
+	{
+		// "ff" = 0x66 0x66
+		var data: byte[2] = [0x66, 0x66]
+		var result: int = this.str.ParseHexUInt(data, 2)
+		assert result == 255
+	}
 
-    @Test
-    fn ParseHexUIntParsesUppercaseHex()
-    {
-        // "FF" = 0x46 0x46
-        var data: byte[2] = [0x46, 0x46]
-        var result: int = this.str.ParseHexUInt(data, 2)
-        assert result == 255
-    }
+	/**
+	 * Checks that ParseHexUInt parses uppercase hex.
+	 */
+	@Test
+	fn ParseHexUIntParsesUppercaseHex()
+	{
+		// "FF" = 0x46 0x46
+		var data: byte[2] = [0x46, 0x46]
+		var result: int = this.str.ParseHexUInt(data, 2)
+		assert result == 255
+	}
 
-    @Test
-    fn ParseHexUIntParsesSingleDigit()
-    {
-        // "a" = 0x61
-        var data: byte[1] = [0x61]
-        var result: int = this.str.ParseHexUInt(data, 1)
-        assert result == 10
-    }
+	/**
+	 * Checks that ParseHexUInt parses single digit.
+	 */
+	@Test
+	fn ParseHexUIntParsesSingleDigit()
+	{
+		// "a" = 0x61
+		var data: byte[1] = [0x61]
+		var result: int = this.str.ParseHexUInt(data, 1)
+		assert result == 10
+	}
 
-    @Test
-    fn ParseHexUIntReturnsNegativeOneForInvalidChar()
-    {
-        // 'G' = 0x47 — not a valid hex digit
-        var data: byte[1] = [0x47]
-        var result: int = this.str.ParseHexUInt(data, 1)
-        assert result == -1
-    }
+	/**
+	 * Checks that ParseHexUInt returns negative one for invalid char.
+	 */
+	@Test
+	fn ParseHexUIntReturnsNegativeOneForInvalidChar()
+	{
+		// 'G' = 0x47 — not a valid hex digit
+		var data: byte[1] = [0x47]
+		var result: int = this.str.ParseHexUInt(data, 1)
+		assert result == -1
+	}
 }

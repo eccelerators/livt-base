@@ -5,21 +5,22 @@ namespace Livt.Timing
  */
 component PeriodicTickProvider100ms
 {
-    provider: PeriodicTickProvider
+	// Owned generic tick provider with the selected time interval.
+	provider: PeriodicTickProvider
 
-    /**
-     * Creates a provider whose period is derived from this component's context.
-     */
-    new(tick: out logic)
-    {
-        this.provider = new PeriodicTickProvider(this.context.TicksFor(100ms), tick)
-    }
+	/**
+	 * Creates a provider whose period is derived from this component's context.
+	 */
+	new(tick: out logic)
+	{
+		this.provider = new PeriodicTickProvider(this.context.TicksFor(100ms), tick)
+	}
 
-    /**
-     * Returns the one-hundred-millisecond interval in context ticks.
-     */
-    public fn GetPeriodTicks() uint
-    {
-        return this.provider.GetPeriodTicks()
-    }
+	/**
+	 * Returns the one-hundred-millisecond interval in context ticks.
+	 */
+	public fn GetPeriodTicks() uint
+	{
+		return this.provider.GetPeriodTicks()
+	}
 }

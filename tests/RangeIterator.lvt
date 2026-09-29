@@ -2,13 +2,42 @@ namespace Livt.Base.Tests
 
 using Livt.Lang
 
+/**
+ * Fixed-range iterator fixture used to exercise iteration and reset semantics.
+ */
 component RangeIterator : IIterator<int>
 {
+	// Shared fixture instances, signals, and observation state.
 	position: int
 
-	new() { this.position = 1 }
-	public fn Reset() { this.position = 1 }
-	override fn HasNext() bool { return this.position <= 4 }
+	/**
+	 * Initializes fixture state and constructor bindings. Test cases share the fixture
+	 * instance rather than constructing a fresh subject for each method.
+	 */
+	new()
+	{
+		this.position = 1
+	}
+
+	/**
+	 * Rewinds the fixture iterator to the first value in its fixed range.
+	 */
+	public fn Reset()
+	{
+		this.position = 1
+	}
+
+	/**
+	 * Reports whether the fixture iterator still has a value in its fixed range.
+	 */
+	override fn HasNext() bool
+	{
+		return this.position <= 4
+	}
+
+	/**
+	 * Returns the current fixture value and advances. Call only while HasNext is true.
+	 */
 	override fn Next() int
 	{
 		var value = this.position

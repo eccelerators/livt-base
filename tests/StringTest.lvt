@@ -1,18 +1,28 @@
 namespace Livt.Base.Tests
 
+/**
+ * Exercises String with a shared fixture instance. Each scenario establishes the inputs
+ * and state it needs.
+ */
 @Test
 component StringTest
 {
-    @Test
-    fn ReportWithStringLiteral()
-    {
-        Simulation.Report("hello from string literal")
-    }
+	/**
+	 * Checks the report with string literal case.
+	 */
+	@Test
+	fn ReportWithStringLiteral()
+	{
+		Simulation.Report("hello from string literal")
+	}
 
-    @Test
-    fn ReportWithStringVariable()
-    {
-        var msg: string = "hello from string variable"
-        Simulation.Report(msg)
-    }
+	/**
+	 * Checks the report with string variable case.
+	 */
+	@Test
+	fn ReportWithStringVariable()
+	{
+		var msg: string = "hello from string variable"
+		Simulation.Report(msg)
+	}
 }

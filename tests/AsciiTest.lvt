@@ -2,417 +2,549 @@ namespace Livt.Base.Tests
 
 using Livt.Ascii
 
+/**
+ * Exercises Ascii with a shared fixture instance. Each scenario establishes the inputs and
+ * state it needs.
+ */
 @Test
 component AsciiTest
 {
-    ascii: Ascii
+	// Shared fixture instances, signals, and observation state.
+	ascii: Ascii
 
-    new()
-    {
-        this.ascii = new Ascii()
-    }
+	/**
+	 * Creates the shared fixture instances (Ascii). Tests initialize the state required by
+	 * their scenario.
+	 */
+	new()
+	{
+		this.ascii = new Ascii()
+	}
 
-    // -----------------------------------------------------------------------
-    // IsDigit
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsDigit
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsDigitReturnsTrueForDigits()
-    {
-        assert this.ascii.IsDigit(0x30) == true
-        assert this.ascii.IsDigit(0x35) == true
-        assert this.ascii.IsDigit(0x39) == true
-    }
+	/**
+	 * Checks that IsDigit returns true for digits.
+	 */
+	@Test
+	fn IsDigitReturnsTrueForDigits()
+	{
+		assert this.ascii.IsDigit(0x30) == true
+		assert this.ascii.IsDigit(0x35) == true
+		assert this.ascii.IsDigit(0x39) == true
+	}
 
-    @Test
-    fn IsDigitReturnsFalseForNonDigits()
-    {
-        assert this.ascii.IsDigit(0x2F) == false
-        assert this.ascii.IsDigit(0x3A) == false
-        assert this.ascii.IsDigit(0x41) == false
-        assert this.ascii.IsDigit(0x00) == false
-    }
+	/**
+	 * Checks that IsDigit returns false for non digits.
+	 */
+	@Test
+	fn IsDigitReturnsFalseForNonDigits()
+	{
+		assert this.ascii.IsDigit(0x2F) == false
+		assert this.ascii.IsDigit(0x3A) == false
+		assert this.ascii.IsDigit(0x41) == false
+		assert this.ascii.IsDigit(0x00) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsHexDigit
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsHexDigit
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsHexDigitReturnsTrueForHexChars()
-    {
-        assert this.ascii.IsHexDigit(0x30) == true
-        assert this.ascii.IsHexDigit(0x39) == true
-        assert this.ascii.IsHexDigit(0x41) == true
-        assert this.ascii.IsHexDigit(0x46) == true
-        assert this.ascii.IsHexDigit(0x61) == true
-        assert this.ascii.IsHexDigit(0x66) == true
-    }
+	/**
+	 * Checks that IsHexDigit returns true for hex chars.
+	 */
+	@Test
+	fn IsHexDigitReturnsTrueForHexChars()
+	{
+		assert this.ascii.IsHexDigit(0x30) == true
+		assert this.ascii.IsHexDigit(0x39) == true
+		assert this.ascii.IsHexDigit(0x41) == true
+		assert this.ascii.IsHexDigit(0x46) == true
+		assert this.ascii.IsHexDigit(0x61) == true
+		assert this.ascii.IsHexDigit(0x66) == true
+	}
 
-    @Test
-    fn IsHexDigitReturnsFalseForNonHexChars()
-    {
-        assert this.ascii.IsHexDigit(0x2F) == false
-        assert this.ascii.IsHexDigit(0x3A) == false
-        assert this.ascii.IsHexDigit(0x47) == false
-        assert this.ascii.IsHexDigit(0x60) == false
-        assert this.ascii.IsHexDigit(0x67) == false
-    }
+	/**
+	 * Checks that IsHexDigit returns false for non hex chars.
+	 */
+	@Test
+	fn IsHexDigitReturnsFalseForNonHexChars()
+	{
+		assert this.ascii.IsHexDigit(0x2F) == false
+		assert this.ascii.IsHexDigit(0x3A) == false
+		assert this.ascii.IsHexDigit(0x47) == false
+		assert this.ascii.IsHexDigit(0x60) == false
+		assert this.ascii.IsHexDigit(0x67) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsBinaryDigit
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsBinaryDigit
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsBinaryDigitReturnsTrueForZeroAndOne()
-    {
-        assert this.ascii.IsBinaryDigit(0x30) == true
-        assert this.ascii.IsBinaryDigit(0x31) == true
-    }
+	/**
+	 * Checks that IsBinaryDigit returns true for zero and one.
+	 */
+	@Test
+	fn IsBinaryDigitReturnsTrueForZeroAndOne()
+	{
+		assert this.ascii.IsBinaryDigit(0x30) == true
+		assert this.ascii.IsBinaryDigit(0x31) == true
+	}
 
-    @Test
-    fn IsBinaryDigitReturnsFalseForOthers()
-    {
-        assert this.ascii.IsBinaryDigit(0x32) == false
-        assert this.ascii.IsBinaryDigit(0x2F) == false
-    }
+	/**
+	 * Checks that IsBinaryDigit returns false for others.
+	 */
+	@Test
+	fn IsBinaryDigitReturnsFalseForOthers()
+	{
+		assert this.ascii.IsBinaryDigit(0x32) == false
+		assert this.ascii.IsBinaryDigit(0x2F) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsOctalDigit
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsOctalDigit
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsOctalDigitReturnsTrueForZeroToSeven()
-    {
-        assert this.ascii.IsOctalDigit(0x30) == true
-        assert this.ascii.IsOctalDigit(0x34) == true
-        assert this.ascii.IsOctalDigit(0x37) == true
-    }
+	/**
+	 * Checks that IsOctalDigit returns true for zero to seven.
+	 */
+	@Test
+	fn IsOctalDigitReturnsTrueForZeroToSeven()
+	{
+		assert this.ascii.IsOctalDigit(0x30) == true
+		assert this.ascii.IsOctalDigit(0x34) == true
+		assert this.ascii.IsOctalDigit(0x37) == true
+	}
 
-    @Test
-    fn IsOctalDigitReturnsFalseForEightAndNine()
-    {
-        assert this.ascii.IsOctalDigit(0x38) == false
-        assert this.ascii.IsOctalDigit(0x39) == false
-    }
+	/**
+	 * Checks that IsOctalDigit returns false for eight and nine.
+	 */
+	@Test
+	fn IsOctalDigitReturnsFalseForEightAndNine()
+	{
+		assert this.ascii.IsOctalDigit(0x38) == false
+		assert this.ascii.IsOctalDigit(0x39) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsUpper
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsUpper
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsUpperReturnsTrueForUppercaseLetters()
-    {
-        assert this.ascii.IsUpper(0x41) == true
-        assert this.ascii.IsUpper(0x4D) == true
-        assert this.ascii.IsUpper(0x5A) == true
-    }
+	/**
+	 * Checks that IsUpper returns true for uppercase letters.
+	 */
+	@Test
+	fn IsUpperReturnsTrueForUppercaseLetters()
+	{
+		assert this.ascii.IsUpper(0x41) == true
+		assert this.ascii.IsUpper(0x4D) == true
+		assert this.ascii.IsUpper(0x5A) == true
+	}
 
-    @Test
-    fn IsUpperReturnsFalseForNonUppercase()
-    {
-        assert this.ascii.IsUpper(0x40) == false
-        assert this.ascii.IsUpper(0x5B) == false
-        assert this.ascii.IsUpper(0x61) == false
-        assert this.ascii.IsUpper(0x30) == false
-    }
+	/**
+	 * Checks that IsUpper returns false for non uppercase.
+	 */
+	@Test
+	fn IsUpperReturnsFalseForNonUppercase()
+	{
+		assert this.ascii.IsUpper(0x40) == false
+		assert this.ascii.IsUpper(0x5B) == false
+		assert this.ascii.IsUpper(0x61) == false
+		assert this.ascii.IsUpper(0x30) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsLower
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsLower
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsLowerReturnsTrueForLowercaseLetters()
-    {
-        assert this.ascii.IsLower(0x61) == true
-        assert this.ascii.IsLower(0x6D) == true
-        assert this.ascii.IsLower(0x7A) == true
-    }
+	/**
+	 * Checks that IsLower returns true for lowercase letters.
+	 */
+	@Test
+	fn IsLowerReturnsTrueForLowercaseLetters()
+	{
+		assert this.ascii.IsLower(0x61) == true
+		assert this.ascii.IsLower(0x6D) == true
+		assert this.ascii.IsLower(0x7A) == true
+	}
 
-    @Test
-    fn IsLowerReturnsFalseForNonLowercase()
-    {
-        assert this.ascii.IsLower(0x60) == false
-        assert this.ascii.IsLower(0x7B) == false
-        assert this.ascii.IsLower(0x41) == false
-    }
+	/**
+	 * Checks that IsLower returns false for non lowercase.
+	 */
+	@Test
+	fn IsLowerReturnsFalseForNonLowercase()
+	{
+		assert this.ascii.IsLower(0x60) == false
+		assert this.ascii.IsLower(0x7B) == false
+		assert this.ascii.IsLower(0x41) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsLetter
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsLetter
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsLetterReturnsTrueForLetters()
-    {
-        assert this.ascii.IsLetter(0x41) == true
-        assert this.ascii.IsLetter(0x5A) == true
-        assert this.ascii.IsLetter(0x61) == true
-        assert this.ascii.IsLetter(0x7A) == true
-    }
+	/**
+	 * Checks that IsLetter returns true for letters.
+	 */
+	@Test
+	fn IsLetterReturnsTrueForLetters()
+	{
+		assert this.ascii.IsLetter(0x41) == true
+		assert this.ascii.IsLetter(0x5A) == true
+		assert this.ascii.IsLetter(0x61) == true
+		assert this.ascii.IsLetter(0x7A) == true
+	}
 
-    @Test
-    fn IsLetterReturnsFalseForDigitsAndSymbols()
-    {
-        assert this.ascii.IsLetter(0x30) == false
-        assert this.ascii.IsLetter(0x20) == false
-        assert this.ascii.IsLetter(0x00) == false
-    }
+	/**
+	 * Checks that IsLetter returns false for digits and symbols.
+	 */
+	@Test
+	fn IsLetterReturnsFalseForDigitsAndSymbols()
+	{
+		assert this.ascii.IsLetter(0x30) == false
+		assert this.ascii.IsLetter(0x20) == false
+		assert this.ascii.IsLetter(0x00) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsAlphaNumeric
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsAlphaNumeric
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsAlphaNumericReturnsTrueForLettersAndDigits()
-    {
-        assert this.ascii.IsAlphaNumeric(0x41) == true
-        assert this.ascii.IsAlphaNumeric(0x61) == true
-        assert this.ascii.IsAlphaNumeric(0x30) == true
-        assert this.ascii.IsAlphaNumeric(0x39) == true
-    }
+	/**
+	 * Checks that IsAlphaNumeric returns true for letters and digits.
+	 */
+	@Test
+	fn IsAlphaNumericReturnsTrueForLettersAndDigits()
+	{
+		assert this.ascii.IsAlphaNumeric(0x41) == true
+		assert this.ascii.IsAlphaNumeric(0x61) == true
+		assert this.ascii.IsAlphaNumeric(0x30) == true
+		assert this.ascii.IsAlphaNumeric(0x39) == true
+	}
 
-    @Test
-    fn IsAlphaNumericReturnsFalseForSymbols()
-    {
-        assert this.ascii.IsAlphaNumeric(0x20) == false
-        assert this.ascii.IsAlphaNumeric(0x2E) == false
-    }
+	/**
+	 * Checks that IsAlphaNumeric returns false for symbols.
+	 */
+	@Test
+	fn IsAlphaNumericReturnsFalseForSymbols()
+	{
+		assert this.ascii.IsAlphaNumeric(0x20) == false
+		assert this.ascii.IsAlphaNumeric(0x2E) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsWhitespace
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsWhitespace
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsWhitespaceReturnsTrueForWhitespaceChars()
-    {
-        assert this.ascii.IsWhitespace(0x20) == true
-        assert this.ascii.IsWhitespace(0x09) == true
-        assert this.ascii.IsWhitespace(0x0A) == true
-        assert this.ascii.IsWhitespace(0x0D) == true
-    }
+	/**
+	 * Checks that IsWhitespace returns true for whitespace chars.
+	 */
+	@Test
+	fn IsWhitespaceReturnsTrueForWhitespaceChars()
+	{
+		assert this.ascii.IsWhitespace(0x20) == true
+		assert this.ascii.IsWhitespace(0x09) == true
+		assert this.ascii.IsWhitespace(0x0A) == true
+		assert this.ascii.IsWhitespace(0x0D) == true
+	}
 
-    @Test
-    fn IsWhitespaceReturnsFalseForOtherChars()
-    {
-        assert this.ascii.IsWhitespace(0x41) == false
-        assert this.ascii.IsWhitespace(0x30) == false
-        assert this.ascii.IsWhitespace(0x00) == false
-    }
+	/**
+	 * Checks that IsWhitespace returns false for other chars.
+	 */
+	@Test
+	fn IsWhitespaceReturnsFalseForOtherChars()
+	{
+		assert this.ascii.IsWhitespace(0x41) == false
+		assert this.ascii.IsWhitespace(0x30) == false
+		assert this.ascii.IsWhitespace(0x00) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsPrintable
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsPrintable
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsPrintableReturnsTrueForPrintableRange()
-    {
-        assert this.ascii.IsPrintable(0x20) == true
-        assert this.ascii.IsPrintable(0x41) == true
-        assert this.ascii.IsPrintable(0x7E) == true
-    }
+	/**
+	 * Checks that IsPrintable returns true for printable range.
+	 */
+	@Test
+	fn IsPrintableReturnsTrueForPrintableRange()
+	{
+		assert this.ascii.IsPrintable(0x20) == true
+		assert this.ascii.IsPrintable(0x41) == true
+		assert this.ascii.IsPrintable(0x7E) == true
+	}
 
-    @Test
-    fn IsPrintableReturnsFalseForControlChars()
-    {
-        assert this.ascii.IsPrintable(0x00) == false
-        assert this.ascii.IsPrintable(0x1F) == false
-        assert this.ascii.IsPrintable(0x7F) == false
-    }
+	/**
+	 * Checks that IsPrintable returns false for control chars.
+	 */
+	@Test
+	fn IsPrintableReturnsFalseForControlChars()
+	{
+		assert this.ascii.IsPrintable(0x00) == false
+		assert this.ascii.IsPrintable(0x1F) == false
+		assert this.ascii.IsPrintable(0x7F) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // IsControl
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// IsControl
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn IsControlReturnsTrueForControlChars()
-    {
-        assert this.ascii.IsControl(0x00) == true
-        assert this.ascii.IsControl(0x09) == true
-        assert this.ascii.IsControl(0x1F) == true
-        assert this.ascii.IsControl(0x7F) == true
-    }
+	/**
+	 * Checks that IsControl returns true for control chars.
+	 */
+	@Test
+	fn IsControlReturnsTrueForControlChars()
+	{
+		assert this.ascii.IsControl(0x00) == true
+		assert this.ascii.IsControl(0x09) == true
+		assert this.ascii.IsControl(0x1F) == true
+		assert this.ascii.IsControl(0x7F) == true
+	}
 
-    @Test
-    fn IsControlReturnsFalseForPrintableChars()
-    {
-        assert this.ascii.IsControl(0x20) == false
-        assert this.ascii.IsControl(0x41) == false
-    }
+	/**
+	 * Checks that IsControl returns false for printable chars.
+	 */
+	@Test
+	fn IsControlReturnsFalseForPrintableChars()
+	{
+		assert this.ascii.IsControl(0x20) == false
+		assert this.ascii.IsControl(0x41) == false
+	}
 
-    // -----------------------------------------------------------------------
-    // ToUpper
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToUpper
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToUpperConvertsLowercaseToUppercase()
-    {
-        assert this.ascii.ToUpper(0x61) == 0x41
-        assert this.ascii.ToUpper(0x7A) == 0x5A
-        assert this.ascii.ToUpper(0x6D) == 0x4D
-    }
+	/**
+	 * Checks that ToUpper converts lowercase to uppercase.
+	 */
+	@Test
+	fn ToUpperConvertsLowercaseToUppercase()
+	{
+		assert this.ascii.ToUpper(0x61) == 0x41
+		assert this.ascii.ToUpper(0x7A) == 0x5A
+		assert this.ascii.ToUpper(0x6D) == 0x4D
+	}
 
-    @Test
-    fn ToUpperLeavesUppercaseUnchanged()
-    {
-        assert this.ascii.ToUpper(0x41) == 0x41
-        assert this.ascii.ToUpper(0x5A) == 0x5A
-    }
+	/**
+	 * Checks that ToUpper leaves uppercase unchanged.
+	 */
+	@Test
+	fn ToUpperLeavesUppercaseUnchanged()
+	{
+		assert this.ascii.ToUpper(0x41) == 0x41
+		assert this.ascii.ToUpper(0x5A) == 0x5A
+	}
 
-    @Test
-    fn ToUpperLeavesDigitsAndSymbolsUnchanged()
-    {
-        assert this.ascii.ToUpper(0x30) == 0x30
-        assert this.ascii.ToUpper(0x20) == 0x20
-    }
+	/**
+	 * Checks that ToUpper leaves digits and symbols unchanged.
+	 */
+	@Test
+	fn ToUpperLeavesDigitsAndSymbolsUnchanged()
+	{
+		assert this.ascii.ToUpper(0x30) == 0x30
+		assert this.ascii.ToUpper(0x20) == 0x20
+	}
 
-    // -----------------------------------------------------------------------
-    // ToLower
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// ToLower
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ToLowerConvertsUppercaseToLowercase()
-    {
-        assert this.ascii.ToLower(0x41) == 0x61
-        assert this.ascii.ToLower(0x5A) == 0x7A
-        assert this.ascii.ToLower(0x4D) == 0x6D
-    }
+	/**
+	 * Checks that ToLower converts uppercase to lowercase.
+	 */
+	@Test
+	fn ToLowerConvertsUppercaseToLowercase()
+	{
+		assert this.ascii.ToLower(0x41) == 0x61
+		assert this.ascii.ToLower(0x5A) == 0x7A
+		assert this.ascii.ToLower(0x4D) == 0x6D
+	}
 
-    @Test
-    fn ToLowerLeavesLowercaseUnchanged()
-    {
-        assert this.ascii.ToLower(0x61) == 0x61
-        assert this.ascii.ToLower(0x7A) == 0x7A
-    }
+	/**
+	 * Checks that ToLower leaves lowercase unchanged.
+	 */
+	@Test
+	fn ToLowerLeavesLowercaseUnchanged()
+	{
+		assert this.ascii.ToLower(0x61) == 0x61
+		assert this.ascii.ToLower(0x7A) == 0x7A
+	}
 
-    @Test
-    fn ToLowerLeavesDigitsAndSymbolsUnchanged()
-    {
-        assert this.ascii.ToLower(0x30) == 0x30
-        assert this.ascii.ToLower(0x20) == 0x20
-    }
+	/**
+	 * Checks that ToLower leaves digits and symbols unchanged.
+	 */
+	@Test
+	fn ToLowerLeavesDigitsAndSymbolsUnchanged()
+	{
+		assert this.ascii.ToLower(0x30) == 0x30
+		assert this.ascii.ToLower(0x20) == 0x20
+	}
 
-    // -----------------------------------------------------------------------
-    // DigitValue
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// DigitValue
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn DigitValueReturnsCorrectValue()
-    {
-        assert this.ascii.DigitValue(0x30) == 0x00
-        assert this.ascii.DigitValue(0x35) == 0x05
-        assert this.ascii.DigitValue(0x39) == 0x09
-    }
+	/**
+	 * Checks that DigitValue returns correct value.
+	 */
+	@Test
+	fn DigitValueReturnsCorrectValue()
+	{
+		assert this.ascii.DigitValue(0x30) == 0x00
+		assert this.ascii.DigitValue(0x35) == 0x05
+		assert this.ascii.DigitValue(0x39) == 0x09
+	}
 
-    @Test
-    fn DigitValueReturnsErrorForNonDigit()
-    {
-        assert this.ascii.DigitValue(0x2F) == 0xFF
-        assert this.ascii.DigitValue(0x3A) == 0xFF
-        assert this.ascii.DigitValue(0x41) == 0xFF
-    }
+	/**
+	 * Checks that DigitValue returns error for non digit.
+	 */
+	@Test
+	fn DigitValueReturnsErrorForNonDigit()
+	{
+		assert this.ascii.DigitValue(0x2F) == 0xFF
+		assert this.ascii.DigitValue(0x3A) == 0xFF
+		assert this.ascii.DigitValue(0x41) == 0xFF
+	}
 
-    // -----------------------------------------------------------------------
-    // HexValue
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// HexValue
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn HexValueReturnsCorrectValueForDigits()
-    {
-        assert this.ascii.HexValue(0x30) == 0x00
-        assert this.ascii.HexValue(0x39) == 0x09
-    }
+	/**
+	 * Checks that HexValue returns correct value for digits.
+	 */
+	@Test
+	fn HexValueReturnsCorrectValueForDigits()
+	{
+		assert this.ascii.HexValue(0x30) == 0x00
+		assert this.ascii.HexValue(0x39) == 0x09
+	}
 
-    @Test
-    fn HexValueReturnsCorrectValueForUpperHex()
-    {
-        assert this.ascii.HexValue(0x41) == 0x0A
-        assert this.ascii.HexValue(0x46) == 0x0F
-    }
+	/**
+	 * Checks that HexValue returns correct value for upper hex.
+	 */
+	@Test
+	fn HexValueReturnsCorrectValueForUpperHex()
+	{
+		assert this.ascii.HexValue(0x41) == 0x0A
+		assert this.ascii.HexValue(0x46) == 0x0F
+	}
 
-    @Test
-    fn HexValueReturnsCorrectValueForLowerHex()
-    {
-        assert this.ascii.HexValue(0x61) == 0x0A
-        assert this.ascii.HexValue(0x66) == 0x0F
-    }
+	/**
+	 * Checks that HexValue returns correct value for lower hex.
+	 */
+	@Test
+	fn HexValueReturnsCorrectValueForLowerHex()
+	{
+		assert this.ascii.HexValue(0x61) == 0x0A
+		assert this.ascii.HexValue(0x66) == 0x0F
+	}
 
-    @Test
-    fn HexValueReturnsErrorForNonHex()
-    {
-        assert this.ascii.HexValue(0x47) == 0xFF
-        assert this.ascii.HexValue(0x67) == 0xFF
-        assert this.ascii.HexValue(0x20) == 0xFF
-    }
+	/**
+	 * Checks that HexValue returns error for non hex.
+	 */
+	@Test
+	fn HexValueReturnsErrorForNonHex()
+	{
+		assert this.ascii.HexValue(0x47) == 0xFF
+		assert this.ascii.HexValue(0x67) == 0xFF
+		assert this.ascii.HexValue(0x20) == 0xFF
+	}
 
-    // -----------------------------------------------------------------------
-    // FromDigit
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// FromDigit
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn FromDigitReturnsCorrectAscii()
-    {
-        assert this.ascii.FromDigit(0x00) == 0x30
-        assert this.ascii.FromDigit(0x05) == 0x35
-        assert this.ascii.FromDigit(0x09) == 0x39
-    }
+	/**
+	 * Checks that FromDigit returns correct ascii.
+	 */
+	@Test
+	fn FromDigitReturnsCorrectAscii()
+	{
+		assert this.ascii.FromDigit(0x00) == 0x30
+		assert this.ascii.FromDigit(0x05) == 0x35
+		assert this.ascii.FromDigit(0x09) == 0x39
+	}
 
-    @Test
-    fn FromDigitReturnsQuestionMarkForOutOfRange()
-    {
-        assert this.ascii.FromDigit(0x0A) == 0x3F
-        assert this.ascii.FromDigit(0xFF) == 0x3F
-    }
+	/**
+	 * Checks that FromDigit returns question mark for out of range.
+	 */
+	@Test
+	fn FromDigitReturnsQuestionMarkForOutOfRange()
+	{
+		assert this.ascii.FromDigit(0x0A) == 0x3F
+		assert this.ascii.FromDigit(0xFF) == 0x3F
+	}
 
-    // -----------------------------------------------------------------------
-    // FromHexDigit
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// FromHexDigit
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn FromHexDigitReturnsDigitCharsForZeroToNine()
-    {
-        assert this.ascii.FromHexDigit(0x00, true) == 0x30
-        assert this.ascii.FromHexDigit(0x09, true) == 0x39
-        assert this.ascii.FromHexDigit(0x00, false) == 0x30
-        assert this.ascii.FromHexDigit(0x09, false) == 0x39
-    }
+	/**
+	 * Checks that FromHexDigit returns digit chars for zero to nine.
+	 */
+	@Test
+	fn FromHexDigitReturnsDigitCharsForZeroToNine()
+	{
+		assert this.ascii.FromHexDigit(0x00, true) == 0x30
+		assert this.ascii.FromHexDigit(0x09, true) == 0x39
+		assert this.ascii.FromHexDigit(0x00, false) == 0x30
+		assert this.ascii.FromHexDigit(0x09, false) == 0x39
+	}
 
-    @Test
-    fn FromHexDigitReturnsUppercaseForAThroughF()
-    {
-        assert this.ascii.FromHexDigit(0x0A, true) == 0x41
-        assert this.ascii.FromHexDigit(0x0F, true) == 0x46
-    }
+	/**
+	 * Checks that FromHexDigit returns uppercase for a through f.
+	 */
+	@Test
+	fn FromHexDigitReturnsUppercaseForAThroughF()
+	{
+		assert this.ascii.FromHexDigit(0x0A, true) == 0x41
+		assert this.ascii.FromHexDigit(0x0F, true) == 0x46
+	}
 
-    @Test
-    fn FromHexDigitReturnsLowercaseForAThroughF()
-    {
-        assert this.ascii.FromHexDigit(0x0A, false) == 0x61
-        assert this.ascii.FromHexDigit(0x0F, false) == 0x66
-    }
+	/**
+	 * Checks that FromHexDigit returns lowercase for a through f.
+	 */
+	@Test
+	fn FromHexDigitReturnsLowercaseForAThroughF()
+	{
+		assert this.ascii.FromHexDigit(0x0A, false) == 0x61
+		assert this.ascii.FromHexDigit(0x0F, false) == 0x66
+	}
 
-    @Test
-    fn FromHexDigitReturnsQuestionMarkForOutOfRange()
-    {
-        assert this.ascii.FromHexDigit(0x10, true) == 0x3F
-        assert this.ascii.FromHexDigit(0xFF, false) == 0x3F
-    }
+	/**
+	 * Checks that FromHexDigit returns question mark for out of range.
+	 */
+	@Test
+	fn FromHexDigitReturnsQuestionMarkForOutOfRange()
+	{
+		assert this.ascii.FromHexDigit(0x10, true) == 0x3F
+		assert this.ascii.FromHexDigit(0xFF, false) == 0x3F
+	}
 
-    // -----------------------------------------------------------------------
-    // Constants
-    // -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	// Constants
+	// -----------------------------------------------------------------------
 
-    @Test
-    fn ConstantsHaveCorrectValues()
-    {
-        assert Ascii.NUL == 0x00
-        assert Ascii.TAB == 0x09
-        assert Ascii.LINE_FEED == 0x0A
-        assert Ascii.CARRIAGE_RETURN == 0x0D
-        assert Ascii.SPACE == 0x20
-        assert Ascii.DIGIT_0 == 0x30
-        assert Ascii.DIGIT_9 == 0x39
-        assert Ascii.UPPER_A == 0x41
-        assert Ascii.UPPER_Z == 0x5A
-        assert Ascii.LOWER_A == 0x61
-        assert Ascii.LOWER_Z == 0x7A
-    }
+	/**
+	 * Checks the constants have correct values case.
+	 */
+	@Test
+	fn ConstantsHaveCorrectValues()
+	{
+		assert Ascii.NUL == 0x00
+		assert Ascii.TAB == 0x09
+		assert Ascii.LINE_FEED == 0x0A
+		assert Ascii.CARRIAGE_RETURN == 0x0D
+		assert Ascii.SPACE == 0x20
+		assert Ascii.DIGIT_0 == 0x30
+		assert Ascii.DIGIT_9 == 0x39
+		assert Ascii.UPPER_A == 0x41
+		assert Ascii.UPPER_Z == 0x5A
+		assert Ascii.LOWER_A == 0x61
+		assert Ascii.LOWER_Z == 0x7A
+	}
 }
