@@ -1,0 +1,850 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved. Copyright 2022-2026 Advanced Micro Devices, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2026.1 (lin64) Build 6511674 Tue Jun 16 11:01:26 MDT 2026
+| Date         : Wed Sep 30 13:28:07 2026
+| Host         : vagrant-devbox running 64-bit Ubuntu 24.04.4 LTS
+| Command      : report_timing_summary -report_unconstrained -check_timing_verbose -file /tmp/livt-arithmetic-audit/format-synthesis/timing.rpt
+| Design       : livt_format_format_slice
+| Device       : 7a100t-csg324
+| Speed File   : -1  PRODUCTION 1.23 2018-06-13
+| Design State : Synthesized
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+Timing Summary Report
+
+------------------------------------------------------------------------------------------------
+| Timer Settings
+| --------------
+------------------------------------------------------------------------------------------------
+
+  Enable Multi Corner Analysis               :  Yes
+  Enable Pessimism Removal                   :  Yes
+  Pessimism Removal Resolution               :  Nearest Common Node
+  Enable Input Delay Default Clock           :  No
+  Enable Preset / Clear Arcs                 :  No
+  Disable Flight Delays                      :  No
+  Ignore I/O Paths                           :  No
+  Timing Early Launch at Borrowing Latches   :  No
+  Borrow Time for Max Delay Exceptions       :  Yes
+  Merge Timing Exceptions                    :  Yes
+  Inter-SLR Compensation                     :  Conservative
+
+  Corner  Analyze    Analyze    
+  Name    Max Paths  Min Paths  
+  ------  ---------  ---------  
+  Slow    Yes        Yes        
+  Fast    Yes        Yes        
+
+
+------------------------------------------------------------------------------------------------
+| Report Methodology
+| ------------------
+------------------------------------------------------------------------------------------------
+
+No report available as report_methodology has not been run prior. Run report_methodology on the current design for the summary of methodology violations.
+
+
+
+check_timing report
+
+Table of Contents
+-----------------
+1. checking no_clock (0)
+2. checking constant_clock (0)
+3. checking pulse_width_clock (0)
+4. checking unconstrained_internal_endpoints (0)
+5. checking no_input_delay (94)
+6. checking no_output_delay (235)
+7. checking multiple_clock (0)
+8. checking generated_clocks (0)
+9. checking loops (0)
+10. checking partial_input_delay (0)
+11. checking partial_output_delay (0)
+12. checking latch_loops (0)
+
+1. checking no_clock (0)
+------------------------
+ There are 0 register/latch pins with no clock.
+
+
+2. checking constant_clock (0)
+------------------------------
+ There are 0 register/latch pins with constant_clock.
+
+
+3. checking pulse_width_clock (0)
+---------------------------------
+ There are 0 register/latch pins which need pulse_width check
+
+
+4. checking unconstrained_internal_endpoints (0)
+------------------------------------------------
+ There are 0 pins that are not constrained for maximum delay.
+
+ There are 0 pins that are not constrained for maximum delay due to constant clock.
+
+
+5. checking no_input_delay (94)
+-------------------------------
+ There are 94 input ports with no input delay specified. (HIGH)
+
+Rst
+tobinarybyte_in[run]
+tobinarybyte_in[value][0]
+tobinarybyte_in[value][1]
+tobinarybyte_in[value][2]
+tobinarybyte_in[value][3]
+tobinarybyte_in[value][4]
+tobinarybyte_in[value][5]
+tobinarybyte_in[value][6]
+tobinarybyte_in[value][7]
+tohexbyte_in[run]
+tohexbyte_in[value][0]
+tohexbyte_in[value][1]
+tohexbyte_in[value][2]
+tohexbyte_in[value][3]
+tohexbyte_in[value][4]
+tohexbyte_in[value][5]
+tohexbyte_in[value][6]
+tohexbyte_in[value][7]
+tostringbyte_in[run]
+tostringbyte_in[value][0]
+tostringbyte_in[value][1]
+tostringbyte_in[value][2]
+tostringbyte_in[value][3]
+tostringbyte_in[value][4]
+tostringbyte_in[value][5]
+tostringbyte_in[value][6]
+tostringbyte_in[value][7]
+tostringint_in[run]
+tostringint_in[value][0]
+tostringint_in[value][10]
+tostringint_in[value][11]
+tostringint_in[value][12]
+tostringint_in[value][13]
+tostringint_in[value][14]
+tostringint_in[value][15]
+tostringint_in[value][16]
+tostringint_in[value][17]
+tostringint_in[value][18]
+tostringint_in[value][19]
+tostringint_in[value][1]
+tostringint_in[value][20]
+tostringint_in[value][21]
+tostringint_in[value][22]
+tostringint_in[value][23]
+tostringint_in[value][24]
+tostringint_in[value][25]
+tostringint_in[value][26]
+tostringint_in[value][27]
+tostringint_in[value][28]
+tostringint_in[value][29]
+tostringint_in[value][2]
+tostringint_in[value][30]
+tostringint_in[value][31]
+tostringint_in[value][3]
+tostringint_in[value][4]
+tostringint_in[value][5]
+tostringint_in[value][6]
+tostringint_in[value][7]
+tostringint_in[value][8]
+tostringint_in[value][9]
+tostringuint_in[run]
+tostringuint_in[value][0]
+tostringuint_in[value][10]
+tostringuint_in[value][11]
+tostringuint_in[value][12]
+tostringuint_in[value][13]
+tostringuint_in[value][14]
+tostringuint_in[value][15]
+tostringuint_in[value][16]
+tostringuint_in[value][17]
+tostringuint_in[value][18]
+tostringuint_in[value][19]
+tostringuint_in[value][1]
+tostringuint_in[value][20]
+tostringuint_in[value][21]
+tostringuint_in[value][22]
+tostringuint_in[value][23]
+tostringuint_in[value][24]
+tostringuint_in[value][25]
+tostringuint_in[value][26]
+tostringuint_in[value][27]
+tostringuint_in[value][28]
+tostringuint_in[value][29]
+tostringuint_in[value][2]
+tostringuint_in[value][30]
+tostringuint_in[value][31]
+tostringuint_in[value][3]
+tostringuint_in[value][4]
+tostringuint_in[value][5]
+tostringuint_in[value][6]
+tostringuint_in[value][7]
+tostringuint_in[value][8]
+tostringuint_in[value][9]
+
+ There are 0 input ports with no input delay but user has a false path constraint.
+
+
+6. checking no_output_delay (235)
+---------------------------------
+ There are 235 ports with no output delay specified. (HIGH)
+
+tobinarybyte_out[busy]
+tobinarybyte_out[return_value][1][0]
+tobinarybyte_out[return_value][1][4]
+tobinarybyte_out[return_value][1][5]
+tobinarybyte_out[return_value][2][0]
+tobinarybyte_out[return_value][2][4]
+tobinarybyte_out[return_value][2][5]
+tobinarybyte_out[return_value][3][0]
+tobinarybyte_out[return_value][3][4]
+tobinarybyte_out[return_value][3][5]
+tobinarybyte_out[return_value][4][0]
+tobinarybyte_out[return_value][4][4]
+tobinarybyte_out[return_value][4][5]
+tobinarybyte_out[return_value][5][0]
+tobinarybyte_out[return_value][5][4]
+tobinarybyte_out[return_value][5][5]
+tobinarybyte_out[return_value][6][0]
+tobinarybyte_out[return_value][6][4]
+tobinarybyte_out[return_value][6][5]
+tobinarybyte_out[return_value][7][0]
+tobinarybyte_out[return_value][7][4]
+tobinarybyte_out[return_value][7][5]
+tobinarybyte_out[return_value][8][0]
+tobinarybyte_out[return_value][8][4]
+tobinarybyte_out[return_value][8][5]
+tohexbyte_out[busy]
+tohexbyte_out[return_value][1][0]
+tohexbyte_out[return_value][1][1]
+tohexbyte_out[return_value][1][2]
+tohexbyte_out[return_value][1][3]
+tohexbyte_out[return_value][1][4]
+tohexbyte_out[return_value][1][5]
+tohexbyte_out[return_value][1][6]
+tohexbyte_out[return_value][2][0]
+tohexbyte_out[return_value][2][1]
+tohexbyte_out[return_value][2][2]
+tohexbyte_out[return_value][2][3]
+tohexbyte_out[return_value][2][4]
+tohexbyte_out[return_value][2][5]
+tohexbyte_out[return_value][2][6]
+tostringbyte_out[busy]
+tostringbyte_out[return_value][1][0]
+tostringbyte_out[return_value][1][1]
+tostringbyte_out[return_value][1][2]
+tostringbyte_out[return_value][1][3]
+tostringbyte_out[return_value][1][4]
+tostringbyte_out[return_value][1][5]
+tostringbyte_out[return_value][1][6]
+tostringbyte_out[return_value][1][7]
+tostringbyte_out[return_value][2][0]
+tostringbyte_out[return_value][2][1]
+tostringbyte_out[return_value][2][2]
+tostringbyte_out[return_value][2][3]
+tostringbyte_out[return_value][2][4]
+tostringbyte_out[return_value][2][5]
+tostringbyte_out[return_value][2][6]
+tostringbyte_out[return_value][2][7]
+tostringbyte_out[return_value][3][0]
+tostringbyte_out[return_value][3][1]
+tostringbyte_out[return_value][3][2]
+tostringbyte_out[return_value][3][3]
+tostringbyte_out[return_value][3][4]
+tostringbyte_out[return_value][3][5]
+tostringbyte_out[return_value][3][6]
+tostringbyte_out[return_value][3][7]
+tostringint_out[busy]
+tostringint_out[return_value][10][0]
+tostringint_out[return_value][10][1]
+tostringint_out[return_value][10][2]
+tostringint_out[return_value][10][3]
+tostringint_out[return_value][10][4]
+tostringint_out[return_value][10][5]
+tostringint_out[return_value][10][6]
+tostringint_out[return_value][10][7]
+tostringint_out[return_value][11][0]
+tostringint_out[return_value][11][1]
+tostringint_out[return_value][11][2]
+tostringint_out[return_value][11][3]
+tostringint_out[return_value][11][4]
+tostringint_out[return_value][11][5]
+tostringint_out[return_value][11][6]
+tostringint_out[return_value][11][7]
+tostringint_out[return_value][1][0]
+tostringint_out[return_value][1][1]
+tostringint_out[return_value][1][2]
+tostringint_out[return_value][1][3]
+tostringint_out[return_value][1][4]
+tostringint_out[return_value][1][5]
+tostringint_out[return_value][1][6]
+tostringint_out[return_value][1][7]
+tostringint_out[return_value][2][0]
+tostringint_out[return_value][2][1]
+tostringint_out[return_value][2][2]
+tostringint_out[return_value][2][3]
+tostringint_out[return_value][2][4]
+tostringint_out[return_value][2][5]
+tostringint_out[return_value][2][6]
+tostringint_out[return_value][2][7]
+tostringint_out[return_value][3][0]
+tostringint_out[return_value][3][1]
+tostringint_out[return_value][3][2]
+tostringint_out[return_value][3][3]
+tostringint_out[return_value][3][4]
+tostringint_out[return_value][3][5]
+tostringint_out[return_value][3][6]
+tostringint_out[return_value][3][7]
+tostringint_out[return_value][4][0]
+tostringint_out[return_value][4][1]
+tostringint_out[return_value][4][2]
+tostringint_out[return_value][4][3]
+tostringint_out[return_value][4][4]
+tostringint_out[return_value][4][5]
+tostringint_out[return_value][4][6]
+tostringint_out[return_value][4][7]
+tostringint_out[return_value][5][0]
+tostringint_out[return_value][5][1]
+tostringint_out[return_value][5][2]
+tostringint_out[return_value][5][3]
+tostringint_out[return_value][5][4]
+tostringint_out[return_value][5][5]
+tostringint_out[return_value][5][6]
+tostringint_out[return_value][5][7]
+tostringint_out[return_value][6][0]
+tostringint_out[return_value][6][1]
+tostringint_out[return_value][6][2]
+tostringint_out[return_value][6][3]
+tostringint_out[return_value][6][4]
+tostringint_out[return_value][6][5]
+tostringint_out[return_value][6][6]
+tostringint_out[return_value][6][7]
+tostringint_out[return_value][7][0]
+tostringint_out[return_value][7][1]
+tostringint_out[return_value][7][2]
+tostringint_out[return_value][7][3]
+tostringint_out[return_value][7][4]
+tostringint_out[return_value][7][5]
+tostringint_out[return_value][7][6]
+tostringint_out[return_value][7][7]
+tostringint_out[return_value][8][0]
+tostringint_out[return_value][8][1]
+tostringint_out[return_value][8][2]
+tostringint_out[return_value][8][3]
+tostringint_out[return_value][8][4]
+tostringint_out[return_value][8][5]
+tostringint_out[return_value][8][6]
+tostringint_out[return_value][8][7]
+tostringint_out[return_value][9][0]
+tostringint_out[return_value][9][1]
+tostringint_out[return_value][9][2]
+tostringint_out[return_value][9][3]
+tostringint_out[return_value][9][4]
+tostringint_out[return_value][9][5]
+tostringint_out[return_value][9][6]
+tostringint_out[return_value][9][7]
+tostringuint_out[busy]
+tostringuint_out[return_value][10][0]
+tostringuint_out[return_value][10][1]
+tostringuint_out[return_value][10][2]
+tostringuint_out[return_value][10][3]
+tostringuint_out[return_value][10][4]
+tostringuint_out[return_value][10][5]
+tostringuint_out[return_value][10][6]
+tostringuint_out[return_value][10][7]
+tostringuint_out[return_value][1][0]
+tostringuint_out[return_value][1][1]
+tostringuint_out[return_value][1][2]
+tostringuint_out[return_value][1][3]
+tostringuint_out[return_value][1][4]
+tostringuint_out[return_value][1][5]
+tostringuint_out[return_value][1][6]
+tostringuint_out[return_value][1][7]
+tostringuint_out[return_value][2][0]
+tostringuint_out[return_value][2][1]
+tostringuint_out[return_value][2][2]
+tostringuint_out[return_value][2][3]
+tostringuint_out[return_value][2][4]
+tostringuint_out[return_value][2][5]
+tostringuint_out[return_value][2][6]
+tostringuint_out[return_value][2][7]
+tostringuint_out[return_value][3][0]
+tostringuint_out[return_value][3][1]
+tostringuint_out[return_value][3][2]
+tostringuint_out[return_value][3][3]
+tostringuint_out[return_value][3][4]
+tostringuint_out[return_value][3][5]
+tostringuint_out[return_value][3][6]
+tostringuint_out[return_value][3][7]
+tostringuint_out[return_value][4][0]
+tostringuint_out[return_value][4][1]
+tostringuint_out[return_value][4][2]
+tostringuint_out[return_value][4][3]
+tostringuint_out[return_value][4][4]
+tostringuint_out[return_value][4][5]
+tostringuint_out[return_value][4][6]
+tostringuint_out[return_value][4][7]
+tostringuint_out[return_value][5][0]
+tostringuint_out[return_value][5][1]
+tostringuint_out[return_value][5][2]
+tostringuint_out[return_value][5][3]
+tostringuint_out[return_value][5][4]
+tostringuint_out[return_value][5][5]
+tostringuint_out[return_value][5][6]
+tostringuint_out[return_value][5][7]
+tostringuint_out[return_value][6][0]
+tostringuint_out[return_value][6][1]
+tostringuint_out[return_value][6][2]
+tostringuint_out[return_value][6][3]
+tostringuint_out[return_value][6][4]
+tostringuint_out[return_value][6][5]
+tostringuint_out[return_value][6][6]
+tostringuint_out[return_value][6][7]
+tostringuint_out[return_value][7][0]
+tostringuint_out[return_value][7][1]
+tostringuint_out[return_value][7][2]
+tostringuint_out[return_value][7][3]
+tostringuint_out[return_value][7][4]
+tostringuint_out[return_value][7][5]
+tostringuint_out[return_value][7][6]
+tostringuint_out[return_value][7][7]
+tostringuint_out[return_value][8][0]
+tostringuint_out[return_value][8][1]
+tostringuint_out[return_value][8][2]
+tostringuint_out[return_value][8][3]
+tostringuint_out[return_value][8][4]
+tostringuint_out[return_value][8][5]
+tostringuint_out[return_value][8][6]
+tostringuint_out[return_value][8][7]
+tostringuint_out[return_value][9][0]
+tostringuint_out[return_value][9][1]
+tostringuint_out[return_value][9][2]
+tostringuint_out[return_value][9][3]
+tostringuint_out[return_value][9][4]
+tostringuint_out[return_value][9][5]
+tostringuint_out[return_value][9][6]
+tostringuint_out[return_value][9][7]
+
+ There are 0 ports with no output delay but user has a false path constraint
+
+ There are 0 ports with no output delay but with a timing clock defined on it or propagating through it
+
+
+7. checking multiple_clock (0)
+------------------------------
+ There are 0 register/latch pins with multiple clocks.
+
+
+8. checking generated_clocks (0)
+--------------------------------
+ There are 0 generated clocks that are not connected to a clock source.
+
+
+9. checking loops (0)
+---------------------
+ There are 0 combinational loops in the design.
+
+
+10. checking partial_input_delay (0)
+------------------------------------
+ There are 0 input ports with partial input delay specified.
+
+
+11. checking partial_output_delay (0)
+-------------------------------------
+ There are 0 ports with partial output delay specified.
+
+
+12. checking latch_loops (0)
+----------------------------
+ There are 0 combinational latch loops in the design through latch input
+
+
+
+------------------------------------------------------------------------------------------------
+| Design Timing Summary
+| ---------------------
+------------------------------------------------------------------------------------------------
+
+    WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+    -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+     14.879        0.000                      0                 2373        0.256        0.000                      0                 2373        9.500        0.000                       0                  1441  
+
+
+All user specified timing constraints are met.
+
+
+------------------------------------------------------------------------------------------------
+| Clock Summary
+| -------------
+------------------------------------------------------------------------------------------------
+
+Clock          Waveform(ns)       Period(ns)      Frequency(MHz)
+-----          ------------       ----------      --------------
+context_clock  {0.000 10.000}     20.000          50.000          
+
+
+------------------------------------------------------------------------------------------------
+| Intra Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+Clock              WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints     WPWS(ns)     TPWS(ns)  TPWS Failing Endpoints  TPWS Total Endpoints  
+-----              -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------     --------     --------  ----------------------  --------------------  
+context_clock       14.879        0.000                      0                 2373        0.256        0.000                      0                 2373        9.500        0.000                       0                  1441  
+
+
+------------------------------------------------------------------------------------------------
+| Inter Clock Table
+| -----------------
+------------------------------------------------------------------------------------------------
+
+From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| Other Path Groups Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock          WNS(ns)      TNS(ns)  TNS Failing Endpoints  TNS Total Endpoints      WHS(ns)      THS(ns)  THS Failing Endpoints  THS Total Endpoints  
+----------    ----------    --------          -------      -------  ---------------------  -------------------      -------      -------  ---------------------  -------------------  
+
+
+------------------------------------------------------------------------------------------------
+| User Ignored Path Table
+| -----------------------
+------------------------------------------------------------------------------------------------
+
+Path Group    From Clock    To Clock    
+----------    ----------    --------    
+
+
+------------------------------------------------------------------------------------------------
+| Unconstrained Path Table
+| ------------------------
+------------------------------------------------------------------------------------------------
+
+Path Group     From Clock     To Clock     
+----------     ----------     --------     
+(none)         context_clock                 
+(none)                        context_clock  
+
+
+------------------------------------------------------------------------------------------------
+| Timing Details
+| --------------
+------------------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------
+From Clock:  context_clock
+  To Clock:  context_clock
+
+Setup :            0  Failing Endpoints,  Worst Slack       14.879ns,  Total Violation        0.000ns
+Hold  :            0  Failing Endpoints,  Worst Slack        0.256ns,  Total Violation        0.000ns
+PW    :            0  Failing Endpoints,  Worst Slack        9.500ns,  Total Violation        0.000ns
+---------------------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             14.879ns  (required time - arrival time)
+  Source:                 dut/tostringuint_fn_reset_sync.tostringuint_fn.index_reg[30]/C
+                            (rising edge-triggered cell FDRE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/tostringuint_fn_reset_sync.tostringuint_fn.buf_reg[3,0]/D
+                            (rising edge-triggered cell FDRE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             context_clock
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            20.000ns  (context_clock rise@20.000ns - context_clock rise@0.000ns)
+  Data Path Delay:        5.081ns  (logic 1.517ns (29.856%)  route 3.564ns (70.144%))
+  Logic Levels:           7  (LUT3=1 LUT4=4 LUT5=1 LUT6=1)
+  Clock Path Skew:        -0.049ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns = ( 20.924 - 20.000 ) 
+    Source Clock Delay      (SCD):    0.973ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.973     0.973    dut/Clk
+                         FDRE                                         r  dut/tostringuint_fn_reset_sync.tostringuint_fn.index_reg[30]/C
+  -------------------------------------------------------------------    -------------------
+                         FDRE (Prop_fdre_C_Q)         0.478     1.451 f  dut/tostringuint_fn_reset_sync.tostringuint_fn.index_reg[30]/Q
+                         net (fo=3, unplaced)         0.781     2.232    dut/tostringuint_fn_reset_sync.tostringuint_fn.index[30]
+                         LUT4 (Prop_lut4_I1_O)        0.295     2.527 f  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[2,0]_i_5/O
+                         net (fo=2, unplaced)         0.460     2.987    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[2,0]_i_5_n_0
+                         LUT4 (Prop_lut4_I0_O)        0.124     3.111 f  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[0,0]_i_14/O
+                         net (fo=1, unplaced)         0.449     3.560    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[0,0]_i_14_n_0
+                         LUT4 (Prop_lut4_I0_O)        0.124     3.684 f  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[0,0]_i_8/O
+                         net (fo=2, unplaced)         0.460     4.144    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[0,0]_i_8_n_0
+                         LUT5 (Prop_lut5_I4_O)        0.124     4.268 r  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[9,0]_i_5/O
+                         net (fo=3, unplaced)         0.467     4.735    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[9,0]_i_5_n_0
+                         LUT4 (Prop_lut4_I0_O)        0.124     4.859 r  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[3,0]_i_3/O
+                         net (fo=2, unplaced)         0.460     5.319    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[3,0]_i_3_n_0
+                         LUT6 (Prop_lut6_I5_O)        0.124     5.443 r  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[3,0]_i_2/O
+                         net (fo=8, unplaced)         0.487     5.930    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[3,7]
+                         LUT3 (Prop_lut3_I1_O)        0.124     6.054 r  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[3,0]_i_1/O
+                         net (fo=1, unplaced)         0.000     6.054    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf[3,0]_i_1_n_0
+                         FDRE                                         r  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf_reg[3,0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock context_clock rise edge)
+                                                     20.000    20.000 r  <hidden>
+                                                      0.000    20.000 r  Clk
+                         net (fo=1440, unset)         0.924    20.924    dut/Clk
+                         FDRE                                         r  dut/tostringuint_fn_reset_sync.tostringuint_fn.buf_reg[3,0]/C
+                         clock pessimism              0.000    20.924    <hidden>
+                         clock uncertainty           -0.035    20.889    <hidden>
+                         FDRE (Setup_fdre_C_D)        0.044    20.933    dut/tostringuint_fn_reset_sync.tostringuint_fn.buf_reg[3,0]
+  -------------------------------------------------------------------
+                         required time                         20.933    <hidden>
+                         arrival time                          -6.054    <hidden>
+  -------------------------------------------------------------------
+                         slack                                 14.879    <hidden>
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack (MET) :             0.256ns  (arrival time - required time)
+  Source:                 dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]/C
+                            (rising edge-triggered cell FDRE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]/D
+                            (rising edge-triggered cell FDRE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             context_clock
+  Path Type:              Hold (Min at Fast Process Corner)
+  Requirement:            0.000ns  (context_clock rise@0.000ns - context_clock rise@0.000ns)
+  Data Path Delay:        0.376ns  (logic 0.245ns (65.144%)  route 0.131ns (34.856%))
+  Logic Levels:           1  (LUT5=1)
+  Clock Path Skew:        0.022ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.432ns
+    Source Clock Delay      (SCD):    0.410ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.410     0.410    dut/Clk
+                         FDRE                                         r  dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]/C
+  -------------------------------------------------------------------    -------------------
+                         FDRE (Prop_fdre_C_Q)         0.147     0.557 r  dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]/Q
+                         net (fo=1, unplaced)         0.131     0.688    dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]
+                         LUT5 (Prop_lut5_I4_O)        0.098     0.786 r  dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued[0][value][0]_i_1/O
+                         net (fo=2, unplaced)         0.000     0.786    dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued[0][value][0]
+                         FDRE                                         r  dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.432     0.432    dut/Clk
+                         FDRE                                         r  dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]/C
+                         clock pessimism              0.000     0.432    <hidden>
+                         FDRE (Hold_fdre_C_D)         0.099     0.531    dut/this_encodedecimal_in_references_arbiter_reset_sync.this_encodedecimal_in_references_arbiter.queued_reg[0][value][0]
+  -------------------------------------------------------------------
+                         required time                         -0.531    <hidden>
+                         arrival time                           0.786    <hidden>
+  -------------------------------------------------------------------
+                         slack                                  0.256    <hidden>
+
+
+
+
+
+Pulse Width Checks
+--------------------------------------------------------------------------------------
+Clock Name:         context_clock
+Waveform(ns):       { 0.000 10.000 }
+Period(ns):         20.000
+Sources:            { Clk }
+
+Check Type        Corner  Lib Pin  Reference Pin  Required(ns)  Actual(ns)  Slack(ns)  Location  Pin
+Min Period        n/a     FDSE/C   n/a            1.000         20.000      19.000               dut/FSM_onehot_digit_fn_reset_sync.this_digit_lvt_state_reg[0]/C
+Low Pulse Width   Slow    FDSE/C   n/a            0.500         10.000      9.500                dut/FSM_onehot_digit_fn_reset_sync.this_digit_lvt_state_reg[0]/C
+High Pulse Width  Slow    FDSE/C   n/a            0.500         10.000      9.500                dut/FSM_onehot_digit_fn_reset_sync.this_digit_lvt_state_reg[0]/C
+
+
+
+--------------------------------------------------------------------------------------
+Path Group:  (none)
+From Clock:  context_clock
+  To Clock:  
+
+Max Delay           235 Endpoints
+Min Delay           235 Endpoints
+--------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack:                    inf
+  Source:                 dut/tobinarybyte_fn_reset_sync.this_tobinarybyte_out_reg[busy]/C
+                            (rising edge-triggered cell FDRE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            tobinarybyte_out[busy]
+                            (output port)
+  Path Group:             (none)
+  Path Type:              Max at Slow Process Corner
+  Data Path Delay:        1.451ns  (logic 0.478ns (32.943%)  route 0.973ns (67.057%))
+  Logic Levels:           0  
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.973     0.973    dut/Clk
+                         FDRE                                         r  dut/tobinarybyte_fn_reset_sync.this_tobinarybyte_out_reg[busy]/C
+  -------------------------------------------------------------------    -------------------
+                         FDRE (Prop_fdre_C_Q)         0.478     1.451 r  dut/tobinarybyte_fn_reset_sync.this_tobinarybyte_out_reg[busy]/Q
+                         net (fo=1, unset)            0.973     2.424    tobinarybyte_out[busy]
+                                                                      r  tobinarybyte_out[busy]
+  -------------------------------------------------------------------    -------------------
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack:                    inf
+  Source:                 dut/tobinarybyte_fn_reset_sync.this_tobinarybyte_out_reg[busy]/C
+                            (rising edge-triggered cell FDRE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Destination:            tobinarybyte_out[busy]
+                            (output port)
+  Path Group:             (none)
+  Path Type:              Min at Fast Process Corner
+  Data Path Delay:        0.557ns  (logic 0.147ns (26.385%)  route 0.410ns (73.615%))
+  Logic Levels:           0  
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.410     0.410    dut/Clk
+                         FDRE                                         r  dut/tobinarybyte_fn_reset_sync.this_tobinarybyte_out_reg[busy]/C
+  -------------------------------------------------------------------    -------------------
+                         FDRE (Prop_fdre_C_Q)         0.147     0.557 r  dut/tobinarybyte_fn_reset_sync.this_tobinarybyte_out_reg[busy]/Q
+                         net (fo=1, unset)            0.410     0.967    tobinarybyte_out[busy]
+                                                                      r  tobinarybyte_out[busy]
+  -------------------------------------------------------------------    -------------------
+
+
+
+
+
+--------------------------------------------------------------------------------------
+Path Group:  (none)
+From Clock:  
+  To Clock:  context_clock
+
+Max Delay          1957 Endpoints
+Min Delay          1957 Endpoints
+--------------------------------------------------------------------------------------
+
+
+Max Delay Paths
+--------------------------------------------------------------------------------------
+Slack:                    inf
+  Source:                 tostringuint_in[run]
+                            (input port)
+  Destination:            dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state_reg[0]/D
+                            (rising edge-triggered cell FDSE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             (none)
+  Path Type:              Setup (Max at Slow Process Corner)
+  Data Path Delay:        3.574ns  (logic 0.620ns (17.348%)  route 2.954ns (82.652%))
+  Logic Levels:           5  (LUT2=1 LUT3=2 LUT5=1 LUT6=1)
+  Clock Path Skew:        0.924ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    0.924ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    0.000ns
+  Clock Uncertainty:      0.025ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.050ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  tostringuint_in[run]
+                         net (fo=0)                   0.973     0.973    dut/tostringuint_in[run]
+                         LUT2 (Prop_lut2_I1_O)        0.124     1.097 r  dut/tostringuint_fn_reset_sync.this_tostringuint_out[busy]_i_2/O
+                         net (fo=20, unplaced)        0.509     1.606    dut/this_tostringuint_out[busy]
+                         LUT3 (Prop_lut3_I0_O)        0.124     1.730 r  dut/tostringuint_fn_reset_sync.tostringuint_fn.index[31]_i_1/O
+                         net (fo=33, unplaced)        0.521     2.251    dut/tostringuint_fn_reset_sync.tostringuint_fn.index[31]_i_1_n_0
+                         LUT5 (Prop_lut5_I0_O)        0.124     2.375 r  dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state[14]_i_4/O
+                         net (fo=1, unplaced)         0.449     2.824    dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state[14]_i_4_n_0
+                         LUT6 (Prop_lut6_I5_O)        0.124     2.948 r  dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state[14]_i_2/O
+                         net (fo=15, unplaced)        0.502     3.450    dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state[14]_i_2_n_0
+                         LUT3 (Prop_lut3_I1_O)        0.124     3.574 r  dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state[0]_i_1/O
+                         net (fo=1, unplaced)         0.000     3.574    dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state[0]_i_1_n_0
+                         FDSE                                         r  dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state_reg[0]/D
+  -------------------------------------------------------------------    -------------------
+
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.924     0.924    dut/Clk
+                         FDSE                                         r  dut/FSM_onehot_tostringuint_fn_reset_sync.this_tostringuint_lvt_state_reg[0]/C
+
+
+
+
+
+Min Delay Paths
+--------------------------------------------------------------------------------------
+Slack:                    inf
+  Source:                 Rst
+                            (input port)
+  Destination:            dut/FSM_onehot_digit_fn_reset_sync.this_digit_lvt_state_reg[0]/S
+                            (rising edge-triggered cell FDSE clocked by context_clock  {rise@0.000ns fall@10.000ns period=20.000ns})
+  Path Group:             (none)
+  Path Type:              Hold (Min at Fast Process Corner)
+  Data Path Delay:        0.410ns  (logic 0.000ns (0.000%)  route 0.410ns (100.000%))
+  Logic Levels:           0  
+  Clock Path Skew:        0.432ns (DCD - SCD - CPR)
+    Destination Clock Delay (DCD):    0.432ns
+    Source Clock Delay      (SCD):    0.000ns
+    Clock Pessimism Removal (CPR):    -0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                                                      0.000     0.000 r  Rst
+                         net (fo=1340, unset)         0.410     0.410    dut/Rst
+                         FDSE                                         r  dut/FSM_onehot_digit_fn_reset_sync.this_digit_lvt_state_reg[0]/S
+  -------------------------------------------------------------------    -------------------
+
+                         (clock context_clock rise edge)
+                                                      0.000     0.000 r  <hidden>
+                                                      0.000     0.000 r  Clk
+                         net (fo=1440, unset)         0.432     0.432    dut/Clk
+                         FDSE                                         r  dut/FSM_onehot_digit_fn_reset_sync.this_digit_lvt_state_reg[0]/C
+
+
+
+
+

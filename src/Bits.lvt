@@ -1,13 +1,12 @@
 namespace Livt.Bits
 
-using Livt.Lang.Annotations
-
 /**
  * Bit and logic-vector operations for non-negative integer values.
  *
  * All functions treat the value as a non-negative integer stored in an int.
  * Bit indices are 0-based (0 = least significant bit, 30 = most significant
- * bit of the usable range). All functions are synthesizable.
+ * bit of the usable range). Widths are 1..31; rotation amounts are nonnegative.
+ * Calls are scheduled and must be serialized. All functions are synthesizable.
  */
 component Bits
 {
@@ -16,33 +15,24 @@ component Bits
 	 */
 	public fn Pow2(n: int) int
 	{
-		var result: int = 1
-
-		for (var i = 0; i < n; i++) {
-			result = result * 2
-		}
-
-		return result
+		return 1 << n
 	}
 
 	/**
 	 * Returns the bit at position index (0 = LSB) as 0 or 1.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn GetBit(value: int, index: int) int
 	{
-		var p: int = this.Pow2(index)
-		return (value / p) % 2
+		return (value >> index) & 1
 	}
 
 	/**
 	 * Returns value with the bit at position index set to 1.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn SetBit(value: int, index: int) int
 	{
 		var p: int = this.Pow2(index)
-		var bit: int = (value / p) % 2
+		var bit: int = (value >> index) & 1
 
 		if (bit == 0) {
 			return value + p
@@ -54,11 +44,10 @@ component Bits
 	/**
 	 * Returns value with the bit at position index cleared to 0.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn ClearBit(value: int, index: int) int
 	{
 		var p: int = this.Pow2(index)
-		var bit: int = (value / p) % 2
+		var bit: int = (value >> index) & 1
 
 		if (bit == 1) {
 			return value - p
@@ -70,11 +59,10 @@ component Bits
 	/**
 	 * Returns value with the bit at position index inverted.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn ToggleBit(value: int, index: int) int
 	{
 		var p: int = this.Pow2(index)
-		var bit: int = (value / p) % 2
+		var bit: int = (value >> index) & 1
 
 		if (bit == 0) {
 			return value + p
@@ -114,22 +102,19 @@ component Bits
 	{
 		var width: int = high - low + 1
 		var m: int = this.Mask(width)
-		var p: int = this.Pow2(low)
-		return m * p
+		return m << low
 	}
 
 	/**
 	 * Returns bits low through high (inclusive) of value, shifted down to bit 0.
 	 * Example: Extract(0b11010110, 5, 2) returns 0b0101 = 5.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn Extract(value: int, high: int, low: int) int
 	{
-		var p: int = this.Pow2(low)
-		var shifted: int = value / p
+		var shifted: int = value >> low
 		var width: int = high - low + 1
 		var pw: int = this.Pow2(width)
-		return shifted % pw
+		return shifted & (pw - 1)
 	}
 
 	/**
@@ -137,16 +122,14 @@ component Bits
 	 * field is masked to the target width before insertion.
 	 * Example: Insert(0b11000000, 5, 2, 0b0101) returns 0b11010100.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn Insert(value: int, high: int, low: int, field: int) int
 	{
-		var p: int = this.Pow2(low)
 		var width: int = high - low + 1
 		var pw: int = this.Pow2(width)
-		var fieldMasked: int = field % pw
+		var fieldMasked: int = field & (pw - 1)
 		var extracted: int = this.Extract(value, high, low)
-		var cleared: int = value - extracted * p
-		return cleared + fieldMasked * p
+		var cleared: int = value - (extracted << low)
+		return cleared + (fieldMasked << low)
 	}
 
 	/**
@@ -159,9 +142,9 @@ component Bits
 		var remaining: int = value
 
 		for (var i = 0; i < 31; i++) {
-			var bit: int = remaining % 2
+			var bit: int = remaining & 1
 			count = count + bit
-			remaining = remaining / 2
+			remaining = remaining >> 1
 		}
 
 		return count
@@ -171,11 +154,10 @@ component Bits
 	 * Returns the number of 0-bits in the lower width bits of value.
 	 * Use width = 8 for a byte field, width = 16 for a halfword, and so on.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn CountZeros(value: int, width: int) int
 	{
 		var p: int = this.Pow2(width)
-		var masked: int = value % p
+		var masked: int = value & (p - 1)
 		var ones: int = this.CountOnes(masked)
 		return width - ones
 	}
@@ -187,26 +169,24 @@ component Bits
 	public fn Parity(value: int) int
 	{
 		var ones: int = this.CountOnes(value)
-		return ones % 2
+		return ones & 1
 	}
 
 	/**
 	 * Returns value with its lower width bits in reverse order.
 	 * Use width = 8 for byte reversal, width = 16 for halfword reversal.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn ReverseBits(value: int, width: int) int
 	{
 		var pw: int = this.Pow2(width)
 		var result: int = 0
-		var remaining: int = value % pw
+		var remaining: int = value & (pw - 1)
 
 		for (var i = 0; i < width; i++) {
-			var bit: int = remaining % 2
+			var bit: int = remaining & 1
 			var shift: int = width - 1 - i
-			var p: int = this.Pow2(shift)
-			result = result + bit * p
-			remaining = remaining / 2
+			result = result + (bit << shift)
+			remaining = remaining >> 1
 		}
 
 		return result
@@ -216,46 +196,41 @@ component Bits
 	 * Rotates value left by amount positions within a field of width bits.
 	 * Example: RotateLeft(0b10110001, 2, 8) returns 0b11000110.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn RotateLeft(value: int, amount: int, width: int) int
 	{
 		var pw: int = this.Pow2(width)
-		var masked: int = value % pw
-		var normAmount: int = amount % width
+		var masked: int = value & (pw - 1)
+		var normAmount: int = this.NormalizeRotation(amount, width)
 		var splitAt: int = width - normAmount
 		var pSplit: int = this.Pow2(splitAt)
-		var topBits: int = masked / pSplit
-		var bottomBits: int = masked % pSplit
-		var pAmount: int = this.Pow2(normAmount)
-		return bottomBits * pAmount + topBits
+		var topBits: int = masked >> splitAt
+		var bottomBits: int = masked & (pSplit - 1)
+		return (bottomBits << normAmount) + topBits
 	}
 
 	/**
 	 * Rotates value right by amount positions within a field of width bits.
 	 * Example: RotateRight(0b10110001, 2, 8) returns 0b01101100.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn RotateRight(value: int, amount: int, width: int) int
 	{
 		var pw: int = this.Pow2(width)
-		var masked: int = value % pw
-		var normAmount: int = amount % width
+		var masked: int = value & (pw - 1)
+		var normAmount: int = this.NormalizeRotation(amount, width)
 		var pNorm: int = this.Pow2(normAmount)
-		var lowBits: int = masked % pNorm
-		var highBits: int = masked / pNorm
-		var pHigh: int = this.Pow2(width - normAmount)
-		return lowBits * pHigh + highBits
+		var lowBits: int = masked & (pNorm - 1)
+		var highBits: int = masked >> normAmount
+		return (lowBits << (width - normAmount)) + highBits
 	}
 
 	/**
 	 * Returns value with its lower fromWidth bits zero-extended to toWidth bits.
 	 * All bits above fromWidth are cleared.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn ZeroExtend(value: int, fromWidth: int, toWidth: int) int
 	{
 		var pw: int = this.Pow2(fromWidth)
-		return value % pw
+		return value & (pw - 1)
 	}
 
 	/**
@@ -263,14 +238,12 @@ component Bits
 	 * If bit (fromWidth - 1) is 1, all bits from fromWidth to toWidth - 1 are
 	 * set to 1.
 	 */
-	@SuppressWarning("variable-divisor")
 	public fn SignExtend(value: int, fromWidth: int, toWidth: int) int
 	{
 		var pw: int = this.Pow2(fromWidth)
-		var masked: int = value % pw
+		var masked: int = value & (pw - 1)
 		var signShift: int = fromWidth - 1
-		var pSign: int = this.Pow2(signShift)
-		var signBit: int = masked / pSign
+		var signBit: int = masked >> signShift
 
 		if (signBit == 0) {
 			return masked
@@ -279,7 +252,7 @@ component Bits
 		var extensionWidth: int = toWidth - fromWidth
 		var pExt: int = this.Pow2(extensionWidth)
 		var extensionMask: int = pExt - 1
-		return masked + extensionMask * pw
+		return masked + (extensionMask << fromWidth)
 	}
 
 	/**
@@ -302,10 +275,28 @@ component Bits
 		for (var i = 0; i < 31; i++) {
 			if (remaining > 0) {
 				bitCount = bitCount + 1
-				remaining = remaining / 2
+				remaining = remaining >> 1
 			}
 		}
 
 		return bitCount
 	}
+	/**
+	 * Reduces a nonnegative rotation amount for width 1..31 in 31 bit steps.
+	 * Kept local to Base to avoid a dependency cycle through Livt.Math.
+	 */
+	fn NormalizeRotation(amount: int, width: int) int
+	{
+		var remainder = 0
+		for (var bit = 30; bit >= 0; bit--) {
+			state {
+				remainder = (remainder << 1) | ((amount >> bit) & 1)
+				if (remainder >= width) {
+					remainder = remainder - width
+				}
+			}
+		}
+		return remainder
+	}
+
 }

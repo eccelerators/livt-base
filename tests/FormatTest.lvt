@@ -194,4 +194,18 @@ component FormatTest
 		var s: string[8] = this.fmt.ToBinaryByte(0xA5)
 		assert s == "10100101"
 	}
+	/**
+	 * Covers full-width magnitude conversion and reuse after large values.
+	 */
+	@Test
+	fn DecimalBoundariesAndRecovery()
+	{
+		assert this.fmt.ToStringUInt(0xffffffff as uint) == "4294967295"
+		assert this.fmt.ToStringInt(-2147483647 - 1) == "-2147483648"
+		assert this.fmt.ToStringInt(2147483647) == "+2147483647"
+		assert this.fmt.ToStringUInt(0) == "0000000000"
+		assert this.fmt.ToStringByte(255) == "255"
+		assert this.fmt.ToStringByte(0) == "000"
+	}
+
 }

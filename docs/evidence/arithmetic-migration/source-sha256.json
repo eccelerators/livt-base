@@ -1,0 +1,6 @@
+{
+  "src/Bits.lvt": "10ab50cae576cfe6c5bb9ea1d4b51c1f9a4f2f24cb26053b4856949c611001f0",
+  "src/Format.lvt": "da34faf9883a4e73b6415e644a2aa0a3d69e8e873ae0a1b04f2b9459c04ea293",
+  "tests/BitsTest.lvt": "4e5bf43e0206c8b22dfa6cff178f9d3750c3c6f8c44b2b0265147e1fc682a22a",
+  "tests/FormatTest.lvt": "e92fbd58df1fead04f3267842e42eeb2b07815647c0816e81f780d606d30d966"
+}

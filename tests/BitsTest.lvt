@@ -709,4 +709,18 @@ component BitsTest
 		assert this.bits.RequiredBits(65535) == 16
 		assert this.bits.RequiredBits(65536) == 17
 	}
+	/**
+	 * Checks variable rotation reduction and the highest usable bit.
+	 */
+	@Test
+	fn RotationAndHighBitBoundaries()
+	{
+		assert this.bits.GetBit(1073741824, 30) == 1
+		assert this.bits.Extract(2147483647, 30, 0) == 2147483647
+		assert this.bits.RotateLeft(1, 2147483647, 31) == 2
+		assert this.bits.RotateRight(1, 2147483647, 31) == 1073741824
+		assert this.bits.RotateLeft(255, 31, 1) == 1
+		assert this.bits.RotateRight(0x81, 0, 8) == 0x81
+	}
+
 }

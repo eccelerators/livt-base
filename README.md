@@ -519,3 +519,6 @@ Dependent packages should pin the version explicitly.
 ## 📄 License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE).
+
+See the [arithmetic migration record](docs/arithmetic-migration.md) for scheduled
+decimal formatting, bit-helper changes, and validation evidence.
