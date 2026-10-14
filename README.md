@@ -13,7 +13,7 @@ or explicitly designated as simulation and test tooling.
 
 ```toml
 [dependencies]
-Livt.Base = "1.0.1"
+Livt.Base = "1.2.0"
 ```
 
 ## 📚 Namespaces
@@ -513,7 +513,7 @@ if (str.StartsWith(buf, 128, method, 3))
 
 ## 🚀 Versioning
 
-`Livt.Base` follows semantic versioning. The current version is `1.0.1`.
+`Livt.Base` follows semantic versioning. The current version is `1.2.0`.
 Dependent packages should pin the version explicitly.
 
 ## 📄 License
