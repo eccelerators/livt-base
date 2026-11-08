@@ -1,8 +1,21 @@
 [project]
 name = "Livt.Base"
-version = "1.2.0"
+version = "1.2.1"
+description = "Foundational bit, array, string, conversion, formatting, and timing helpers for Livt hardware designs."
+authors = ["Denis Vasilík"]
+repository = "https://github.com/eccelerators/livt-base"
+homepage = "https://github.com/eccelerators/livt-base"
+keywords = ["fpga", "base", "bits", "arrays", "strings", "timing"]
+license = "MIT"
 path = "src"
 outdir = "out"
+
+[publish]
+files = ["README.md", "CHANGELOG.md", "LICENSE"]
+
+[project.organization]
+name = "Eccelerators GmbH"
+website = "https://eccelerators.com"
 
 [tests]
 path = "tests"
