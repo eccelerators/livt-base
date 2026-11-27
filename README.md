@@ -13,7 +13,7 @@ or explicitly designated as simulation and test tooling.
 
 ```toml
 [dependencies]
-Livt.Base = "1.2.1"
+Livt.Base = "1.3.0"
 ```
 
 ## 📚 Namespaces
@@ -143,16 +143,29 @@ livt test
 ## 🔢 `Livt.Bits`
 
 Provides bit and logic-vector operations for non-negative integer values. All
-functions treat the value as a non-negative integer stored in `int`. Bit indices
+integer functions treat the value as a non-negative integer stored in `int`. Bit indices
 are 0-based (0 = least significant bit). All functions are synthesizable.
+
+For cycle-sensitive byte selection, use the static combinational helper:
+
+```livt
+using Livt.Bits
+
+// index must be in 0..7; zero selects the least significant bit.
+bus.mosi = Bits.GetByteBit(transmitByte, 7 - bitIndex)
+```
+
+`GetByteBit[](value: byte, index: int)` returns `logic`. It needs no `Bits`
+instance and adds no scheduled call or clock cycles. A variable index selects
+between the eight bits combinationally. Existing integer-returning instance
+functions retain their scheduled API.
 
 ### Known Synthesis Costs
 
 Several generic `Bits` helpers compute powers of two at runtime and then use
 division or modulo with variable divisors. The generated VHDL is correct in the
-current tests, but the compiler reports variable-divider warnings for functions
-such as `GetBit`, `SetBit`, `ClearBit`, `ToggleBit`, `Extract`, `RotateLeft`,
-`RotateRight`, and `SignExtend`.
+current tests, but operations with variable divisors can require expensive
+hardware. `GetBit` itself uses a shift and mask, not division or remainder.
 
 These helpers are useful portable reference utilities. Timing-critical FPGA
 designs should prefer fixed-width, constant-index logic or future specialized
@@ -513,11 +526,12 @@ if (str.StartsWith(buf, 128, method, 3))
 
 ## 🚀 Versioning
 
-`Livt.Base` follows semantic versioning. The current version is `1.2.1`.
+`Livt.Base` follows semantic versioning. The current version is `1.3.0`.
 Dependent packages should pin the version explicitly.
 
-Version 1.2.1 publishes package discovery metadata, this README, the changelog,
-and the MIT license. Its component API is unchanged from 1.2.0.
+Version 1.3.0 adds static combinational byte-bit selection through
+`Bits.GetByteBit`. Existing scheduled integer helpers retain their signatures
+and execution model; callers choose register boundaries for the new helper.
 
 ## 📄 License
 

@@ -26,6 +26,26 @@ component BitsTest
 	// -----------------------------------------------------------------------
 
 	/**
+	 * Exhaustively checks byte selection against an integer arithmetic oracle.
+	 */
+	@Test
+	fn GetByteBitForEveryByteAndPosition()
+	{
+		for (var sample = 0; sample < 256; sample++) {
+			var remaining = sample
+			for (var index = 0; index < 8; index++) {
+				var actual = Bits.GetByteBit(sample as byte, index)
+				if (remaining % 2 == 0) {
+					assert actual == 0b0
+				} else {
+					assert actual == 0b1
+				}
+				remaining = remaining / 2
+			}
+		}
+	}
+
+	/**
 	 * Checks that GetBit at bit0 is lsb.
 	 */
 	@Test

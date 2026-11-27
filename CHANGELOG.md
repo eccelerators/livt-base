@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.3.0
+
+### Added
+
+- Static combinational `Bits.GetByteBit` for byte-to-logic bit selection without
+  scheduled calls, with exhaustive byte and bit-position tests.
+
+### Compatibility
+
+- Existing scheduled integer helper APIs and timing contracts are unchanged.
+- No new package dependencies.
+
 ## 1.2.1
 
 ### Added

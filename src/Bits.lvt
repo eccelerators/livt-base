@@ -3,13 +3,27 @@ namespace Livt.Bits
 /**
  * Bit and logic-vector operations for non-negative integer values.
  *
- * All functions treat the value as a non-negative integer stored in an int.
+ * Integer functions treat the value as a non-negative integer stored in an int.
  * Bit indices are 0-based (0 = least significant bit, 30 = most significant
  * bit of the usable range). Widths are 1..31; rotation amounts are nonnegative.
- * Calls are scheduled and must be serialized. All functions are synthesizable.
+ * Instance calls are scheduled and must be serialized. GetByteBit is a static,
+ * combinational operation with no scheduled call. All functions are synthesizable.
  */
 component Bits
 {
+	/**
+	 * Selects a byte bit as logic without adding clock cycles. Use this in
+	 * cycle-sensitive signal paths such as serial transmitters.
+	 * The caller must supply index 0..7; 0 selects the least significant bit.
+	 */
+	public static fn GetByteBit[](value: byte, index: int) logic
+	{
+		if ((((value as int) >> index) & 1) == 0) {
+			return 0b0
+		}
+		return 0b1
+	}
+
 	/**
 	 * Returns 2^n for n in 0..30.
 	 */
